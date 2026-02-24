@@ -320,14 +320,14 @@ export default function App() {
   const [insightsOpen, setInsightsOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-[#f9fafb] flex text-[#0a0a0a]">
-      {/* Sidebar – Figma Single Solver Concepts 145:911 */}
-      <aside className="w-[220px] shrink-0 bg-[#12171e] flex flex-col py-8 px-4">
+    <div className="h-screen bg-[#f9fafb] flex text-[#0a0a0a] overflow-hidden">
+      {/* App shell: fixed sidebar */}
+      <aside className="w-[220px] h-full shrink-0 bg-[#12171e] flex flex-col overflow-hidden py-8 px-4">
         <div className="relative flex items-center justify-between px-4 py-2 min-h-[40px]">
           <AutoneLogo />
         </div>
 
-        <nav className="flex-1 flex flex-col gap-1.5 mt-8">
+        <nav className="flex-1 min-h-0 flex flex-col gap-1.5 mt-8 overflow-y-auto">
           <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] bg-[#0267ff] text-left text-sm font-medium text-white shrink-0">
             <IconGrid className="text-white" />
             <span>Control Panel</span>
@@ -386,7 +386,7 @@ export default function App() {
         </nav>
 
         {/* Sidebar footer – Figma 145:935 */}
-        <div className="flex flex-col gap-[var(--spacing-xs,6px)] items-start w-full shrink-0" data-name="Container" data-node-id="145:935">
+        <div className="flex flex-col gap-[var(--spacing-xs,6px)] items-start w-full shrink-0 mt-auto" data-name="Container" data-node-id="145:935">
           <button type="button" className="flex h-[40px] w-full shrink-0 items-center justify-center gap-[var(--spacing-m,12px)] rounded-[var(--border-radius-s,4px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] text-left text-[14px] font-normal text-white hover:bg-white/5" data-name="Sidebar element" data-node-id="145:936">
             <IconClockSidebar className="text-emerald-400 size-6 shrink-0" aria-hidden />
             <span className="min-w-0 flex-1 text-white">Data age</span>
@@ -419,17 +419,19 @@ export default function App() {
         </div>
       </aside>
 
-      {/* Right column: top bar + main content (aligned with sidebar) */}
-      <div className="flex flex-col flex-1 min-w-0 w-full overflow-hidden">
-        <TopBar
+      {/* App shell: fixed top bar + scrollable main */}
+      <div className="flex flex-col flex-1 min-w-0 min-h-0 w-full overflow-hidden">
+        <div className="shrink-0">
+          <TopBar
           title="Control Panel"
           subtitle="Control Panel for managing all of your inventory and scheduling needs."
         />
+        </div>
 
-        {/* Main */}
-        <main className="flex-1 min-w-0 w-full pl-8 pr-8 pb-12">
+        {/* Main: scrollable content panel */}
+        <main className="flex-1 min-h-0 min-w-0 w-full pl-8 pr-8 pb-12 overflow-y-auto overflow-x-hidden">
         {/* Page header – welcome/date; filters, search, actions */}
-        <header className="w-full min-w-0 bg-white border-b border-[#e5e7eb] pt-6 pb-4 -mx-8 px-8">
+        <header className="w-[calc(100%+4rem)] min-w-0 -ml-8 bg-white border-b border-[#e5e7eb] pt-6 pb-4 px-8">
           <div className="flex flex-wrap items-center gap-3 w-full min-w-0">
             <div className="shrink-0 mr-2 min-w-0">
               <h1 className="text-xl font-semibold text-[#0a0a0a] leading-tight">Welcome back, Tamir</h1>
