@@ -322,41 +322,43 @@ export default function App() {
   return (
     <div className="h-screen bg-[#f9fafb] flex text-[#0a0a0a] overflow-hidden">
       {/* App shell: fixed sidebar */}
-      <aside className="w-[220px] h-full shrink-0 bg-[#12171e] flex flex-col overflow-hidden py-8 px-4">
-        <div className="relative flex items-center justify-between px-4 py-2 min-h-[40px]">
+      <aside className={`w-[220px] h-full shrink-0 bg-[#12171e] flex flex-col px-4 py-8 ${insightsOpen ? 'overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden' : 'overflow-hidden'}`} data-name="Sidebar" data-node-id="12212:42695">
+        <div className="flex flex-col gap-0 items-start justify-center px-4 py-2 shrink-0 w-full" data-name="Logo container" data-node-id="12203:5658">
           <AutoneLogo />
         </div>
 
-        <nav className="flex-1 min-h-0 flex flex-col gap-1.5 mt-8 overflow-y-auto">
-          <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] bg-[#0267ff] text-left text-sm font-medium text-white shrink-0">
-            <IconGrid className="text-white" />
+        <nav className={`flex-1 flex flex-col gap-[6px] items-start w-full mt-8 min-h-0 ${insightsOpen ? 'overflow-visible' : 'overflow-y-auto'}`} data-name="Container" data-node-id="12203:5677">
+          <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] bg-[#0267ff] text-left text-[14px] font-medium text-white shrink-0" data-name="Sidebar element">
+            <IconGrid className="text-white size-6 shrink-0" aria-hidden />
             <span>Control Panel</span>
           </button>
-          <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white hover:bg-white/5">
-            <IconBuy className="text-[#22272f]" />
+          <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+            <IconBuy className="text-[#22272f] size-6 shrink-0" aria-hidden />
             <span>Buying</span>
           </button>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-[6px] w-full shrink-0">
             <button
               type="button"
               onClick={() => setInsightsOpen((o) => !o)}
-              className={`h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white w-full ${insightsOpen ? 'bg-white/5' : 'hover:bg-white/5'}`}
+              className={`h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white shrink-0 ${insightsOpen ? 'bg-white/5' : 'hover:bg-white/5'}`}
               aria-expanded={insightsOpen}
               aria-haspopup="true"
+              data-name="Sidebar element"
             >
-              <IconLightbulb className="text-[#22272f]" />
-              <span>Insights</span>
-              <span className={`ml-auto inline-flex text-white transition-transform duration-200 ${insightsOpen ? 'rotate-180' : ''}`} aria-hidden>
+              <IconLightbulb className="text-[#22272f] size-6 shrink-0" aria-hidden />
+              <span className="flex-1 min-w-0 text-left">Insights</span>
+              <span className={`ml-auto inline-flex text-white transition-transform duration-200 shrink-0 ${insightsOpen ? 'rotate-180' : ''}`} aria-hidden>
                 <IconInsightsChevron />
               </span>
             </button>
             {insightsOpen && (
-              <div className="flex flex-col border-l border-white/10 pl-3 py-1 gap-0.5">
-                {['Retail', 'Bestsellers', 'Explorer', 'Thoughtspot'].map((label) => (
+              <div className="flex flex-col gap-[4px] pl-4 pb-2 w-full shrink-0" data-node-id="12354:176031">
+                {['Retail', 'Bestseller', 'Explorer'].map((label) => (
                   <button
                     key={label}
                     type="button"
-                    className="h-9 flex items-center rounded-[4px] pl-3 pr-2 text-left text-[13px] font-normal text-white hover:bg-white/5 w-full"
+                    className="h-9 w-full flex items-center gap-2 px-2 py-1 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0"
+                    data-name="Sidebar element"
                   >
                     {label}
                   </button>
@@ -364,25 +366,27 @@ export default function App() {
               </div>
             )}
           </div>
-
-          <div className="my-2 h-px bg-white/10 w-full" role="separator" />
-
-          <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white hover:bg-white/5">
-            <IconGridDots className="text-[#22272f]" />
-            <span>Assortment</span>
-          </button>
-          <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white hover:bg-white/5">
-            <IconCalendarSidebar className="text-[#22272f]" />
-            <span>Events</span>
-          </button>
-          <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white hover:bg-white/5">
-            <IconGears className="text-[#22272f]" />
-            <span>Parameters</span>
-          </button>
-          <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white hover:bg-white/5">
-            <IconTeam className="text-[#22272f]" />
-            <span>Team</span>
-          </button>
+          {!insightsOpen && (
+            <>
+              <div className="h-px w-full bg-white/10 shrink-0 my-0" role="separator" data-name="divider" />
+              <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                <IconGridDots className="text-[#22272f] size-6 shrink-0" aria-hidden />
+                <span>Assortment</span>
+              </button>
+              <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                <IconCalendarSidebar className="text-[#22272f] size-6 shrink-0" aria-hidden />
+                <span>Events</span>
+              </button>
+              <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                <IconGears className="text-[#22272f] size-6 shrink-0" aria-hidden />
+                <span>Parameters</span>
+              </button>
+              <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                <IconTeam className="text-[#22272f] size-6 shrink-0" aria-hidden />
+                <span>Team</span>
+              </button>
+            </>
+          )}
         </nav>
 
         {/* Sidebar footer – Figma 145:935 */}
