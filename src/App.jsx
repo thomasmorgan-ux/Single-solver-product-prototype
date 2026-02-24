@@ -6,6 +6,12 @@ const IconChevronDown = () => (
     <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
+/* Insights nav item chevron (20×20, white stroke) */
+const IconInsightsChevron = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M5 7.5L7.73726 10.2373C8.52929 11.0293 8.92531 11.4253 9.38197 11.5737C9.78365 11.7042 10.2163 11.7042 10.618 11.5737C11.0747 11.4253 11.4707 11.0293 12.2627 10.2373L15 7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
 /* Search icon – inside search box (Figma 116:1577): dark grey outline magnifying glass */
 const IconSearch = () => (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0" aria-hidden>
@@ -157,10 +163,11 @@ const IconGears = () => (
   </svg>
 )
 const IconTeam = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
-    <circle cx="9" cy="7" r="3" stroke="currentColor" strokeWidth="1.5" />
-    <circle cx="15" cy="7" r="3" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2.6 1.8-4.8 4.2-5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M12.5 8.33268C14.3409 8.33268 15.8333 6.8403 15.8333 4.99935C15.8333 3.1584 14.3409 1.66602 12.5 1.66602" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="6.66665" cy="4.99935" r="3.33333" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M0.833313 14.9993C0.833313 13.1584 2.3257 11.666 4.16665 11.666H9.16664C11.0076 11.666 12.5 13.1584 12.5 14.9993V14.9993C12.5 16.8403 11.0076 18.3327 9.16665 18.3327H4.16665C2.3257 18.3327 0.833313 16.8403 0.833313 14.9993V14.9993Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M14.1667 18.3327H16.5C17.9728 18.3327 19.1667 17.1388 19.1667 15.666C19.1667 13.4569 17.3758 11.666 15.1667 11.666H14.1667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 const IconClockSidebar = () => (
@@ -170,21 +177,24 @@ const IconClockSidebar = () => (
   </svg>
 )
 const IconChat = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
-    <path d="M21 11.5a8.5 8.5 0 01-8.5 8.5H6l-4 4v-4.5A8.5 8.5 0 1112.5 3a8.5 8.5 0 018.5 8.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" className="h-5 w-5 shrink-0 block">
+    <path d="M10 0.917969C15.0163 0.918145 19.0838 4.98465 19.084 10.001C19.0838 15.0173 15.0163 19.0848 10 19.085C8.97617 19.0849 8.07457 18.9377 7.22754 18.6348C6.86937 18.5066 6.60549 18.4121 6.41406 18.3457C6.31862 18.3126 6.24418 18.2884 6.18848 18.2705C6.16125 18.2618 6.13997 18.2547 6.12402 18.25C6.11634 18.2478 6.10973 18.2462 6.10547 18.2451C6.10257 18.2443 6.10036 18.2435 6.09961 18.2432C5.69406 18.1479 5.42764 18.2253 5.08789 18.3867C4.76636 18.5396 4.1972 18.8901 3.51465 19.0039C2.49746 19.1732 1.59253 18.3402 1.67676 17.3125C1.70767 16.9368 1.84949 16.6047 1.95508 16.3711C2.07883 16.0973 2.15469 15.9502 2.2002 15.792C2.38122 15.1617 2.16846 14.7093 1.75391 13.8145C1.21645 12.6542 0.91704 11.3612 0.916992 10.001C0.917168 4.98465 4.98367 0.918144 10 0.917969ZM6.66699 9.16797C6.20675 9.16797 5.83301 9.54074 5.83301 10.001C5.83301 10.4612 6.20675 10.834 6.66699 10.834C7.12708 10.8338 7.5 10.4611 7.5 10.001C7.5 9.54085 7.12708 9.16814 6.66699 9.16797ZM10 9.16797C9.53976 9.16797 9.16699 9.54074 9.16699 10.001C9.16699 10.4612 9.53976 10.834 10 10.834C10.4602 10.834 10.833 10.4612 10.833 10.001C10.833 9.54074 10.4602 9.16797 10 9.16797ZM13.333 9.16797C12.8729 9.16814 12.5 9.54085 12.5 10.001C12.5 10.4611 12.8729 10.8338 13.333 10.834C13.7932 10.834 14.167 10.4612 14.167 10.001C14.167 9.54074 13.7932 9.16797 13.333 9.16797Z" fill="currentColor" />
   </svg>
 )
 const IconDollar = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
-    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M12 6v12M9 9h3a1.5 1.5 0 110 3H9M15 12h-3a1.5 1.5 0 100 3h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M13.3334 2.35942C12.3126 1.91343 11.1852 1.66602 10 1.66602C5.39765 1.66602 1.66669 5.39698 1.66669 9.99935C1.66669 14.6017 5.39765 18.3327 10 18.3327C14.6024 18.3327 18.3334 14.6017 18.3334 9.99935C18.3334 8.12297 17.7132 6.39144 16.6667 4.99854M7.49992 11.666C7.49992 12.5865 8.24611 13.3327 9.16659 13.3327H11.0471C11.8495 13.3327 12.4999 12.6822 12.4999 11.8798C12.4999 11.2545 12.0998 10.6993 11.5065 10.5015L8.49333 9.49715C7.90008 9.2994 7.49992 8.74421 7.49992 8.11886C7.49992 7.31648 8.15038 6.66602 8.95276 6.66602H10.8333C11.7537 6.66602 12.4999 7.41221 12.4999 8.33268M9.99992 5.41602V14.5827" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="10" cy="9.99935" r="8.33333" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 const IconFlagUK = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
-    <rect x="2" y="4" width="20" height="14" rx="1.5" fill="#012169" stroke="currentColor" strokeWidth="0.5" />
-    <path d="M2 4L24 16M24 4L2 16M12 4v16M2 12h20" stroke="#fff" strokeWidth="1.2" />
-    <path d="M2 4l4 3-4 3 4 3-4 3M22 16l-4-3 4-3-4-3 4-3M12 4v4M12 16v4M2 12h4M18 12h4" stroke="#C8102E" strokeWidth="0.8" />
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="13" viewBox="0 0 19 13" fill="none" className="shrink-0">
+    <path fillRule="evenodd" clipRule="evenodd" d="M1.95029 -1.25H0V1.25L16.3725 13.75L18.3333 13.75V11.25L1.95029 -1.25Z" fill="white" />
+    <path d="M0.650483 -1.25L18.3333 12.2854V13.75L17.6981 13.75L0 0.200559V-1.25H0.650483Z" fill="#F93939" />
+    <path fillRule="evenodd" clipRule="evenodd" d="M16.5873 -1.25H18.3333V1.25C18.3333 1.25 6.99269 9.57806 1.74603 13.75H0V11.25L16.5873 -1.25Z" fill="white" />
+    <path d="M18.3333 -1.25H17.7412L0 12.2971V13.75H0.650483L18.3333 0.211513V-1.25Z" fill="#F93939" />
+    <path fillRule="evenodd" clipRule="evenodd" d="M6.66729 -1.25H11.6813V3.37682H18.3333V9.12013H11.6813V13.75H6.66729V9.12013H0V3.37682H6.66729V-1.25Z" fill="white" />
+    <path fillRule="evenodd" clipRule="evenodd" d="M7.7193 -1.25H10.614V4.51923H18.3333V7.98077H10.614V13.75H7.7193V7.98077H0V4.51923H7.7193V-1.25Z" fill="#F93939" />
   </svg>
 )
 const IconChevronRight = () => (
@@ -226,7 +236,7 @@ const IconUpload = () => (
   </svg>
 )
 
-function TopBar({ title = 'Team', subtitle = 'Manage permissions and invites throughout your team', primaryButtonLabel = 'Next', primaryButtonHref = '#', onPrimaryClick }) {
+function TopBar({ title = 'Team', subtitle = 'Manage permissions and invites throughout your team', primaryButtonLabel = '', primaryButtonHref = '#', onPrimaryClick }) {
   return (
     <header className="bg-[#12171e] flex items-center justify-between p-6 shrink-0" data-name="Top bar" data-node-id="12301:65733">
       <div className="flex flex-1 flex-col gap-1 min-w-0">
@@ -307,6 +317,7 @@ function EventCard({ route, units, time, category, priority }) {
 
 export default function App() {
   const [assignee, setAssignee] = useState({})
+  const [insightsOpen, setInsightsOpen] = useState(false)
 
   return (
     <div className="min-h-screen bg-[#f9fafb] flex text-[#0a0a0a]">
@@ -314,9 +325,6 @@ export default function App() {
       <aside className="w-[220px] shrink-0 bg-[#12171e] flex flex-col py-8 px-4">
         <div className="relative flex items-center justify-between px-4 py-2 min-h-[40px]">
           <AutoneLogo />
-          <button type="button" className="absolute right-1 top-1/2 -translate-y-1/2 p-1 rounded text-white/70 hover:text-white hover:bg-white/10" aria-label="Collapse sidebar">
-            <IconCollapse />
-          </button>
         </div>
 
         <nav className="flex-1 flex flex-col gap-1.5 mt-8">
@@ -328,11 +336,34 @@ export default function App() {
             <IconBuy className="text-[#22272f]" />
             <span>Buying</span>
           </button>
-          <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white hover:bg-white/5">
-            <IconLightbulb className="text-[#22272f]" />
-            <span>Insights</span>
-            <IconChevronDown className="ml-auto text-[#22272f]" />
-          </button>
+          <div className="flex flex-col gap-1.5">
+            <button
+              type="button"
+              onClick={() => setInsightsOpen((o) => !o)}
+              className={`h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white w-full ${insightsOpen ? 'bg-white/5' : 'hover:bg-white/5'}`}
+              aria-expanded={insightsOpen}
+              aria-haspopup="true"
+            >
+              <IconLightbulb className="text-[#22272f]" />
+              <span>Insights</span>
+              <span className={`ml-auto inline-flex text-white transition-transform duration-200 ${insightsOpen ? 'rotate-180' : ''}`} aria-hidden>
+                <IconInsightsChevron />
+              </span>
+            </button>
+            {insightsOpen && (
+              <div className="flex flex-col border-l border-white/10 pl-3 py-1 gap-0.5">
+                {['Retail', 'Bestsellers', 'Explorer', 'Thoughtspot'].map((label) => (
+                  <button
+                    key={label}
+                    type="button"
+                    className="h-9 flex items-center rounded-[4px] pl-3 pr-2 text-left text-[13px] font-normal text-white hover:bg-white/5 w-full"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           <div className="my-2 h-px bg-white/10 w-full" role="separator" />
 
@@ -354,72 +385,73 @@ export default function App() {
           </button>
         </nav>
 
-        <div className="flex flex-col gap-1.5 shrink-0">
-          <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white hover:bg-white/5">
-            <IconClockSidebar className="text-emerald-400" />
-            <span className="flex-1">Data age</span>
-            <span className="text-sm font-medium text-emerald-400">12h</span>
-            <IconChevronRight className="text-[#22272f]" />
+        {/* Sidebar footer – Figma 145:935 */}
+        <div className="flex flex-col gap-[var(--spacing-xs,6px)] items-start w-full shrink-0" data-name="Container" data-node-id="145:935">
+          <button type="button" className="flex h-[40px] w-full shrink-0 items-center justify-center gap-[var(--spacing-m,12px)] rounded-[var(--border-radius-s,4px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] text-left text-[14px] font-normal text-white hover:bg-white/5" data-name="Sidebar element" data-node-id="145:936">
+            <IconClockSidebar className="text-emerald-400 size-6 shrink-0" aria-hidden />
+            <span className="min-w-0 flex-1 text-white">Data age</span>
+            <span className="shrink-0 text-[14px] font-medium text-emerald-400">12h</span>
+            <IconChevronRight className="text-[#22272f] size-5 shrink-0" aria-hidden />
           </button>
-          <div className="h-px bg-white/10 w-full" role="separator" />
-          <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white hover:bg-white/5">
-            <IconChat className="text-[#22272f]" />
-            <span>Chat with us</span>
+          <div className="h-px w-full shrink-0 bg-white/10" role="separator" data-name="divider" />
+          <button type="button" className="flex h-[40px] w-full shrink-0 items-center justify-center gap-[var(--spacing-m,12px)] rounded-[var(--border-radius-s,4px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] text-left text-[14px] font-normal text-white hover:bg-white/5" data-name="Sidebar element" data-node-id="145:938">
+            <IconChat className="text-[#22272f] size-6 shrink-0" aria-hidden />
+            <span className="min-w-0 flex-1">Chat with us</span>
           </button>
-          <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white hover:bg-white/5">
-            <IconDollar className="text-[#22272f]" />
-            <span>Currency</span>
+          <button type="button" className="flex h-[40px] w-full shrink-0 items-center justify-center gap-[var(--spacing-m,12px)] rounded-[var(--border-radius-s,4px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] text-left text-[14px] font-normal text-white hover:bg-white/5" data-name="Sidebar element" data-node-id="145:939">
+            <IconDollar className="text-[#22272f] size-6 shrink-0" aria-hidden />
+            <span className="min-w-0 flex-1">Currency</span>
           </button>
-          <button type="button" className="h-10 flex items-center gap-3 px-4 rounded-[4px] text-left text-sm font-normal text-white hover:bg-white/5">
-            <IconFlagUK className="text-[#22272f]" />
-            <span>English</span>
+          <button type="button" className="flex h-[40px] w-full shrink-0 items-center justify-center gap-[var(--spacing-m,12px)] rounded-[var(--border-radius-s,4px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] text-left text-[14px] font-normal text-white hover:bg-white/5" data-name="Sidebar element" data-node-id="145:940">
+            <IconFlagUK className="size-6 shrink-0" aria-hidden />
+            <span className="min-w-0 flex-1">English</span>
           </button>
-          <button type="button" className="w-full flex items-center gap-2 pr-4 py-2 rounded-[8px] text-left hover:bg-white/5 shadow-[0px_8px_25px_0px_rgba(0,0,0,0.08)]">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-sm font-medium shrink-0">
-              CM
+          <button type="button" className="flex w-full shrink-0 items-center gap-[var(--spacing-s,8px)] rounded-[var(--border-radius-l,8px)] py-0 pl-0 pr-[var(--spacing-l,16px)] text-left shadow-[0px_8px_25px_0px_rgba(0,0,0,0.03)] hover:bg-white/5" data-name="user-avatar" data-node-id="145:941">
+            <div className="relative size-[40px] shrink-0 overflow-hidden rounded-[var(--border-radius-l,8px)]" data-name="Avatar">
+              <img src="/avatar-user.jpg" alt="" className="absolute inset-0 size-full object-cover pointer-events-none" />
             </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-base font-medium text-white truncate">Charles Morenno</p>
-              <p className="text-[10px] text-[#878d94] truncate">charlesmorenno@gmail.com</p>
+            <div className="flex min-w-0 flex-1 flex-col gap-[2px] items-start text-left" data-node-id="I145:941;12206:42131">
+              <p className="truncate w-full font-sans text-[16px] font-medium font-normal leading-normal tracking-[0] text-white" data-node-id="I145:941;12206:42132">Charles Morenno</p>
+              <p className="truncate w-full font-sans text-[10px] font-normal leading-normal tracking-[0] text-[#878D94]" data-node-id="I145:941;12206:42133">charlesmorenno@gmail.com</p>
             </div>
-            <IconChevronRight className="text-[#22272f] shrink-0" />
+            <IconChevronRight className="text-[#22272f] size-5 shrink-0" aria-hidden />
           </button>
         </div>
       </aside>
 
       {/* Right column: top bar + main content (aligned with sidebar) */}
-      <div className="flex flex-col flex-1 min-w-0">
+      <div className="flex flex-col flex-1 min-w-0 w-full overflow-hidden">
         <TopBar
           title="Control Panel"
           subtitle="Control Panel for managing all of your inventory and scheduling needs."
-          primaryButtonLabel="Next"
-          primaryButtonHref="#"
         />
 
         {/* Main */}
-        <main className="flex-1 min-w-0 pl-8 pr-8 pb-12">
+        <main className="flex-1 min-w-0 w-full pl-8 pr-8 pb-12">
         {/* Page header – welcome/date; filters, search, actions */}
-        <header className="bg-white border-b border-[#e5e7eb] pt-6 pb-4 -mx-8 px-8">
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="shrink-0 mr-2">
+        <header className="w-full min-w-0 bg-white border-b border-[#e5e7eb] pt-6 pb-4 -mx-8 px-8">
+          <div className="flex flex-wrap items-center gap-3 w-full min-w-0">
+            <div className="shrink-0 mr-2 min-w-0">
               <h1 className="text-xl font-semibold text-[#0a0a0a] leading-tight">Welcome back, Tamir</h1>
               <p className="text-sm text-[#6a7282]">Monday, February 23, 2026</p>
             </div>
-            <span className="text-sm text-[#4a5565] shrink-0">Filter views by</span>
-            {['All products', 'All locations', 'All user types'].map((label) => (
-              <button key={label} type="button" className="h-10 shrink-0 bg-[#f3f3f5] rounded-lg pl-3 pr-3 flex items-center justify-between gap-2 text-sm text-[#0a0a0a] min-w-[100px]">
-                <span className="truncate">{label}</span>
-                <IconChevronDown className="shrink-0" />
-              </button>
-            ))}
-            <div className="flex items-center shrink-0 w-[280px] sm:w-[325px] h-[42px] rounded-[10px] border border-[#d1d5dc] bg-white overflow-hidden">
-              <span className="pl-3 flex items-center justify-center text-[#4a5565] shrink-0" aria-hidden>
-                <IconSearch />
-              </span>
-              <input type="text" placeholder="Search insights..." className="flex-1 min-w-0 h-full pl-2 pr-4 bg-transparent border-0 text-base text-[#0a0a0a] placeholder:text-[#0a0a0a]/50 tracking-[-0.01em] outline-none" />
+            <div className="flex flex-wrap items-center gap-3 ml-auto min-w-0 justify-end">
+              <span className="text-sm text-[#4a5565] shrink-0">Filter views by</span>
+              {['All products', 'All locations', 'All user types'].map((label) => (
+                <button key={label} type="button" className="h-10 shrink-0 bg-[#f3f3f5] rounded-lg pl-3 pr-3 flex items-center justify-between gap-2 text-sm text-[#0a0a0a] min-w-[100px]">
+                  <span className="truncate">{label}</span>
+                  <IconChevronDown className="shrink-0" />
+                </button>
+              ))}
+              <div className="flex items-center w-[280px] sm:w-[325px] shrink-0 h-[42px] rounded-[10px] border border-[#d1d5dc] bg-white overflow-hidden">
+                <span className="pl-3 flex items-center justify-center text-[#4a5565] shrink-0" aria-hidden>
+                  <IconSearch />
+                </span>
+                <input type="text" placeholder="Search insights..." className="flex-1 min-w-0 h-full pl-2 pr-4 bg-transparent border-0 text-base text-[#0a0a0a] placeholder:text-[#0a0a0a]/50 tracking-[-0.01em] outline-none" />
+              </div>
+              <NotificationButton />
+              <div className="w-9 h-9 shrink-0 rounded-full bg-[#7c3aed] flex items-center justify-center text-white text-base font-medium">T</div>
             </div>
-            <NotificationButton />
-            <div className="w-9 h-9 shrink-0 rounded-full bg-[#7c3aed] flex items-center justify-center text-white text-base font-medium">T</div>
           </div>
         </header>
 
