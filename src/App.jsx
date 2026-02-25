@@ -132,15 +132,24 @@ const IconRebalancing = () => (
   </svg>
 )
 const IconBuy = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="shrink-0">
     <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M3 6h18M16 10a4 4 0 11-8 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
   </svg>
 )
-const IconLightbulb = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
-    <path d="M9 21h6M12 3a6 6 0 014 10.5v.5a2 2 0 01-2 2h-4a2 2 0 01-2-2v-.5A6 6 0 0112 3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M10 18h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+/* Icon=bars – Insights nav (Figma 13111:40 / 14404:7252) – three vertical bars, increasing height L→R */
+const IconBars = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0" data-name="Icon=bars" data-node-id="I14404:7252;12203:35386" aria-hidden>
+    <path d="M6 18v-5M12 18v-9M18 18v-13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+/* Icon=new reorder – Optimiser nav (Figma 12205:40449 / 14404:7825) */
+const IconOptimiser = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20" fill="none" className="shrink-0" aria-hidden data-name="Icon=new reorder" data-node-id="12205:40449">
+    <path d="M17.5006 8.3335C17.5006 7.55493 17.5006 7.16564 17.4124 6.80999C17.2806 6.27849 17.0058 5.7932 16.6179 5.40672C16.3583 5.14811 16.0245 4.94783 15.3569 4.54726L11.6368 2.31524C10.7389 1.7765 10.29 1.50713 9.81072 1.40189C9.38679 1.30879 8.94772 1.30879 8.52379 1.40189C8.04453 1.50713 7.59558 1.7765 6.69768 2.31524L3.16434 4.43524C2.31455 4.94512 1.88965 5.20006 1.58101 5.55106C1.30788 5.86168 1.10194 6.22541 0.976112 6.61943C0.833923 7.06467 0.833923 7.56018 0.833923 8.55121V11.4491C0.833923 12.4401 0.833923 12.9357 0.976112 13.3809C1.10194 13.7749 1.30788 14.1386 1.58101 14.4493C1.88965 14.8003 2.31455 15.0552 3.16434 15.5651L6.38948 17.5002L7.93247 18.426C8.38142 18.6953 8.60589 18.83 8.84552 18.8826C9.05749 18.9292 9.27703 18.9292 9.48899 18.8826C9.72862 18.83 9.9531 18.6953 10.402 18.426L11.5978 17.7085" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M5.41736 7.91667L10.1901 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M9.16736 10.4168L16.6674 5.8335M9.16736 10.4168L1.66736 5.8335M9.16736 10.4168V18.7502" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M12.9152 12.7432V11.5279M12.9152 12.7432C12.9152 12.7432 14.0726 10.8335 16.3874 10.8335C17.0215 10.8335 17.6139 11.0015 18.1236 11.2951M12.9152 12.7432H14.1305M18.6791 15.0349C18.6791 15.0349 17.4718 16.9446 15.5541 16.9446C14.9217 16.9446 14.3287 16.7755 13.818 16.4801M18.6791 15.0349H17.4638M18.6791 15.0349V16.2502" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 const IconGridDots = () => (
@@ -315,73 +324,185 @@ function EventCard({ route, units, time, category, priority }) {
   )
 }
 
+/* Optimiser page – Figma 174:2696 (Optimiser-Concepts) */
+function OptimiserPage() {
+  const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  const typeFilters = [
+    { id: 'all', label: 'All', active: true },
+    { id: 'replenishment', label: 'Replenishment', active: false },
+    { id: 'reorder', label: 'Reorder', active: false },
+    { id: 'rebalancing', label: 'Rebalancing', active: false },
+  ]
+  const viewOptions = [
+    { id: 'event-date', label: 'Event Date', active: false },
+    { id: 'list', label: 'List', active: false },
+    { id: 'week', label: 'Week', active: false },
+    { id: 'month', label: 'Month', active: true },
+  ]
+  const feb2026 = (() => {
+    const weeks = []
+    let d = new Date(2026, 0, 26)
+    for (let w = 0; w < 5; w++) {
+      const row = []
+      for (let i = 0; i < 7; i++) {
+        row.push(d.getDate())
+        d.setDate(d.getDate() + 1)
+      }
+      weeks.push(row)
+    }
+    return weeks
+  })()
+
+  return (
+    <div className="flex flex-col gap-6" data-name="Optimiser" data-node-id="174:2696">
+      <div className="bg-white border border-[#ebf3ff] rounded-[14px] p-6 flex flex-col gap-5" data-name="Calendar container" data-node-id="174:2767">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div className="flex items-center gap-2">
+            <IconCalendarSidebar className="text-[#22272f] size-6 shrink-0" />
+            <div>
+              <p className="text-[16px] font-medium text-[#0a0a0a] leading-tight">Optimiser schedule</p>
+              <p className="text-[14px] font-normal text-[#4b535c]">Perform all job and schedule actions for all your upcoming inventory</p>
+            </div>
+          </div>
+          <button type="button" className="h-10 px-4 rounded-[4px] bg-[#0267ff] text-white text-[16px] font-medium flex items-center gap-2 shrink-0">
+            <IconPlus />
+            Add Schedule
+          </button>
+        </div>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-2 p-1 rounded-[4px] border border-[#e9eaeb] bg-white">
+            {typeFilters.map((f) => (
+              <button key={f.id} type="button" className={`flex items-center gap-1.5 h-8 px-2 rounded-[2px] text-[14px] ${f.active ? 'bg-[#f8f8f8] font-medium text-[#0a0a0a]' : 'font-normal text-[#4b535c]'}`}>
+                {f.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 p-1 rounded-[4px] border border-[#e9eaeb] bg-white h-12 px-4">
+              {viewOptions.map((v) => (
+                <button key={v.id} type="button" className={`flex items-center gap-2 text-[14px] ${v.active ? 'font-medium text-[#0a0a0a]' : 'font-normal text-[#4b535c]'}`}>
+                  {v.id === 'event-date' && <IconCalendarSidebar className="size-4" />}
+                  {v.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center gap-4 h-7">
+            <button type="button" className="rounded size-7 flex items-center justify-center text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label="Previous month">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+            <h2 className="text-[20px] font-semibold text-[#0a0a0a] tracking-tight">February 2026</h2>
+            <button type="button" className="rounded size-7 flex items-center justify-center text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label="Next month">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 4l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          </div>
+          <div className="border border-[#e5e7eb] rounded-[10px] overflow-hidden">
+            <div className="grid grid-cols-7 bg-[#f3f4f6] border-b border-[#e5e7eb]">
+              {weekDays.map((day) => (
+                <div key={day} className="py-3 text-center text-[14px] font-medium text-[#364153] border-r border-[#e5e7eb] last:border-r-0">
+                  {day}
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-7">
+              {feb2026.map((row, ri) =>
+                row.map((date, ci) => (
+                  <div key={`${ri}-${ci}`} className={`min-h-[80px] p-2 border-b border-[#e5e7eb] bg-white text-[14px] text-[#0a0a0a] ${ci < 6 ? 'border-r' : ''}`}>
+                    {date}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function App() {
   const [assignee, setAssignee] = useState({})
-  const [insightsOpen, setInsightsOpen] = useState(false)
+  const [optimiserOpen, setOptimiserOpen] = useState(false)
+  const [activeView, setActiveView] = useState('control-panel')
 
   return (
     <div className="h-screen bg-[#f9fafb] flex text-[#0a0a0a] overflow-hidden">
-      {/* App shell: fixed sidebar */}
-      <aside className={`w-[220px] h-full shrink-0 bg-[#12171e] flex flex-col px-4 py-8 ${insightsOpen ? 'overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden' : 'overflow-hidden'}`} data-name="Sidebar" data-node-id="12212:42695">
-        <div className="flex flex-col gap-0 items-start justify-center px-4 py-2 shrink-0 w-full" data-name="Logo container" data-node-id="12203:5658">
+      {/* App shell: fixed sidebar – Figma 14404:7242 OptimiserSidebar/Expanded/Default */}
+      <aside className={`min-w-[220px] w-max h-full shrink-0 bg-[#12171e] flex flex-col px-[var(--spacing-l,16px)] py-[var(--spacing-2xl,32px)] overflow-y-auto overflow-x-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`} data-name="OptimiserSidebar/Expanded/Default" data-node-id="14404:7242">
+        <div className="flex flex-col gap-[var(--spacing-2xl,32px)] min-w-0 flex-1 min-h-0" data-name="Container" data-node-id="14404:7243">
+        <div className="flex flex-row items-center justify-between gap-2 w-full px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] shrink-0" data-name="Logo container" data-node-id="14404:7244">
           <AutoneLogo />
+          <button type="button" className="flex items-center justify-center size-8 rounded-[var(--border-radius-s,4px)] text-white hover:bg-white/10 shrink-0" aria-label="Collapse sidebar" data-name="Icon=Collapse" data-node-id="12206:42115">
+            <IconCollapse />
+          </button>
         </div>
 
-        <nav className={`flex-1 flex flex-col gap-[6px] items-start w-full mt-8 min-h-0 ${insightsOpen ? 'overflow-visible' : 'overflow-y-auto'}`} data-name="Container" data-node-id="12203:5677">
-          <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] bg-[#0267ff] text-left text-[14px] font-medium text-white shrink-0" data-name="Sidebar element">
-            <IconGrid className="text-white size-6 shrink-0" aria-hidden />
+        <nav className={`flex-1 flex flex-col gap-[var(--spacing-xs,6px)] items-start w-full min-h-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${optimiserOpen ? 'overflow-visible' : 'overflow-y-auto'}`} data-name="Container" data-node-id="14404:7246">
+          <button type="button" onClick={() => setActiveView('control-panel')} className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-medium shrink-0 ${activeView === 'control-panel' ? 'bg-[#0267ff] text-white' : 'text-white hover:bg-white/5'}`} data-name="Sidebar element" data-node-id="14404:7247">
+            <IconGrid className={`size-6 shrink-0 ${activeView === 'control-panel' ? 'text-white' : 'text-[#22272f]'}`} aria-hidden />
             <span>Control Panel</span>
           </button>
-          <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
-            <IconBuy className="text-[#22272f] size-6 shrink-0" aria-hidden />
-            <span>Buying</span>
+          <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7252">
+            <IconBars className="text-[#22272f] size-6 shrink-0" aria-hidden />
+            <span className="flex-1 min-w-0 text-left">Insights</span>
+            <span className="ml-auto inline-flex text-white size-5 shrink-0" aria-hidden data-name="icon" data-node-id="I14404:7252;12203:35389">
+              <IconInsightsChevron />
+            </span>
           </button>
-          <div className="flex flex-col gap-[6px] w-full shrink-0">
+          <div className="flex flex-col gap-[var(--spacing-xs,6px)] w-full shrink-0">
             <button
               type="button"
-              onClick={() => setInsightsOpen((o) => !o)}
-              className={`h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white shrink-0 ${insightsOpen ? 'bg-white/5' : 'hover:bg-white/5'}`}
-              aria-expanded={insightsOpen}
+              onClick={() => { setActiveView('optimiser'); setOptimiserOpen((o) => !o); }}
+              className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] shrink-0 ${activeView === 'optimiser' ? 'bg-[#0267ff] text-white font-medium' : 'font-normal text-white hover:bg-white/5'}`}
+              aria-expanded={optimiserOpen}
               aria-haspopup="true"
               data-name="Sidebar element"
+              data-node-id="14404:7825"
             >
-              <IconLightbulb className="text-[#22272f] size-6 shrink-0" aria-hidden />
-              <span className="flex-1 min-w-0 text-left">Insights</span>
-              <span className={`ml-auto inline-flex text-white transition-transform duration-200 shrink-0 ${insightsOpen ? 'rotate-180' : ''}`} aria-hidden>
+              <span className="relative shrink-0 size-6" data-name="Icon=new reorder" data-node-id="I14404:7825;12203:35386">
+                <IconOptimiser className={`size-full ${activeView === 'optimiser' ? 'text-white' : 'text-[#22272f]'}`} aria-hidden />
+              </span>
+              <span className="flex flex-1 min-w-0 flex-col justify-center text-left text-[14px] leading-[100%]" data-node-id="I14404:7825;12203:35387">Optimiser</span>
+              <span className={`relative shrink-0 size-5 inline-flex transition-transform duration-200 ${activeView === 'optimiser' ? 'text-white' : 'text-white'} ${optimiserOpen ? 'rotate-180' : ''}`} aria-hidden data-name="icon" data-node-id="I14404:7825;12203:35389">
                 <IconInsightsChevron />
               </span>
             </button>
-            {insightsOpen && (
-              <div className="flex flex-col gap-[4px] pl-4 pb-2 w-full shrink-0" data-node-id="12354:176031">
-                {['Retail', 'Bestseller', 'Explorer'].map((label) => (
-                  <button
-                    key={label}
-                    type="button"
-                    className="h-9 w-full flex items-center gap-2 px-2 py-1 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0"
-                    data-name="Sidebar element"
-                  >
-                    {label}
-                  </button>
-                ))}
+            {optimiserOpen && (
+              <div className="flex flex-col gap-[4px] pl-4 pb-2 w-full shrink-0">
+                <button type="button" className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7250">
+                  Replenishment
+                </button>
+                <button type="button" className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7790">
+                  Reorder
+                </button>
+                <button type="button" className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7793">
+                  Rebalancing
+                </button>
               </div>
             )}
           </div>
-          {!insightsOpen && (
+          <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7251">
+            <IconBuy className="text-[#22272f] size-6 shrink-0" aria-hidden />
+            <span>Buying</span>
+          </button>
+          <div className="h-px w-full bg-white/10 shrink-0 my-0" role="separator" data-name="divider" />
+          {!optimiserOpen && (
             <>
-              <div className="h-px w-full bg-white/10 shrink-0 my-0" role="separator" data-name="divider" />
-              <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+              <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7254">
                 <IconGridDots className="text-[#22272f] size-6 shrink-0" aria-hidden />
                 <span>Assortment</span>
               </button>
-              <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+              <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7255">
                 <IconCalendarSidebar className="text-[#22272f] size-6 shrink-0" aria-hidden />
                 <span>Events</span>
               </button>
-              <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+              <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
                 <IconGears className="text-[#22272f] size-6 shrink-0" aria-hidden />
                 <span>Parameters</span>
               </button>
-              <button type="button" className="h-10 w-full flex items-center gap-3 px-4 py-2 rounded-[4px] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+              <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
                 <IconTeam className="text-[#22272f] size-6 shrink-0" aria-hidden />
                 <span>Team</span>
               </button>
@@ -421,19 +542,26 @@ export default function App() {
             <IconChevronRight className="text-[#22272f] size-5 shrink-0" aria-hidden />
           </button>
         </div>
+        </div>
       </aside>
 
       {/* App shell: fixed top bar + scrollable main */}
       <div className="flex flex-col flex-1 min-w-0 min-h-0 w-full overflow-hidden">
         <div className="shrink-0">
           <TopBar
-          title="Control Panel"
-          subtitle="Control Panel for managing all of your inventory and scheduling needs."
-        />
+            title={activeView === 'optimiser' ? 'Optimiser' : 'Control Panel'}
+            subtitle={activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : 'Control Panel for managing all of your inventory and scheduling needs.'}
+          />
         </div>
 
         {/* Main: scrollable content panel */}
         <main className="flex-1 min-h-0 min-w-0 w-full pl-8 pr-8 pb-12 overflow-y-auto overflow-x-hidden">
+        {activeView === 'optimiser' ? (
+          <div className="pt-6">
+            <OptimiserPage />
+          </div>
+        ) : (
+        <>
         {/* Page header – welcome/date; filters, search, actions */}
         <header className="w-[calc(100%+4rem)] min-w-0 -ml-8 bg-white border-b border-[#e5e7eb] pt-6 pb-4 px-8">
           <div className="flex flex-wrap items-center gap-3 w-full min-w-0">
@@ -617,6 +745,8 @@ export default function App() {
             </div>
           </section>
         </div>
+        </>
+        )}
         </main>
       </div>
     </div>
