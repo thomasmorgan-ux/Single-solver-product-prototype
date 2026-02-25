@@ -46,6 +46,16 @@ const IconPlus = () => (
     <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
   </svg>
 )
+const IconClose = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0" aria-hidden>
+    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+const IconChevronDownSelect = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 pointer-events-none">
+    <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
 const IconArrowRight = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0">
     <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -383,8 +393,11 @@ function EventCard({ route, units, time, category, priority }) {
 
 /* Optimiser page – Figma 174:2696 (Optimiser-Concepts) */
 function OptimiserPage() {
+  const [scheduleDrawerOpen, setScheduleDrawerOpen] = useState(false)
+  const [scheduleDrawerDays, setScheduleDrawerDays] = useState(() => ({ Wed: true, Sat: true }))
   const [activeTypeFilter, setActiveTypeFilter] = useState('all')
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  const toggleScheduleDay = (day) => setScheduleDrawerDays((prev) => ({ ...prev, [day]: !prev[day] }))
   const typeFilters = [
     { id: 'all', label: 'All', icon: null },
     { id: 'replenishment', label: 'Replenishment', icon: 'replenishment' },
@@ -412,7 +425,8 @@ function OptimiserPage() {
   })()
 
   return (
-    <div className="flex flex-col gap-6" data-name="Optimiser" data-node-id="174:2696">
+    <>
+      <div className="flex flex-col gap-6" data-name="Optimiser" data-node-id="174:2696">
       <div className="bg-white border border-[#ebf3ff] rounded-[14px] p-6 flex flex-col gap-5" data-name="Calendar container" data-node-id="174:2767">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-2">
@@ -422,7 +436,7 @@ function OptimiserPage() {
               <p className="text-[14px] font-normal text-[#4b535c]">Perform all job and schedule actions for all your upcoming inventory</p>
             </div>
           </div>
-          <button type="button" className="h-10 px-4 rounded-[4px] bg-[#0267ff] text-white text-[16px] font-medium flex items-center gap-2 shrink-0">
+          <button type="button" onClick={() => setScheduleDrawerOpen(true)} className="h-10 px-4 rounded-[4px] bg-[#0267ff] text-white text-[16px] font-medium flex items-center gap-2 shrink-0">
             <IconPlus />
             Add Schedule
           </button>
@@ -504,6 +518,127 @@ function OptimiserPage() {
         </div>
       </div>
     </div>
+
+      {scheduleDrawerOpen && (
+        <>
+          <div role="presentation" className="fixed inset-0 bg-black/50 z-40" onClick={() => setScheduleDrawerOpen(false)} aria-hidden />
+          <div className="fixed right-0 top-0 bottom-0 w-[800px] bg-white shadow-xl z-50 flex flex-col" role="dialog" aria-modal aria-labelledby="add-schedule-title" data-name="Add Schedule" data-node-id="214:2622">
+            <header className="flex items-center justify-between shrink-0 h-14 px-6 border-b border-[#e9eaeb]">
+              <h2 id="add-schedule-title" className="text-[18px] font-semibold text-[#0a0a0a]">Add Schedule</h2>
+              <button type="button" onClick={() => setScheduleDrawerOpen(false)} className="p-2 -mr-2 text-[#4b535c] hover:bg-[#f3f4f6] rounded-[4px]" aria-label="Close">
+                <IconClose />
+              </button>
+            </header>
+            <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+              <section className="flex flex-col gap-2">
+                <p className="text-[14px] font-medium text-[#0a0a0a]">Choose module to create schedule <span className="font-normal text-[#4b535c]">Make a selection</span></p>
+                <label className="text-[14px] font-normal text-[#4b535c]">Module</label>
+                <div className="relative">
+                  <select className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none">
+                    <option value="">Select</option>
+                  </select>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none"><IconChevronDownSelect /></span>
+                </div>
+              </section>
+              <section className="flex flex-col gap-2">
+                <p className="text-[14px] font-medium text-[#0a0a0a]">Give your schedule a name:</p>
+                <label className="text-[14px] font-normal text-[#4b535c]">Name schedule</label>
+                <input type="text" placeholder="Placeholder" className="w-full h-10 px-3 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] placeholder:text-[#4b535c]" />
+                <p className="text-[12px] font-normal text-[#4b535c]">If not assigned, name will be given automatically</p>
+              </section>
+              <section className="flex flex-col gap-2">
+                <p className="text-[14px] font-medium text-[#0a0a0a]">Scheduling Dates <span className="font-normal text-[#4b535c]">Make a selection</span></p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[14px] font-normal text-[#4b535c]">Sending location</label>
+                    <div className="relative">
+                      <select className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none">
+                        <option value="">Select</option>
+                      </select>
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none"><IconChevronDownSelect /></span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[14px] font-normal text-[#4b535c]">Receiving location</label>
+                    <div className="relative">
+                      <select className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none">
+                        <option value="">Select</option>
+                      </select>
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none"><IconChevronDownSelect /></span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section className="flex flex-col gap-2">
+                <p className="text-[14px] font-medium text-[#0a0a0a]">Schedule:</p>
+                <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-col gap-1 min-w-[140px]">
+                    <label className="text-[14px] font-normal text-[#4b535c]">Repeats</label>
+                    <div className="relative">
+                      <select className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none">
+                        <option value="biweekly">Bi-weekly (Every 2 weeks)</option>
+                      </select>
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none"><IconChevronDownSelect /></span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1 min-w-[100px]">
+                    <label className="text-[14px] font-normal text-[#4b535c]">Time</label>
+                    <div className="relative">
+                      <select className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none">
+                        <option value="">Select time</option>
+                      </select>
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none"><IconChevronDownSelect /></span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1 min-w-[160px]">
+                    <label className="text-[14px] font-normal text-[#4b535c]">Time zone</label>
+                    <div className="relative">
+                      <select className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none">
+                        <option value="gmt+1">(GMT +1) Central Europe</option>
+                      </select>
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none"><IconChevronDownSelect /></span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-[14px] font-normal text-[#4b535c]">Day selection</label>
+                  <div className="flex gap-2 flex-wrap">
+                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => {
+                      const selected = scheduleDrawerDays[day]
+                      return (
+                        <button key={day} type="button" onClick={() => toggleScheduleDay(day)} className={`h-9 px-3 rounded-[4px] border text-[14px] font-normal shrink-0 ${selected ? 'border-[#0267ff] bg-[#ebf3ff] text-[#0267ff]' : 'border-[#e9eaeb] bg-white text-[#4b535c] hover:bg-[#f3f4f6]'}`}>
+                          {day}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              </section>
+              <section className="flex flex-col gap-2">
+                <label className="text-[14px] font-normal text-[#4b535c]">Ends on</label>
+                <div className="relative">
+                  <input type="text" placeholder="Select date" readOnly className="w-full h-10 pl-3 pr-10 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] placeholder:text-[#4b535c]" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none"><IconCalendarSidebar className="size-4" /></span>
+                </div>
+                <p className="text-[12px] font-normal text-[#4b535c]">If left empty, rebalancing will be repeating indefinitely</p>
+              </section>
+              <section className="flex flex-col gap-2">
+                <p className="text-[14px] font-medium text-[#0a0a0a]">Notify users:</p>
+                <input type="text" placeholder="Enter user emails" className="w-full h-10 px-3 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] placeholder:text-[#4b535c]" />
+              </section>
+            </div>
+            <footer className="flex items-center justify-end gap-3 shrink-0 p-6 border-t border-[#e9eaeb]">
+              <button type="button" onClick={() => setScheduleDrawerOpen(false)} className="h-10 px-4 rounded-[4px] text-[16px] font-medium text-[#0a0a0a] hover:bg-[#f3f4f6]">
+                Cancel
+              </button>
+              <button type="button" className="h-10 px-4 rounded-[4px] bg-[#0267ff] text-white text-[16px] font-medium">
+                Add Schedule
+              </button>
+            </footer>
+          </div>
+        </>
+      )}
+    </>
   )
 }
 
