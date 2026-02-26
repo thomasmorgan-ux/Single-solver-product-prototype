@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps'
 
 // Simple inline icons (no external assets)
 const IconChevronDown = () => (
@@ -94,6 +95,72 @@ const IconPound = () => (
 const IconChart = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
     <path d="M3 17l5-5 4 4 6-8 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+const IconStar = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M10 2l2.2 4.5 4.9.7-3.5 3.4.8 4.9L10 13.5l-4.4 2.1.8-4.9-3.5-3.4 4.9-.7L10 2z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+  </svg>
+)
+const IconInfo = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="10" cy="6.5" r="1.25" fill="currentColor" />
+    <path d="M10 9v4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+)
+const IconEye = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M10 4c-4 0-7 3-9 6 2 3 5 6 9 6s7-3 9-6c-2-3-5-6-9-6z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="10" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.2" />
+  </svg>
+)
+const IconLock = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <rect x="3.5" y="8" width="13" height="8.5" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
+    <path d="M6 8V5a4 4 0 018 0v3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+  </svg>
+)
+const IconSparkle = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M10 2l1.2 3.6 3.8.2-2.8 2.4 1 3.6L10 10.4l-2.2 2.4 1-3.6L6 5.8l3.8-.2L10 2z" fill="currentColor" />
+  </svg>
+)
+const IconAI = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M10 2v3M10 15v3M2 10h3M15 10h3M5.05 5.05l2.1 2.1M12.85 12.85l2.1 2.1M5.05 14.95l2.1-2.1M12.85 7.15l2.1-2.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <circle cx="10" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+)
+const IconSave = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M4 2h9l3 3v12H4V2z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+    <path d="M4 2v16h12V5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M7 10h6M7 13h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+  </svg>
+)
+const IconShare = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M15 10v5a2 2 0 01-2 2H7a2 2 0 01-2-2v-5M10 12V3M10 3l3 3M10 3L7 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+const IconBulb = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M10 3c-2.2 0-4 1.8-4 4 0 1.2.5 2.2 1.3 2.9l.7.6v.5h4V10.5l.7-.6c.8-.7 1.3-1.7 1.3-2.9 0-2.2-1.8-4-4-4zM7 13v1.5c0 .3.2.5.5.5h5c.3 0 .5-.2.5-.5V13H7z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="currentColor" fillOpacity="0.1" />
+  </svg>
+)
+const IconDocument = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M4 2h8l4 4v12H4V2z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+    <path d="M12 2v4h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6 10h8M6 13h8M6 16h5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+  </svg>
+)
+const IconEllipsisVertical = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <circle cx="10" cy="4" r="1.5" fill="currentColor" />
+    <circle cx="10" cy="10" r="1.5" fill="currentColor" />
+    <circle cx="10" cy="16" r="1.5" fill="currentColor" />
   </svg>
 )
 
@@ -374,6 +441,794 @@ function EventCard({ route, units, time, category, priority }) {
   )
 }
 
+/* Insights page – Analytics dashboard */
+const INSIGHTS_TABS = ['Retail', 'Best sellers', 'Business KPIs', 'Assortment KPIs', 'Data exploration']
+const INSIGHTS_FILTER_CHIPS = [
+  'Customer new demo', 'Date (Select)', 'Season (Select)', 'Department (Select)', 'Sub department (Select)',
+  'Gender (Select)', 'Collection type (Select)', 'Brand (Select)', 'Color (Select)', 'Product ID (Select)',
+  'Product labels (Select)', 'Top N products (Select)', 'Region (Select)', 'Country (Select)',
+  'Location type (Select)', 'Location (Select)',
+]
+const INSIGHTS_ACTIVE_CHIPS = [
+  'Metric Volume', 'Retail attribute Department', 'Variance Last year', 'View period Weekly', 'Location attributes Location Type', 'Product attributes Department',
+]
+const SALES_PERFORMANCE_ROWS = [
+  { dept: 'Fragrance & Home', wtd: 89, wtdLy: -62, wtdLyPct: -41.07, mtd: '1.98K', mtdLy: -198, mtdLyPct: -9.09, ytd: '4.12K', ytdLy: -402, ytdLyPct: -8.89 },
+  { dept: 'Apparel', wtd: 156, wtdLy: -134, wtdLyPct: -46.21, mtd: '3.45K', mtdLy: -345, mtdLyPct: -9.09, ytd: '6.89K', ytdLy: -673, ytdLyPct: -8.90 },
+  { dept: 'Activewear', wtd: 142, wtdLy: -98, wtdLyPct: -40.83, mtd: '2.78K', mtdLy: -278, mtdLyPct: -9.09, ytd: '5.21K', ytdLy: -509, ytdLyPct: -8.91 },
+  { dept: 'Jewelry', wtd: 98, wtdLy: -76, wtdLyPct: -43.68, mtd: '1.89K', mtdLy: -189, mtdLyPct: -9.09, ytd: '4.15K', ytdLy: -405, ytdLyPct: -8.89 },
+  { dept: 'Watches', wtd: 134, wtdLy: -187, wtdLyPct: -58.26, mtd: '1.45K', mtdLy: -145, mtdLyPct: -9.09, ytd: '2.98K', ytdLy: -291, ytdLyPct: -8.90 },
+  { dept: 'Handbags', wtd: 94, wtdLy: -146, wtdLyPct: -60.83, mtd: '1.24K', mtdLy: -124, mtdLyPct: -9.09, ytd: '2.30K', ytdLy: -225, ytdLyPct: -8.91 },
+]
+const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
+const SALES_BY_COUNTRY = {
+  124: { name: 'Canada', value: 159000 },
+  840: { name: 'United States', value: 13120 },
+  250: { name: 'France', value: 175000 },
+  724: { name: 'Spain', value: 729 },
+  578: { name: 'Norway', value: 424 },
+  826: { name: 'United Kingdom', value: 45000 },
+  276: { name: 'Germany', value: 62000 },
+  380: { name: 'Italy', value: 38000 },
+  392: { name: 'Japan', value: 1296000 },
+  702: { name: 'Singapore', value: 981 },
+  156: { name: 'China', value: 85000 },
+  410: { name: 'South Korea', value: 120000 },
+  36: { name: 'Australia', value: 223 },
+  554: { name: 'New Zealand', value: 13120 },
+  152: { name: 'Chile', value: 12000 },
+  170: { name: 'Colombia', value: 8000 },
+}
+const getSalesData = (id) => SALES_BY_COUNTRY[id] ?? SALES_BY_COUNTRY[String(id).replace(/^0+/, '')]
+const getColor = (value) => {
+  if (!value || value === 0) return '#e5e7eb'
+  const max = 1296000
+  const ratio = Math.min(value / max, 1)
+  const r = Math.round(248 - ratio * 100)
+  const g = Math.round(180 - ratio * 140)
+  const b = Math.round(100 - ratio * 80)
+  return `rgb(${r},${g},${b})`
+}
+function SalesYTDMap() {
+  const [hovered, setHovered] = useState(null)
+  const [zoom, setZoom] = useState(1)
+  const center = [0, 20]
+
+  const handleZoomIn = () => setZoom((z) => Math.min(z * 1.5, 8))
+  const handleZoomOut = () => setZoom((z) => Math.max(z / 1.5, 0.5))
+  const handleMoveEnd = (pos) => {
+    if (pos?.zoom != null) setZoom(pos.zoom)
+  }
+
+  const hoverData = hovered != null ? getSalesData(hovered) : null
+  const formatValue = (v) => v >= 1000 ? `${(v / 1000).toFixed(v >= 100000 ? 0 : 2)}K` : String(v)
+
+  return (
+    <div className="mt-6 bg-white border border-[#e5e7eb] rounded-[14px] overflow-hidden shadow-sm">
+      <div className="flex items-start justify-between gap-4 p-6 pb-0">
+        <h3 className="text-base font-medium text-[#0a0a0a]">Sales YTD</h3>
+        <div className="flex items-center gap-2 shrink-0">
+          <button type="button" className="h-9 px-3 rounded-lg border border-[#e5e7eb] bg-white text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">Explore</button>
+          <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5]"><IconEllipsisVertical /></button>
+        </div>
+      </div>
+      <div className="relative" style={{ height: 420 }}>
+        <div className="absolute left-4 top-4 z-10 flex flex-col gap-1">
+          <button type="button" onClick={handleZoomIn} className="w-8 h-8 rounded bg-white border border-[#e5e7eb] flex items-center justify-center text-[#4a5565] hover:bg-[#f9fafb] text-lg leading-none">+</button>
+          <button type="button" onClick={handleZoomOut} className="w-8 h-8 rounded bg-white border border-[#e5e7eb] flex items-center justify-center text-[#4a5565] hover:bg-[#f9fafb] text-lg leading-none">−</button>
+        </div>
+        <ComposableMap projection="geoMercator" projectionConfig={{ scale: 147 }} width={800} height={420}>
+          <ZoomableGroup center={center} zoom={zoom} onMoveEnd={handleMoveEnd}>
+            <Geographies geography={GEO_URL}>
+              {({ geographies }) =>
+                geographies.map((geo) => {
+                  const id = geo.id
+                  const data = getSalesData(id)
+                  const value = data?.value ?? 0
+                  const isHovered = hovered === id || hovered === String(id)
+                  const fill = isHovered ? '#93c5fd' : getColor(value)
+                  return (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      fill={fill}
+                      stroke="#fff"
+                      strokeWidth={0.5}
+                      style={{
+                        default: { outline: 'none' },
+                        hover: { outline: 'none', cursor: 'pointer' },
+                        pressed: { outline: 'none' },
+                      }}
+                      onMouseEnter={() => setHovered(id)}
+                      onMouseLeave={() => setHovered(null)}
+                    />
+                  )
+                })
+              }
+            </Geographies>
+          </ZoomableGroup>
+        </ComposableMap>
+        {hoverData && (
+          <div className="absolute bottom-4 left-4 px-3 py-2 rounded-lg bg-white/95 border border-[#e5e7eb] shadow-sm text-sm">
+            <span className="font-medium text-[#0a0a0a]">{hoverData.name}</span>
+            <span className="text-[#6a7282] ml-2">{formatValue(hoverData.value)}</span>
+          </div>
+        )}
+        <div className="absolute bottom-4 right-4 flex items-center gap-2 px-3 py-2 rounded-lg bg-white/95 border border-[#e5e7eb] shadow-sm text-xs">
+          <span className="text-[#6a7282]">0</span>
+          <div className="w-24 h-2 rounded-full bg-gradient-to-r from-[#e5e7eb] via-[#fbbf24] to-[#dc2626]" />
+          <span className="text-[#6a7282]">13.12K</span>
+        </div>
+      </div>
+      <p className="text-[10px] text-[#9ca3af] px-6 py-2">© mapbox © Mapbox © OpenStreetMap Improve this map</p>
+    </div>
+  )
+}
+
+/* Pareto chart: blue bars + orange cumulative % line */
+const PARETO_LOCATION_DATA = [
+  { label: 'Store', value: 631120 },
+  { label: 'STR', value: 421480 },
+  { label: 'FIN', value: 0 },
+]
+const PARETO_DEPT_DATA = [
+  { label: 'Fragrance & Home', value: 438990 },
+  { label: 'Apparel', value: 386620 },
+  { label: 'Activewear', value: 213270 },
+  { label: 'Jewelry', value: 7720 },
+  { label: 'Watches', value: 3810 },
+  { label: 'Handbags', value: 2170 },
+]
+function ParetoChart({ title, xAxisLabel, data, hasExplore = true }) {
+  const total = data.reduce((s, d) => s + d.value, 0)
+  const scaleMax = 1052600
+  const formatVal = (v) => (v >= 1000 ? `${(v / 1000).toFixed(v >= 100000 ? 0 : 2)}K` : String(v))
+  let cumul = 0
+  const withCumul = data.map((d) => {
+    cumul += d.value
+    return { ...d, cumul, cumulPct: total ? (cumul / total) * 100 : 0 }
+  })
+  const w = 500
+  const h = 240
+  const pad = { L: 56, R: 56, T: 32, B: 44 }
+  const chartW = w - pad.L - pad.R
+  const chartH = h - pad.T - pad.B
+  const barW = chartW / data.length
+  const barGap = Math.max(0, barW * 0.15)
+
+  return (
+    <div className="bg-white border border-[#e5e7eb] rounded-[14px] p-6 shadow-sm">
+      <div className="flex items-start justify-between gap-4 mb-4">
+        <h3 className="text-base font-medium text-[#0a0a0a]">{title}</h3>
+        {hasExplore && (
+          <div className="flex items-center gap-2 shrink-0">
+            <button type="button" className="h-9 px-3 rounded-lg border border-[#e5e7eb] bg-white text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">Explore</button>
+            <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5]"><IconEllipsisVertical /></button>
+          </div>
+        )}
+      </div>
+      <div className="overflow-x-auto">
+        <svg viewBox={`0 0 ${w} ${h}`} className="min-w-[400px] w-full" preserveAspectRatio="xMidYMid meet" style={{ height: 240 }}>
+          {/* Horizontal grid (0–100% for right axis) */}
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+            <line key={i} x1={pad.L} y1={pad.T + (i / 10) * chartH} x2={w - pad.R} y2={pad.T + (i / 10) * chartH} stroke="#e5e7eb" strokeWidth="0.5" />
+          ))}
+          {/* Left Y-axis: Sales */}
+          <text x="20" y={pad.T + chartH / 2} fill="#6a7282" fontSize="11" transform={`rotate(-90, 20, ${pad.T + chartH / 2})`} textAnchor="middle">Sales</text>
+          {[0, 0.2, 0.4, 0.6, 0.8, 1].map((r) => {
+            const v = r * scaleMax
+            const label = v >= 1000000 ? `${(v / 1000000).toFixed(2)}M` : v >= 1000 ? `${(v / 1000).toFixed(2)}K` : v
+            return <text key={r} x={pad.L - 6} y={pad.T + chartH - r * chartH + 4} fill="#6a7282" fontSize="10" textAnchor="end">{label}</text>
+          })}
+          {/* Right Y-axis: Cumulative % */}
+          <text x={w - 20} y={pad.T + chartH / 2} fill="#6a7282" fontSize="11" transform={`rotate(90, ${w - 20}, ${pad.T + chartH / 2})`} textAnchor="middle">Cumulative Percent Sales</text>
+          {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((p) => (
+            <text key={p} x={w - pad.R + 6} y={pad.T + chartH - (p / 100) * chartH + 4} fill="#6a7282" fontSize="10" textAnchor="start">{p}%</text>
+          ))}
+          {/* X-axis label with dropdown cue */}
+          <g>
+            <text x={pad.L + chartW / 2} y={h - 14} fill="#6a7282" fontSize="11" textAnchor="middle">{xAxisLabel}</text>
+            <path d={`M${pad.L + chartW / 2 + 42} ${h - 14} l-4 4 4-4`} fill="none" stroke="#6a7282" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+          </g>
+          {/* Bars */}
+          {withCumul.map((d, i) => {
+            const x = pad.L + i * barW + barGap / 2
+            const barWidth = barW - barGap
+            const barH = scaleMax ? (d.value / scaleMax) * chartH : 0
+            const labelY = barH > 12 ? pad.T + chartH - barH - 6 : pad.T + chartH + 14
+            return (
+              <g key={d.label}>
+                <rect x={x} y={pad.T + chartH - barH} width={barWidth} height={barH} fill="#155dfc" />
+                <text x={x + barWidth / 2} y={labelY} fill="#0a0a0a" fontSize="10" textAnchor="middle">{formatVal(d.value)}</text>
+              </g>
+            )
+          })}
+          {/* Cumulative line (orange) - starts at 0% left of first bar */}
+          <polyline
+            points={[
+              `${pad.L},${pad.T + chartH}`,
+              ...withCumul.map((d, i) => {
+                const x = pad.L + (i + 0.5) * barW
+                const y = pad.T + chartH - (d.cumulPct / 100) * chartH
+                return `${x},${y}`
+              }),
+            ].join(' ')}
+            fill="none"
+            stroke="#f97316"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          {/* Cumulative % labels on line */}
+          {withCumul.map((d, i) => {
+            const x = pad.L + (i + 0.5) * barW
+            const y = pad.T + chartH - (d.cumulPct / 100) * chartH - 8
+            return <text key={d.label} x={x} y={Math.max(y, pad.T + 12)} fill="#0a0a0a" fontSize="10" textAnchor="middle">{d.cumulPct.toFixed(2)}%</text>
+          })}
+          {/* X-axis category labels */}
+          {withCumul.map((d, i) => {
+            const x = pad.L + (i + 0.5) * barW
+            return <text key={d.label} x={x} y={h - 20} fill="#6a7282" fontSize="10" textAnchor="middle">{d.label}</text>
+          })}
+        </svg>
+      </div>
+    </div>
+  )
+}
+
+const SALES_PERFORMANCE_2_ROWS = [
+  { dept: 'Fragrance & Home', wtd: 315, wtdLy: -385, wtdLyPct: -56, mtd: '7.2K', mtdLy: -681, mtdLyPct: -9, ytd: '14K', ytdLy: -337, ytdLyPct: -2 },
+  { dept: 'Apparel', wtd: 255, wtdLy: -194, wtdLyPct: -48, mtd: '3.1K', mtdLy: -364, mtdLyPct: -10, ytd: '7.7K', ytdLy: -378, ytdLyPct: -5 },
+  { dept: 'Activewear', wtd: 148, wtdLy: -120, wtdLyPct: -46, mtd: '2.4K', mtdLy: -89, mtdLyPct: -4, ytd: '3.7K', ytdLy: -1600, ytdLyPct: -31 },
+  { dept: 'Jewelry', wtd: -3, wtdLy: 6, wtdLyPct: 200, mtd: '57', mtdLy: 96, mtdLyPct: 63, ytd: '17K', ytdLy: -100, ytdLyPct: -38 },
+  { dept: 'Watches', wtd: -2, wtdLy: 2, wtdLyPct: -50, mtd: '38', mtdLy: 36, mtdLyPct: -48, ytd: '96', ytdLy: -34, ytdLyPct: -26 },
+  { dept: 'Handbags', wtd: 0, wtdLy: 0, wtdLyPct: 0, mtd: '6', mtdLy: -16, mtdLyPct: -71, ytd: '20', ytdLy: -28, ytdLyPct: -68 },
+  { dept: 'Total', wtd: 713, wtdLy: -703, wtdLyPct: -50, mtd: '12.8K', mtdLy: -1300, mtdLyPct: -9, ytd: '25.6K', ytdLy: -2500, ytdLyPct: -9, isTotal: true },
+]
+function LyCell({ val, display, suffix = '' }) {
+  if (val < 0) return <span className="inline-block px-2 py-0.5 rounded-md bg-red-50 text-red-600">{display}{suffix}</span>
+  return <span className="inline-block px-2 py-0.5 rounded-md bg-green-50 text-green-600">{display}{suffix}</span>
+}
+
+/* Sales trend chart with hover tooltip */
+const SALES_TREND_DATA = [
+  { date: '01/04', ly: 1800, ty: 2100 },
+  { date: '01/11', ly: 3000, ty: 2160 },
+  { date: '01/18', ly: 3300, ty: 2190 },
+  { date: '01/25', ly: 2790, ty: 2010 },
+  { date: '02/01', ly: 2190, ty: 1800 },
+  { date: '02/08', ly: 3490, ty: 3415 },
+  { date: '02/15', ly: 4110, ty: 5190 },
+  { date: '02/22', ly: 5310, ty: 5490 },
+  { date: '03/01', ly: 3600, ty: 750 },
+]
+function catmullRomToBezier(p0, p1, p2, p3, tension = 0.25) {
+  const cp1x = p1.x + (p2.x - p0.x) * tension
+  const cp1y = p1.y + (p2.y - p0.y) * tension
+  const cp2x = p2.x - (p3.x - p1.x) * tension
+  const cp2y = p2.y - (p3.y - p1.y) * tension
+  return `C${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${p2.x},${p2.y}`
+}
+function smoothPath(pts, getY) {
+  const getP = (i) => {
+    const idx = Math.max(0, Math.min(i, pts.length - 1))
+    const p = pts[idx]
+    return { x: p.x, y: getY(p) }
+  }
+  let d = `M${getP(0).x},${getP(0).y}`
+  for (let i = 0; i < pts.length - 1; i++) {
+    d += ' ' + catmullRomToBezier(getP(i - 1), getP(i), getP(i + 1), getP(i + 2))
+  }
+  return d
+}
+
+function SalesTrendChart() {
+  const [hoverIndex, setHoverIndex] = useState(null)
+  const chartMax = 6000
+  const pad = { L: 36, R: 12, T: 16, B: 28 }
+  const svgW = 800
+  const chartW = svgW - pad.L - pad.R
+  const chartH = 180
+  const pts = SALES_TREND_DATA.map((d, i) => ({
+    ...d,
+    x: pad.L + (i / (SALES_TREND_DATA.length - 1)) * chartW,
+    yLy: pad.T + chartH - (d.ly / chartMax) * chartH,
+    yTy: pad.T + chartH - (d.ty / chartMax) * chartH,
+  }))
+  const lyPath = smoothPath(pts, (p) => p.yLy)
+  const tyPath = smoothPath(pts, (p) => p.yTy)
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const ratio = (e.clientX - rect.left) / rect.width
+    const idx = Math.round(ratio * (SALES_TREND_DATA.length - 1))
+    const clamped = Math.max(0, Math.min(idx, SALES_TREND_DATA.length - 1))
+    setHoverIndex(clamped)
+  }
+  const handleMouseLeave = () => setHoverIndex(null)
+
+  const hovered = hoverIndex != null ? SALES_TREND_DATA[hoverIndex] : null
+  const total = hovered ? hovered.ly + hovered.ty : 0
+  const lyPct = total ? ((hovered.ly / total) * 100).toFixed(2) : '0'
+  const tyPct = total ? ((hovered.ty / total) * 100).toFixed(2) : '0'
+
+  return (
+    <div className="mt-6 bg-white border border-[#e5e7eb] rounded-[14px] p-6">
+      <div className="flex items-start justify-between gap-4 mb-4">
+        <div>
+          <h3 className="text-base font-medium text-[#0a0a0a]">Sales trend</h3>
+          <p className="text-sm text-[#6a7282] mt-0.5">Select the comparison period using &apos;Variance&apos; parameter</p>
+        </div>
+        <div className="flex flex-col gap-1 text-sm">
+          <span className="text-[#6a7282]">Metrics</span>
+          <div className="flex items-center gap-2">
+            <span className="size-2.5 rounded-full bg-[#7eb8ff]" />
+            <span>LY</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="size-2.5 rounded-full bg-[#155dfc]" />
+            <span>TY</span>
+          </div>
+        </div>
+      </div>
+      <div className="h-[280px] w-full relative" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+        <svg viewBox={`0 0 ${svgW} 240`} className="w-full h-full" preserveAspectRatio="xMinYMid meet">
+          {/* Horizontal grid lines */}
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+            <line key={i} x1={pad.L} y1={pad.T + chartH - (i / 10) * chartH} x2={svgW - pad.R} y2={pad.T + chartH - (i / 10) * chartH} stroke="#e5e7eb" strokeWidth="0.5" />
+          ))}
+          {/* Left Y-axis - stacked vertically, condensed */}
+          <g>
+            <text x="8" y={pad.T + chartH / 2} fill="#6a7282" fontSize="10" transform={`rotate(-90, 8, ${pad.T + chartH / 2})`} textAnchor="middle">Sales</text>
+            {[0, 2, 4, 6].map((i) => (
+              <text key={i} x={pad.L - 4} y={pad.T + chartH - (i / 6) * chartH + 4} fill="#6a7282" fontSize="9" textAnchor="end">{i === 0 ? '0' : `${i}K`}</text>
+            ))}
+          </g>
+          <text x={pad.L + chartW / 2} y={230} fill="#6a7282" fontSize="12" textAnchor="middle">Date period</text>
+          {SALES_TREND_DATA.map((d, i) => (
+            <text key={d.date} x={pad.L + (i / (SALES_TREND_DATA.length - 1)) * chartW} y={236} fill="#6a7282" fontSize="10" textAnchor="middle">{d.date}</text>
+          ))}
+          <path d={lyPath} fill="none" stroke="#7eb8ff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+          <path d={tyPath} fill="none" stroke="#155dfc" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+          {/* Dashed vertical line + highlight circle at hovered point */}
+          {hoverIndex != null && (
+            <g>
+              <line x1={pts[hoverIndex].x} y1={pad.T} x2={pts[hoverIndex].x} y2={pad.T + chartH} stroke="#6a7282" strokeWidth="1" strokeDasharray="4 2" opacity={0.6} />
+              <circle cx={pts[hoverIndex].x} cy={pts[hoverIndex].yLy} r="4" fill="#7eb8ff" stroke="#fff" strokeWidth="2" />
+              <circle cx={pts[hoverIndex].x} cy={pts[hoverIndex].yTy} r="4" fill="#155dfc" stroke="#fff" strokeWidth="2" />
+            </g>
+          )}
+        </svg>
+        {/* Hover tooltip modal - sits left or right of the dotted vertical line */}
+        {hovered && (() => {
+          const lineFrac = (pad.L + (hoverIndex / (SALES_TREND_DATA.length - 1)) * chartW) / svgW
+          const linePercent = lineFrac * 100
+          const toRight = linePercent < 50
+          return (
+          <div
+            className="absolute rounded-xl shadow-lg px-4 py-3 text-sm text-white z-10 pointer-events-none"
+            style={{
+              backgroundColor: '#1f2937',
+              left: toRight ? `calc(${linePercent}% + 12px)` : undefined,
+              right: toRight ? undefined : `calc(${(1 - lineFrac) * 100}% + 12px)`,
+              top: 24,
+              transform: toRight ? 'none' : 'translateX(-100%)',
+              minWidth: 200,
+            }}
+          >
+            <div className="flex flex-col gap-2">
+              <div>
+                <span className="text-[#9ca3af]">Date period:</span>
+                <span className="ml-2 font-medium">{hovered.date}</span>
+              </div>
+              <div>
+                <span className="text-[#9ca3af]">Total Sales:</span>
+                <span className="ml-2 font-medium">{total.toLocaleString()}</span>
+              </div>
+              <div className="flex gap-3 mt-1">
+                <div className="w-1 rounded-full bg-[#7eb8ff]" />
+                <div>
+                  <div><span className="text-[#9ca3af]">Metrics:</span> <span className="font-medium">LY</span></div>
+                  <div><span className="text-[#9ca3af]">Sales:</span> <span className="font-medium">{hovered.ly.toLocaleString()} ({lyPct} %)</span></div>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="w-1 rounded-full bg-[#155dfc]" />
+                <div>
+                  <div><span className="text-[#9ca3af]">Metrics:</span> <span className="font-medium">TY</span></div>
+                  <div><span className="text-[#9ca3af]">Sales:</span> <span className="font-medium">{hovered.ty.toLocaleString()} ({tyPct} %)</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          )
+        })()}
+      </div>
+    </div>
+  )
+}
+
+const INSIGHTS_METRIC_CARDS = [
+  { title: 'Daily sales', date: '24/02/2026', value: '551', comparison: 'Comparison point unavailable', comparisonDown: false, chartType: 'area', chartVariant: 'daily', hasExplore: false },
+  { title: 'Sales WTD', date: 'Week of 23/02/2026', value: '713', comparison: '↓37.84%', comparisonSuffix: ' vs Week of 24/02/2025 (1.15K)', comparisonDown: true, chartType: 'area', chartVariant: 'wtd', hasExplore: false },
+  { title: 'Sales MTD', date: 'Feb 2026', value: '12.79K', comparison: '↓9.09%', comparisonSuffix: ' vs Feb 2025 (14.07K)', comparisonDown: true, chartType: 'area', chartVariant: 'mtd', hasExplore: true },
+  { title: 'Sales YTD', date: '2026', value: '25.65K', comparison: '↓8.93%', comparisonSuffix: ' vs 2025 (28.16K)', comparisonDown: true, chartType: 'area', chartVariant: 'ytd', hasExplore: false },
+]
+
+const CHART_VARIANTS = {
+  daily: '0,55 40,45 80,65 120,30 160,50 200,35 240,55',
+  wtd: '0,70 40,65 80,55 120,25 160,45 180,35 210,50 240,60',
+  mtd: '0,65 40,50 80,55 120,55 160,50 200,48 240,52',
+  ytd: '0,70 40,55 80,40 120,25 160,35 200,45 240,55',
+}
+function InsightsMiniChart({ variant = 'daily' }) {
+  const pts = CHART_VARIANTS[variant] || CHART_VARIANTS.daily
+  const pathD = pts.split(' ').map((p, i) => (i === 0 ? `M${p}` : `L${p}`)).join(' ')
+  const areaD = `${pathD} L240,80 L0,80 Z`
+  const pairs = pts.split(' ')
+  const lastPt = pairs[pairs.length - 1].split(',')
+  const useDotted = variant === 'ytd'
+  const solidPts = useDotted ? pairs.slice(0, 6) : pairs
+  const solidPathD = solidPts.map((p, i) => (i === 0 ? `M${p}` : `L${p}`)).join(' ')
+  const dottedPathD = useDotted ? pairs.slice(5).map((p, i) => (i === 0 ? `M${p}` : `L${p}`)).join(' ') : ''
+  return (
+    <div className="h-[100px] w-full mt-6">
+      <svg viewBox="0 0 240 80" className="w-full h-full" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id={`insightsGrad-${variant}`} x1="0" y1="0" x2="0" y2="1">
+            <stop stopColor="#155dfc" stopOpacity="0.4" />
+            <stop stopColor="#155dfc" stopOpacity="0" offset="1" />
+          </linearGradient>
+        </defs>
+        <path d={areaD} fill={`url(#insightsGrad-${variant})`} />
+        <path d={solidPathD} fill="none" stroke="#155dfc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        {useDotted && dottedPathD && (
+          <>
+            <path d={dottedPathD} fill="none" stroke="#155dfc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="4 3" />
+            <circle cx={lastPt[0]} cy={lastPt[1]} r="3" fill="#155dfc" />
+          </>
+        )}
+      </svg>
+    </div>
+  )
+}
+
+const LIVEBOARD_RECENT_VIEWERS = [
+  { name: 'David Le Corre', initial: 'D', color: 'bg-[#7c3aed]' },
+  { name: 'Pierre-Alain Renou', initial: 'P', color: 'bg-[#ea580c]' },
+  { name: 'Autone Internal', initial: 'A', color: 'bg-[#2563eb]' },
+  { name: 'ines.sebbar', initial: 'I', color: 'bg-[#16a34a]' },
+  { name: 'Sim Durgun', initial: 'S', color: 'bg-[#0d9488]' },
+  { name: 'Ever Sasson', initial: 'E', color: 'bg-[#0d9488]' },
+  { name: 'Bonaventura Pacileo', initial: 'B', color: 'bg-[#7c3aed]' },
+  { name: 'Autone Internal', initial: 'A', color: 'bg-[#2563eb]' },
+  { name: 'Adil', initial: 'A', color: 'bg-[#ea580c]' },
+]
+
+function InsightsPage() {
+  const [activeTab, setActiveTab] = useState('Retail')
+  const [liveboardModalOpen, setLiveboardModalOpen] = useState(false)
+
+  return (
+    <>
+    <div className="flex flex-col gap-6">
+      {/* Header: title + icons + tabs + actions */}
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-medium text-[#0a0a0a]">Insights</h1>
+            <div className="flex items-center gap-2">
+              <div className="relative group">
+                <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5] hover:text-[#0a0a0a]" aria-label="Liveboard details" onClick={() => setLiveboardModalOpen(true)}>
+                  <IconInfo />
+                </button>
+                <div className="absolute left-0 bottom-full mb-1 px-2 py-1.5 rounded-md bg-[#1f2937] text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                  Liveboard details
+                </div>
+              </div>
+              <div className="relative group">
+                <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5] hover:text-[#0a0a0a]" aria-label="Add to favourites">
+                  <IconStar />
+                </button>
+                <div className="absolute left-0 bottom-full mb-1 px-2 py-1.5 rounded-md bg-[#1f2937] text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                  Add to favourites
+                </div>
+              </div>
+              <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5] hover:text-[#0a0a0a]" aria-label="Permissions">
+                <IconLock />
+              </button>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <button type="button" className="h-10 px-4 rounded-lg bg-[#155dfc] text-white text-sm font-medium flex items-center gap-2">
+              <IconAI />
+              AI Highlights
+            </button>
+            <div className="relative group">
+              <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5]" aria-label="Share">
+                <IconShare />
+              </button>
+              <div className="absolute left-0 bottom-full mb-1 px-2 py-1.5 rounded-md bg-[#1f2937] text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+                Share
+              </div>
+            </div>
+            <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5]" aria-label="More options">
+              <IconEllipsisVertical />
+            </button>
+          </div>
+        </div>
+        <div className="flex gap-1 border-b border-[#e5e7eb]">
+          {INSIGHTS_TABS.map((tab) => (
+            <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-colors ${activeTab === tab ? 'border-[#155dfc] text-[#155dfc]' : 'border-transparent text-[#4a5565] hover:text-[#0a0a0a]'}`}>
+              {tab}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Main content: filters + cards + sidebar */}
+      <div className="flex gap-6">
+        <div className="flex-1 min-w-0">
+          {/* Filter chips */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {INSIGHTS_ACTIVE_CHIPS.map((chip, i) => (
+              <button key={chip} type="button" className={`h-9 px-3 rounded-lg text-sm flex items-center gap-2 ${i === INSIGHTS_ACTIVE_CHIPS.length - 1 ? 'bg-[#364153] text-white' : 'bg-[#e5e7eb] text-[#0a0a0a]'}`}>
+                {chip}
+                {i === INSIGHTS_ACTIVE_CHIPS.length - 1 && <IconArrowRight className="size-4" />}
+              </button>
+            ))}
+            {INSIGHTS_FILTER_CHIPS.map((chip) => (
+              <button key={chip} type="button" className="h-9 px-3 rounded-lg text-sm bg-[#f3f3f5] text-[#4a5565] hover:bg-[#e5e7eb]">
+                {chip}
+              </button>
+            ))}
+          </div>
+
+          {/* Metric and Currency titles */}
+          <div className="flex items-center gap-6 mb-2">
+            <div>
+              <p className="text-xs text-[#6a7282]">Metric</p>
+              <p className="text-sm font-medium text-[#0a0a0a]">Volume</p>
+            </div>
+            <div>
+              <p className="text-xs text-[#6a7282]">Currency</p>
+              <p className="text-sm font-medium text-[#0a0a0a]">EUR</p>
+            </div>
+          </div>
+
+          {/* Metric cards - single full-width box with 4 sections */}
+          <div className="bg-white border border-[#e5e7eb] rounded-[14px] overflow-hidden shadow-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#e5e7eb]">
+              {INSIGHTS_METRIC_CARDS.map((card, i) => (
+                <div key={card.title} className="p-6 flex flex-col min-h-[280px]">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <h3 className="text-base font-medium text-[#0a0a0a]">{card.title}</h3>
+                      <p className="text-sm text-[#6a7282] mt-0.5">{card.date}</p>
+                    </div>
+                    {card.hasExplore && (
+                      <div className="flex items-center gap-1 shrink-0">
+                        <button type="button" className="p-1.5 rounded text-[#4a5565] hover:bg-[#f3f3f5]" aria-label="Document"><IconDocument className="size-4" /></button>
+                        <button type="button" className="h-8 px-3 rounded-lg border border-[#e5e7eb] bg-white text-[#155dfc] text-sm font-medium hover:bg-[#f8fafc]">Explore</button>
+                        <button type="button" className="p-1.5 rounded text-[#4a5565] hover:bg-[#f3f3f5]"><IconEllipsisVertical /></button>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-3xl font-semibold text-[#0a0a0a] mt-3">{card.value}</p>
+                  <p className="text-sm mt-1 text-[#6a7282]">
+                    {card.comparisonDown ? (
+                      <><span className="text-[#dc2626]">{card.comparison}</span><span className="text-[#6a7282]">{card.comparisonSuffix}</span></>
+                    ) : (
+                      card.comparison
+                    )}
+                  </p>
+                  <div className="flex-1" />
+                  <InsightsMiniChart variant={card.chartVariant} />
+                  <button type="button" className="text-sm text-[#155dfc] mt-3 underline decoration-[#155dfc] hover:decoration-[#0252cc] w-fit">Analyse change</button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Sales trend chart */}
+          <SalesTrendChart />
+
+          {/* Sales performance table */}
+          <div className="mt-6 bg-white border border-[#e5e7eb] rounded-[14px] p-6 overflow-hidden">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div>
+                <h3 className="text-base font-medium text-[#0a0a0a]">Sales performance</h3>
+                <p className="text-sm text-[#6a7282] mt-0.5">Select the comparison period using &apos;Variance&apos; parameter and choose the breakdown selecting the &apos;Retail attribute&apos;</p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button type="button" className="h-9 px-3 rounded-lg border border-[#e5e7eb] text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">Explore</button>
+                <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5]"><IconEllipsisVertical /></button>
+              </div>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-[#f9fafb]">
+                    <th className="text-left py-3 px-4 font-medium text-[#0a0a0a]">Department</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">WTD</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">WTD vs LY</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">WTD vs LY %</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">MTD</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">MTD vs LY</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">MTD vs LY %</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">YTD ↓</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">YTD vs LY</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">YTD vs LY %</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {SALES_PERFORMANCE_ROWS.map((row) => (
+                    <tr key={row.dept} className="border-t border-[#e5e7eb]">
+                      <td className="py-3 px-4 text-[#0a0a0a]">{row.dept}</td>
+                      <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.wtd}</td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.wtdLy} display={row.wtdLy} /></td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.wtdLyPct} display={row.wtdLyPct} suffix="%" /></td>
+                      <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.mtd}</td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.mtdLy} display={row.mtdLy} /></td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.mtdLyPct} display={row.mtdLyPct} suffix="%" /></td>
+                      <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.ytd}</td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.ytdLy} display={row.ytdLy} /></td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.ytdLyPct} display={row.ytdLyPct} suffix="%" /></td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr className="border-t-2 border-[#e5e7eb] bg-[#f9fafb]">
+                    <td className="py-3 px-4 text-[#6a7282] font-medium">UNIQUE COUNT 6</td>
+                    <td className="py-3 px-4 text-right font-semibold text-[#0a0a0a]">TOTAL 713</td>
+                    <td className="py-3 px-4 text-right"><LyCell val={-703} display={-703} /></td>
+                    <td className="py-3 px-4 text-right"><LyCell val={-49.65} display="-49.65" suffix="%" /></td>
+                    <td className="py-3 px-4 text-right font-semibold text-[#0a0a0a]">TOTAL 12.79K</td>
+                    <td className="py-3 px-4 text-right"><LyCell val={-1280} display="-1.28K" /></td>
+                    <td className="py-3 px-4 text-right"><LyCell val={-9.09} display="-9.09" suffix="%" /></td>
+                    <td className="py-3 px-4 text-right font-semibold text-[#0a0a0a]">TOTAL 25.65K</td>
+                    <td className="py-3 px-4 text-right"><LyCell val={-2510} display="-2.51K" /></td>
+                    <td className="py-3 px-4 text-right"><LyCell val={-8.93} display="-8.93" suffix="%" /></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <p className="text-xs text-[#6a7282] mt-3">Showing 6 of 6 rows</p>
+          </div>
+
+          {/* Sales performance table 2 - dimension breakdown */}
+          <div className="mt-6 bg-white border border-[#e5e7eb] rounded-[14px] p-6 overflow-hidden">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div>
+                <h3 className="text-base font-medium text-[#0a0a0a]">Sales performance</h3>
+                <p className="text-sm text-[#6a7282] mt-0.5">Select the comparison period using &apos;Variance&apos; parameter and choose the breakdown selecting the &apos;Retail attribute&apos;</p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button type="button" className="h-9 px-3 rounded-lg border border-[#e5e7eb] text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">Explore</button>
+                <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5]"><IconEllipsisVertical /></button>
+              </div>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-[#f9fafb]">
+                    <th className="text-left py-3 px-4 font-medium text-[#0a0a0a]">DIMENSION</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">WTD</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">WTD VS LY</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">WTD VS LY%</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">MTD</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">MTD VS LY</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">MTD VS LY%</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">YTD</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">YTD VS LY</th>
+                    <th className="text-right py-3 px-4 font-medium text-[#0a0a0a]">YTD VS LY%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {SALES_PERFORMANCE_2_ROWS.map((row) => (
+                    <tr key={row.dept} className={`border-t border-[#e5e7eb] ${row.isTotal ? 'bg-[#f9fafb] font-semibold' : ''}`}>
+                      <td className="py-3 px-4 text-[#0a0a0a]">{row.dept}</td>
+                      <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.wtd}</td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.wtdLy} display={row.wtdLy > 0 ? `+${row.wtdLy}` : row.wtdLy} /></td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.wtdLyPct} display={row.wtdLyPct > 0 ? `+${row.wtdLyPct}` : row.wtdLyPct} suffix="%" /></td>
+                      <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.mtd}</td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.mtdLy} display={Math.abs(row.mtdLy) >= 1000 ? `${(row.mtdLy / 1000).toFixed(1)}K` : row.mtdLy > 0 ? `+${row.mtdLy}` : row.mtdLy} /></td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.mtdLyPct} display={row.mtdLyPct > 0 ? `+${row.mtdLyPct}` : row.mtdLyPct} suffix="%" /></td>
+                      <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.ytd}</td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.ytdLy} display={Math.abs(row.ytdLy) >= 1000 ? `${(row.ytdLy / 1000).toFixed(1)}K` : row.ytdLy > 0 ? `+${row.ytdLy}` : row.ytdLy} /></td>
+                      <td className="py-3 px-4 text-right"><LyCell val={row.ytdLyPct} display={row.ytdLyPct > 0 ? `+${row.ytdLyPct}` : row.ytdLyPct} suffix="%" /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <SalesYTDMap />
+
+          {/* Pareto charts: Sales by Location Type & Sales by Department */}
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ParetoChart title="Sales by Location Type" xAxisLabel="Location attribute" data={PARETO_LOCATION_DATA} hasExplore />
+            <ParetoChart title="Sales by Department" xAxisLabel="Product attribute" data={PARETO_DEPT_DATA} hasExplore={false} />
+          </div>
+        </div>
+      </div>
+    </div>
+
+      {/* Liveboard details modal */}
+      {liveboardModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" aria-hidden onClick={() => setLiveboardModalOpen(false)} />
+          <div className="relative w-full max-w-2xl bg-white rounded-xl shadow-xl overflow-hidden" role="dialog" aria-labelledby="liveboard-modal-title" aria-modal>
+            <h2 id="liveboard-modal-title" className="text-xl font-semibold text-[#0a0a0a] px-6 pt-6 pb-4">Liveboard details</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 pb-6">
+              <div className="flex flex-col gap-5">
+                <div>
+                  <h3 className="text-sm font-semibold text-[#0a0a0a] mb-2">Insights</h3>
+                  <div className="flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-full bg-[#0d9488] text-white flex items-center justify-center text-sm font-medium shrink-0">E</span>
+                    <span className="text-sm text-[#4a5565]">Created by Ever Sasson • 24 Feb, 2026</span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-[#0a0a0a] mb-3">Data sources</h3>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-[#f9fafb] cursor-pointer">
+                      <span className="w-8 h-8 rounded bg-[#e5e7eb] flex items-center justify-center shrink-0">
+                        <IconDocument />
+                      </span>
+                      <div>
+                        <p className="text-sm font-medium text-[#0a0a0a]">Insights</p>
+                        <p className="text-xs text-[#6a7282]">by Ever Sasson • 26 Feb, 2026</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-[#f9fafb] cursor-pointer">
+                      <span className="w-8 h-8 rounded bg-[#e5e7eb] flex items-center justify-center shrink-0">
+                        <IconDocument />
+                      </span>
+                      <p className="text-sm font-medium text-[#0a0a0a]">ROI for insights</p>
+                    </div>
+                    <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-[#f9fafb] cursor-pointer">
+                      <span className="w-8 h-8 rounded bg-[#e5e7eb] flex items-center justify-center shrink-0">
+                        <IconDocument />
+                      </span>
+                      <p className="text-sm font-medium text-[#0a0a0a]">Assortment for insights</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-[#0a0a0a] mb-2">Visibility</h3>
+                  <p className="text-sm text-[#4a5565]">Discoverable</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-[#0a0a0a] mb-2">Verification status</h3>
+                  <p className="text-sm text-[#4a5565]">Unverified</p>
+                </div>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-[#0a0a0a] mb-3">Recent viewers</h3>
+                <div className="border border-[#e5e7eb] rounded-lg overflow-hidden">
+                  {LIVEBOARD_RECENT_VIEWERS.map((v, i) => (
+                    <div key={`${v.name}-${i}`} className={`flex items-center gap-3 px-3 py-2.5 ${i > 0 ? 'border-t border-[#e5e7eb]' : ''}`}>
+                      <span className={`w-8 h-8 rounded-full ${v.color} text-white flex items-center justify-center text-sm font-medium shrink-0`}>{v.initial}</span>
+                      <span className="text-sm text-[#0a0a0a]">{v.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="px-6 pb-6 flex justify-end">
+              <button type="button" onClick={() => setLiveboardModalOpen(false)} className="h-10 px-5 rounded-lg bg-[#155dfc] text-white text-sm font-medium hover:bg-[#0252cc]">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
 /* Optimiser page – Figma 174:2696 (Optimiser-Concepts) */
 function OptimiserPage() {
   const [activeTypeFilter, setActiveTypeFilter] = useState('all')
@@ -503,6 +1358,7 @@ function OptimiserPage() {
 export default function App() {
   const [assignee, setAssignee] = useState({})
   const [optimiserOpen, setOptimiserOpen] = useState(false)
+  const [insightsOpen, setInsightsOpen] = useState(false)
   const [activeView, setActiveView] = useState('control-panel')
 
   return (
@@ -517,18 +1373,47 @@ export default function App() {
           </button>
         </div>
 
-        <nav className={`flex-1 flex flex-col gap-[var(--spacing-xs,6px)] items-start w-full min-h-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${optimiserOpen ? 'overflow-visible' : 'overflow-y-auto'}`} data-name="Container" data-node-id="14404:7246">
+        <nav className={`flex-1 flex flex-col gap-[var(--spacing-xs,6px)] items-start w-full min-h-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${optimiserOpen || insightsOpen ? 'overflow-visible' : 'overflow-y-auto'}`} data-name="Container" data-node-id="14404:7246">
           <button type="button" onClick={() => setActiveView('control-panel')} className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-medium shrink-0 ${activeView === 'control-panel' ? 'bg-[#0267ff] text-white' : 'text-white hover:bg-white/5'}`} data-name="Sidebar element" data-node-id="14404:7247">
             <IconGrid className={`size-6 shrink-0 ${activeView === 'control-panel' ? 'text-white' : 'text-[#22272f]'}`} aria-hidden />
             <span>Overview</span>
           </button>
-          <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7252">
-            <IconBars className="text-[#22272f] size-6 shrink-0" aria-hidden />
-            <span className="flex-1 min-w-0 text-left">Insights</span>
-            <span className="ml-auto inline-flex text-white size-5 shrink-0" aria-hidden data-name="icon" data-node-id="I14404:7252;12203:35389">
-              <IconInsightsChevron />
-            </span>
-          </button>
+          <div className="flex flex-col gap-[var(--spacing-xs,6px)] w-full shrink-0">
+            <button
+              type="button"
+              onClick={() => { setActiveView('insights'); setInsightsOpen((o) => !o); }}
+              className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] shrink-0 ${activeView === 'insights' ? 'bg-[#0267ff] text-white font-medium' : 'font-normal text-white hover:bg-white/5'}`}
+              aria-expanded={insightsOpen}
+              aria-haspopup="true"
+              aria-expanded={insightsOpen}
+              aria-haspopup="true"
+              data-name="Sidebar element"
+              data-node-id="14404:7252"
+            >
+              <IconBars className={`size-6 shrink-0 ${activeView === 'insights' ? 'text-white' : 'text-[#22272f]'}`} aria-hidden />
+              <span className="flex-1 min-w-0 text-left">Insights</span>
+              <span className={`ml-auto inline-flex size-5 shrink-0 transition-transform duration-200 ${activeView === 'insights' ? 'text-white' : 'text-white'} ${insightsOpen ? 'rotate-180' : ''}`} aria-hidden data-name="icon" data-node-id="I14404:7252;12203:35389">
+                <IconInsightsChevron />
+              </span>
+            </button>
+            {insightsOpen && (
+              <div className="flex flex-col gap-[4px] pl-4 pb-2 w-full shrink-0">
+                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                  Buying
+                </button>
+                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                  Data health
+                </button>
+                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                  Optimiser status
+                </button>
+                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                  <span className="flex-1 min-w-0 text-left">Forecast inspector</span>
+                  <span className="text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded shrink-0">Premium</span>
+                </button>
+              </div>
+            )}
+          </div>
           <div className="flex flex-col gap-[var(--spacing-xs,6px)] w-full shrink-0">
             <button
               type="button"
@@ -566,7 +1451,7 @@ export default function App() {
             <span>Buying</span>
           </button>
           <div className="h-px w-full bg-white/10 shrink-0 my-0" role="separator" data-name="divider" />
-          {!optimiserOpen && (
+          {!optimiserOpen && !insightsOpen && (
             <>
               <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7254">
                 <IconGridDots className="text-[#22272f] size-6 shrink-0" aria-hidden />
@@ -627,8 +1512,8 @@ export default function App() {
       <div className="flex flex-col flex-1 min-w-0 min-h-0 w-full overflow-hidden">
         <div className="shrink-0">
           <TopBar
-            title={activeView === 'optimiser' ? 'Optimiser' : 'Overview'}
-            subtitle={activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"}
+            title={activeView === 'optimiser' ? 'Optimiser' : activeView === 'insights' ? 'Insights' : 'Overview'}
+            subtitle={activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : activeView === 'insights' ? 'Analytics and reporting for your retail performance.' : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"}
           />
         </div>
 
@@ -637,6 +1522,10 @@ export default function App() {
         {activeView === 'optimiser' ? (
           <div className="pt-6">
             <OptimiserPage />
+          </div>
+        ) : activeView === 'insights' ? (
+          <div className="pt-6">
+            <InsightsPage />
           </div>
         ) : (
         <>
