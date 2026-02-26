@@ -111,6 +111,72 @@ const IconChart = () => (
     <path d="M3 17l5-5 4 4 6-8 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
+const IconStar = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M10 2l2.2 4.5 4.9.7-3.5 3.4.8 4.9L10 13.5l-4.4 2.1.8-4.9-3.5-3.4 4.9-.7L10 2z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+  </svg>
+)
+const IconInfo = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="10" cy="6.5" r="1.25" fill="currentColor" />
+    <path d="M10 9v4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+)
+const IconEye = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M10 4c-4 0-7 3-9 6 2 3 5 6 9 6s7-3 9-6c-2-3-5-6-9-6z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="10" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.2" />
+  </svg>
+)
+const IconLock = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <rect x="3.5" y="8" width="13" height="8.5" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
+    <path d="M6 8V5a4 4 0 018 0v3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+  </svg>
+)
+const IconSparkle = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M10 2l1.2 3.6 3.8.2-2.8 2.4 1 3.6L10 10.4l-2.2 2.4 1-3.6L6 5.8l3.8-.2L10 2z" fill="currentColor" />
+  </svg>
+)
+const IconAI = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M10 2v3M10 15v3M2 10h3M15 10h3M5.05 5.05l2.1 2.1M12.85 12.85l2.1 2.1M5.05 14.95l2.1-2.1M12.85 7.15l2.1-2.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <circle cx="10" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+)
+const IconSave = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M4 2h9l3 3v12H4V2z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+    <path d="M4 2v16h12V5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M7 10h6M7 13h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+  </svg>
+)
+const IconShare = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M15 10v5a2 2 0 01-2 2H7a2 2 0 01-2-2v-5M10 12V3M10 3l3 3M10 3L7 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+const IconBulb = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M10 3c-2.2 0-4 1.8-4 4 0 1.2.5 2.2 1.3 2.9l.7.6v.5h4V10.5l.7-.6c.8-.7 1.3-1.7 1.3-2.9 0-2.2-1.8-4-4-4zM7 13v1.5c0 .3.2.5.5.5h5c.3 0 .5-.2.5-.5V13H7z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="currentColor" fillOpacity="0.1" />
+  </svg>
+)
+const IconDocument = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <path d="M4 2h8l4 4v12H4V2z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+    <path d="M12 2v4h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6 10h8M6 13h8M6 16h5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+  </svg>
+)
+const IconEllipsisVertical = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
+    <circle cx="10" cy="4" r="1.5" fill="currentColor" />
+    <circle cx="10" cy="10" r="1.5" fill="currentColor" />
+    <circle cx="10" cy="16" r="1.5" fill="currentColor" />
+  </svg>
+)
 
 // Sidebar icons – Autone Design System 2.0 (12299:63282), inactive #22272f
 const IconGrid = () => (
@@ -1404,8 +1470,8 @@ function OptimiserPage({ onAddJob }) {
 export default function App() {
   const [assignee, setAssignee] = useState({})
   const [optimiserOpen, setOptimiserOpen] = useState(false)
-  const [activeView, setActiveView] = useState('optimiser') // 'control-panel' | 'optimiser' – set to 'optimiser' to show Scope on load
-  const [optimiserSubView, setOptimiserSubView] = useState('scope') // 'schedule' | 'scope'
+  const [insightsOpen, setInsightsOpen] = useState(false)
+  const [activeView, setActiveView] = useState('control-panel')
 
   return (
     <div className="h-screen bg-[#f9fafb] flex text-[#0a0a0a] overflow-hidden">
@@ -1419,18 +1485,47 @@ export default function App() {
           </button>
         </div>
 
-        <nav className={`flex-1 flex flex-col gap-[var(--spacing-xs,6px)] items-start w-full min-h-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${optimiserOpen ? 'overflow-visible' : 'overflow-y-auto'}`} data-name="Container" data-node-id="14404:7246">
+        <nav className={`flex-1 flex flex-col gap-[var(--spacing-xs,6px)] items-start w-full min-h-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${optimiserOpen || insightsOpen ? 'overflow-visible' : 'overflow-y-auto'}`} data-name="Container" data-node-id="14404:7246">
           <button type="button" onClick={() => setActiveView('control-panel')} className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-medium shrink-0 ${activeView === 'control-panel' ? 'bg-[#0267ff] text-white' : 'text-white hover:bg-white/5'}`} data-name="Sidebar element" data-node-id="14404:7247">
             <IconGrid className={`size-6 shrink-0 ${activeView === 'control-panel' ? 'text-white' : 'text-[#22272f]'}`} aria-hidden />
             <span>Overview</span>
           </button>
-          <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7252">
-            <IconBars className="text-[#22272f] size-6 shrink-0" aria-hidden />
-            <span className="flex-1 min-w-0 text-left">Insights</span>
-            <span className="ml-auto inline-flex text-white size-5 shrink-0" aria-hidden data-name="icon" data-node-id="I14404:7252;12203:35389">
-              <IconInsightsChevron />
-            </span>
-          </button>
+          <div className="flex flex-col gap-[var(--spacing-xs,6px)] w-full shrink-0">
+            <button
+              type="button"
+              onClick={() => { setActiveView('insights'); setInsightsOpen((o) => !o); }}
+              className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] shrink-0 ${activeView === 'insights' ? 'bg-[#0267ff] text-white font-medium' : 'font-normal text-white hover:bg-white/5'}`}
+              aria-expanded={insightsOpen}
+              aria-haspopup="true"
+              aria-expanded={insightsOpen}
+              aria-haspopup="true"
+              data-name="Sidebar element"
+              data-node-id="14404:7252"
+            >
+              <IconBars className={`size-6 shrink-0 ${activeView === 'insights' ? 'text-white' : 'text-[#22272f]'}`} aria-hidden />
+              <span className="flex-1 min-w-0 text-left">Insights</span>
+              <span className={`ml-auto inline-flex size-5 shrink-0 transition-transform duration-200 ${activeView === 'insights' ? 'text-white' : 'text-white'} ${insightsOpen ? 'rotate-180' : ''}`} aria-hidden data-name="icon" data-node-id="I14404:7252;12203:35389">
+                <IconInsightsChevron />
+              </span>
+            </button>
+            {insightsOpen && (
+              <div className="flex flex-col gap-[4px] pl-4 pb-2 w-full shrink-0">
+                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                  Buying
+                </button>
+                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                  Data health
+                </button>
+                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                  Optimiser status
+                </button>
+                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                  <span className="flex-1 min-w-0 text-left">Forecast inspector</span>
+                  <span className="text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded shrink-0">Premium</span>
+                </button>
+              </div>
+            )}
+          </div>
           <div className="flex flex-col gap-[var(--spacing-xs,6px)] w-full shrink-0">
             <button
               type="button"
@@ -1468,7 +1563,7 @@ export default function App() {
             <span>Buying</span>
           </button>
           <div className="h-px w-full bg-white/10 shrink-0 my-0" role="separator" data-name="divider" />
-          {!optimiserOpen && (
+          {!optimiserOpen && !insightsOpen && (
             <>
               <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7254">
                 <IconGridDots className="text-[#22272f] size-6 shrink-0" aria-hidden />
@@ -1542,6 +1637,10 @@ export default function App() {
         ) : activeView === 'optimiser' ? (
           <div className="pt-6">
             <OptimiserPage onAddJob={() => setOptimiserSubView('scope')} />
+          </div>
+        ) : activeView === 'insights' ? (
+          <div className="pt-6">
+            <InsightsPage />
           </div>
         ) : (
         <>
