@@ -284,6 +284,19 @@ const IconLightbulb = () => (
     <path d="M8 3a3.5 3.5 0 00-2.5 5.9v.6c0 .3.2.5.5.5h4c.3 0 .5-.2.5-.5v-.6A3.5 3.5 0 008 3z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
+const IconTruck = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0">
+    <path d="M1 4h6v8H1V4zM7 6h2l3 3v3H7V6zM10 9h2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="4" cy="12" r="1" stroke="currentColor" strokeWidth="1.2" />
+    <circle cx="12" cy="12" r="1" stroke="currentColor" strokeWidth="1.2" />
+  </svg>
+)
+const IconLightbulb = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0">
+    <path d="M6 14h4M8 12v-1M5.5 6.5a3 3 0 015 0c0 .8-.3 1.5-.7 2.1L8 9.5V11M8 2v1M3 5l.7.7M12.3 5.7L13 5M4 9H3M13 9h-1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    <path d="M8 3a3.5 3.5 0 00-2.5 5.9v.6c0 .3.2.5.5.5h4c.3 0 .5-.2.5-.5v-.6A3.5 3.5 0 008 3z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
 const IconChevronRight = () => (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
     <path d="M7 5l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -540,6 +553,7 @@ function OptimiserPage() {
   const hoverLeaveTimeoutRef = useRef(null)
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
   const toggleScheduleDay = (day) => setScheduleDrawerDays((prev) => ({ ...prev, [day]: !prev[day] }))
+  const toggleScheduleDay = (day) => setScheduleDrawerDays((prev) => ({ ...prev, [day]: !prev[day] }))
   const typeFilters = [
     { id: 'all', label: 'All', icon: null },
     { id: 'replenishment', label: 'Replenishment', icon: 'replenishment' },
@@ -580,15 +594,31 @@ function OptimiserPage() {
     const first = new Date(y, m, 1)
     const last = new Date(y, m + 1, 0)
     const start = getMonday(first)
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  const getMonday = (d) => {
+    const x = new Date(d)
+    x.setDate(d.getDate() - ((d.getDay() + 6) % 7))
+    return x
+  }
+  const monthGrid = (() => {
+    const y = viewDate.getFullYear()
+    const m = viewDate.getMonth()
+    const first = new Date(y, m, 1)
+    const last = new Date(y, m + 1, 0)
+    const start = getMonday(first)
     const weeks = []
+    let d = new Date(start)
+    while (weeks.length < 6) {
     let d = new Date(start)
     while (weeks.length < 6) {
       const row = []
       for (let i = 0; i < 7; i++) {
         row.push(d.getMonth() === m ? d.getDate() : null)
+        row.push(d.getMonth() === m ? d.getDate() : null)
         d.setDate(d.getDate() + 1)
       }
       weeks.push(row)
+      if (d > last) break
       if (d > last) break
     }
     return weeks
@@ -891,8 +921,11 @@ function OptimiserPage() {
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4 h-7">
             <button type="button" onClick={goPrev} className="rounded size-7 flex items-center justify-center text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label={activeViewOption === 'week' ? 'Previous week' : 'Previous month'}>
+            <button type="button" onClick={goPrev} className="rounded size-7 flex items-center justify-center text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label={activeViewOption === 'week' ? 'Previous week' : 'Previous month'}>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>
+            <h2 className="text-[20px] font-semibold text-[#0a0a0a] tracking-tight">{viewTitle}</h2>
+            <button type="button" onClick={goNext} className="rounded size-7 flex items-center justify-center text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label={activeViewOption === 'week' ? 'Next week' : 'Next month'}>
             <h2 className="text-[20px] font-semibold text-[#0a0a0a] tracking-tight">{viewTitle}</h2>
             <button type="button" onClick={goNext} className="rounded size-7 flex items-center justify-center text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label={activeViewOption === 'week' ? 'Next week' : 'Next month'}>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 4l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
