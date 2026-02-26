@@ -464,30 +464,30 @@ function ScopePage() {
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1000px] text-[14px]">
-            <thead>
-              <tr className="border-b border-[#e5e7eb] bg-[#F8F8F8]">
-                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#F8F8F8]">Product details</th>
-                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#F8F8F8]">Transfers</th>
-                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#F8F8F8]">Sales</th>
-                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#F8F8F8]">Forecast</th>
-                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#F8F8F8]">Revenue increase</th>
-                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#F8F8F8]">Stockouts</th>
-                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#F8F8F8]">Locations</th>
-                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#F8F8F8]">Overstocks</th>
-                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#F8F8F8]">Understocks</th>
-                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#F8F8F8]">Dept</th>
+            <thead className="bg-[#f8f8f8]">
+              <tr className="border-b border-[#e5e7eb] bg-[#f8f8f8]">
+                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#f8f8f8]">Product details</th>
+                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#f8f8f8]">Transfers</th>
+                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#f8f8f8]">Sales</th>
+                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#f8f8f8]">Forecast</th>
+                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#f8f8f8]">Revenue increase</th>
+                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#f8f8f8]">Stockouts</th>
+                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#f8f8f8]">Locations</th>
+                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#f8f8f8]">Overstocks</th>
+                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#f8f8f8]">Understocks</th>
+                <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] bg-[#f8f8f8]">Dept</th>
               </tr>
-              <tr className="border-b border-[#e5e7eb] bg-[#F8F8F8]">
-                <th className="text-left py-2 px-4 bg-[#F8F8F8]" />
-                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#F8F8F8]">3,220 units · 113 trips</th>
-                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#F8F8F8]">991 L7D · 5,468 L30D</th>
-                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#F8F8F8]">1077.84</th>
-                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#F8F8F8]">€661.8K</th>
-                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#F8F8F8]">38,598 → 37,855</th>
-                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#F8F8F8]">61 → 61</th>
-                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#F8F8F8]">5,566 → 2,930</th>
-                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#F8F8F8]">4,846 → 1,672</th>
-                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#F8F8F8]">0.6</th>
+              <tr className="border-b border-[#e5e7eb] bg-[#f8f8f8]">
+                <th className="text-left py-2 px-4 bg-[#f8f8f8]" />
+                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#f8f8f8]">3,220 units · 113 trips</th>
+                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#f8f8f8]">991 L7D · 5,468 L30D</th>
+                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#f8f8f8]">1077.84</th>
+                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#f8f8f8]">€661.8K</th>
+                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#f8f8f8]">38,598 → 37,855</th>
+                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#f8f8f8]">61 → 61</th>
+                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#f8f8f8]">5,566 → 2,930</th>
+                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#f8f8f8]">4,846 → 1,672</th>
+                <th className="text-left py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#f8f8f8]">0.6</th>
               </tr>
             </thead>
             <tbody>
@@ -825,7 +825,7 @@ function OptimiserPage({ onAddJob }) {
           <div className="flex items-center gap-2">
             <IconCalendarSidebar className="text-[#22272f] size-6 shrink-0" />
             <div>
-              <p className="text-[16px] font-medium text-[#0a0a0a] leading-tight">Optimiser schedule</p>
+              <p className="text-[16px] font-medium text-[#0a0a0a] leading-tight">Optimiser Schedule & jobs</p>
               <p className="text-[14px] font-normal text-[#4b535c]">Perform all job and schedule actions for all your upcoming inventory</p>
             </div>
           </div>
