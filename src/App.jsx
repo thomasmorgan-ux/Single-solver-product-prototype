@@ -1,4 +1,34 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, Component } from 'react'
+
+class ViewErrorBoundary extends Component {
+  state = { hasError: false, error: null }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error }
+  }
+  componentDidCatch(error, info) {
+    console.error('View error:', error, info)
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-8 max-w-xl">
+          <div className="rounded-lg border border-red-200 bg-red-50 p-6">
+            <h2 className="text-lg font-medium text-red-800 mb-2">Something went wrong</h2>
+            <p className="text-sm text-red-700 mb-4">{this.state.error?.message ?? 'Unknown error'}</p>
+            <button
+              type="button"
+              onClick={() => this.setState({ hasError: false, error: null })}
+              className="px-4 py-2 rounded bg-red-600 text-white text-sm font-medium hover:bg-red-700"
+            >
+              Try again
+            </button>
+          </div>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 // Simple inline icons (no external assets)
 const IconChevronDown = () => (
@@ -1467,11 +1497,23 @@ function OptimiserPage({ onAddJob }) {
   )
 }
 
+function InsightsPage() {
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="bg-white border border-[#e5e7eb] rounded-[14px] p-6">
+        <h2 className="text-lg font-medium text-[#0a0a0a] mb-2">Insights</h2>
+        <p className="text-sm text-[#4b535c]">Insights and analytics will appear here.</p>
+      </div>
+    </div>
+  )
+}
+
 export default function App() {
   const [assignee, setAssignee] = useState({})
   const [optimiserOpen, setOptimiserOpen] = useState(false)
   const [insightsOpen, setInsightsOpen] = useState(false)
   const [activeView, setActiveView] = useState('control-panel')
+  const [optimiserSubView, setOptimiserSubView] = useState('schedule')
 
   return (
     <div className="h-screen bg-[#f9fafb] flex text-[#0a0a0a] overflow-hidden">
@@ -1496,7 +1538,6 @@ export default function App() {
               onClick={() => { setActiveView('insights'); setInsightsOpen((o) => !o); }}
               className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] shrink-0 ${activeView === 'insights' ? 'bg-[#0267ff] text-white font-medium' : 'font-normal text-white hover:bg-white/5'}`}
               aria-expanded={insightsOpen}
-              aria-haspopup="true"
               data-name="Sidebar element"
               data-node-id="14404:7252"
             >
@@ -1530,7 +1571,6 @@ export default function App() {
               onClick={() => { setActiveView('optimiser'); setOptimiserSubView('schedule'); setOptimiserOpen((o) => !o); }}
               className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] shrink-0 ${activeView === 'optimiser' ? 'bg-[#0267ff] text-white font-medium' : 'font-normal text-white hover:bg-white/5'}`}
               aria-expanded={optimiserOpen}
-              aria-haspopup="true"
               data-name="Sidebar element"
               data-node-id="14404:7825"
             >
@@ -1622,14 +1662,15 @@ export default function App() {
       <div className="flex flex-col flex-1 min-w-0 min-h-0 w-full overflow-hidden">
         <div className="shrink-0">
           <TopBar
-            title={activeView === 'optimiser' && optimiserSubView === 'scope' ? 'Scope' : activeView === 'optimiser' ? 'Optimiser' : 'Overview'}
-            subtitle={activeView === 'optimiser' && optimiserSubView === 'scope' ? null : activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"}
+            title={activeView === 'optimiser' && optimiserSubView === 'scope' ? 'Scope' : activeView === 'optimiser' ? 'Optimiser' : activeView === 'insights' ? 'Insights' : 'Overview'}
+            subtitle={activeView === 'optimiser' && optimiserSubView === 'scope' ? null : activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : activeView === 'insights' ? 'Analytics and insights across your inventory.' : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"}
             onBack={activeView === 'optimiser' && optimiserSubView === 'scope' ? () => setOptimiserSubView('schedule') : undefined}
           />
         </div>
 
         {/* Main: scrollable content panel */}
         <main className="flex-1 min-h-0 min-w-0 w-full pl-8 pr-8 pb-12 overflow-y-auto overflow-x-hidden">
+        <ViewErrorBoundary key={activeView}>
         {activeView === 'optimiser' && optimiserSubView === 'scope' ? (
           <ScopePage />
         ) : activeView === 'optimiser' ? (
@@ -1781,10 +1822,12 @@ export default function App() {
               <button type="button" className="text-sm text-[#155dfc] flex items-center gap-1">See all <IconArrowRight /></button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {VALUE_CARDS.map((card, i) => (
+              {VALUE_CARDS.map((card, i) => {
+                const Icon = card.icon
+                return (
                 <div key={i} className={`rounded-lg border border-[#e5e7eb] p-6 relative overflow-hidden ${card.bg}`}>
                   <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-[#0a0a0a] ${card.iconBg}`}>
-                    <card.icon />
+                    <Icon />
                   </div>
                   <div className="mt-4 flex items-baseline gap-2">
                     <span className="text-3xl font-normal tracking-tight text-[#0a0a0a]">{card.value}</span>
@@ -1793,12 +1836,14 @@ export default function App() {
                   <h3 className="text-sm font-medium text-[#364153] mt-1">{card.title}</h3>
                   <p className="text-sm text-[#4a5565] mt-2">{card.body}</p>
                 </div>
-              ))}
+                )
+              })}
             </div>
           </section>
         </div>
         </>
         )}
+        </ViewErrorBoundary>
         </main>
       </div>
     </div>
