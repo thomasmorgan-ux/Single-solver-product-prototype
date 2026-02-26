@@ -156,6 +156,87 @@ const IconDocument = () => (
     <path d="M6 10h8M6 13h8M6 16h5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
   </svg>
 )
+const TRIPS_GRAPH_NODES = [
+  { x: 85, y: 55 }, { x: 118, y: 48 }, { x: 145, y: 62 }, { x: 95, y: 92 }, { x: 125, y: 95 }, { x: 155, y: 88 },
+  { x: 175, y: 55 }, { x: 205, y: 70 }, { x: 75, y: 125 }, { x: 105, y: 130 }, { x: 135, y: 122 },
+  { x: 505, y: 50 }, { x: 535, y: 58 }, { x: 565, y: 48 }, { x: 515, y: 88 }, { x: 545, y: 92 }, { x: 575, y: 85 },
+  { x: 525, y: 125 }, { x: 555, y: 118 }, { x: 518, y: 155 }, { x: 548, y: 162 }, { x: 578, y: 150 },
+  { x: 515, y: 200 }, { x: 542, y: 195 }, { x: 572, y: 208 }, { x: 530, y: 235 }, { x: 560, y: 242 },
+  { x: 510, y: 275 }, { x: 538, y: 268 }, { x: 568, y: 280 }, { x: 520, y: 305 }, { x: 550, y: 298 },
+  { x: 95, y: 255 }, { x: 125, y: 262 }, { x: 155, y: 248 }, { x: 85, y: 288 }, { x: 118, y: 295 }, { x: 145, y: 282 },
+  { x: 295, y: 280 }, { x: 325, y: 272 }, { x: 355, y: 285 }, { x: 310, y: 305 }, { x: 340, y: 298 }, { x: 370, y: 312 },
+  { x: 525, y: 115 }, { x: 555, y: 125 }, { x: 530, y: 195 }, { x: 560, y: 200 },
+  { x: 320, y: 180 },
+]
+const TRIPS_GRAPH_NODE_COLORS = [
+  ...Array(11).fill('#7dd3fc'),
+  ...Array(9).fill('#2dd4bf'),
+  ...Array(7).fill('#c084fc'),
+  ...Array(5).fill('#c084fc'),
+  ...Array(6).fill('#84cc16'),
+  ...Array(6).fill('#1e3a8a'),
+  ...Array(4).fill('#84cc16'),
+  '#84cc16',
+]
+const TRIPS_GRAPH_PINK_INDICES = [2, 5, 14, 22, 35, 39]
+
+function TripsNetworkGraph() {
+  const w = 640
+  const h = 360
+  const centerNode = TRIPS_GRAPH_NODES[TRIPS_GRAPH_NODES.length - 1]
+  return (
+    <div className="relative rounded-xl overflow-hidden bg-[#0a0a0a]" style={{ minHeight: 360 }}>
+      <svg viewBox={`0 0 ${w} ${h}`} className="w-full" preserveAspectRatio="xMidYMid meet" style={{ height: 360 }}>
+        {[[0, 1], [1, 2], [3, 4], [4, 5], [6, 7], [8, 9], [11, 12], [12, 13], [16, 17], [19, 20], [21, 22], [24, 25], [27, 28], [30, 31], [32, 33], [36, 37], [38, 39]].map(([a, b]) => (
+          <line key={`e-${a}-${b}`} x1={TRIPS_GRAPH_NODES[a].x} y1={TRIPS_GRAPH_NODES[a].y} x2={TRIPS_GRAPH_NODES[b].x} y2={TRIPS_GRAPH_NODES[b].y} stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+        ))}
+        {TRIPS_GRAPH_NODES.slice(0, -1).map((n, i) =>
+          TRIPS_GRAPH_PINK_INDICES.includes(i) ? null : (
+            <line key={`g-${i}`} x1={n.x} y1={n.y} x2={centerNode.x} y2={centerNode.y} stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
+          )
+        )}
+        {TRIPS_GRAPH_PINK_INDICES.map((i) => (
+          <line key={`p-${i}`} x1={TRIPS_GRAPH_NODES[i].x} y1={TRIPS_GRAPH_NODES[i].y} x2={centerNode.x} y2={centerNode.y} stroke="#ec4899" strokeWidth="2.5" />
+        ))}
+        {TRIPS_GRAPH_NODES.map((n, i) => (
+          <circle key={i} cx={n.x} cy={n.y} r={i === TRIPS_GRAPH_NODES.length - 1 ? 8 : 3} fill={TRIPS_GRAPH_NODE_COLORS[i]} />
+        ))}
+      </svg>
+      <div className="absolute left-3 top-3 bg-white rounded-lg shadow-sm px-3 py-2 min-w-[140px]">
+        <p className="text-sm font-medium text-[#0a0a0a] mb-2">Countries</p>
+        <ul className="space-y-1 text-sm text-[#0a0a0a]">
+          {TRIPS_COUNTRIES.map((c) => (
+            <li key={c.name} className="flex items-center gap-2">
+              <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${c.filled ? '' : 'border border-current'}`} style={{ backgroundColor: c.filled ? c.color : 'transparent', borderColor: c.color }} />
+              {c.name}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-[#1f2937] rounded-lg px-4 py-3 text-white text-sm">
+        <p>From: 444 DE BIJENKORF AMSTERDAM FEMME</p>
+        <p>To: 565 DE BIJENKORF MAASTRICHT</p>
+        <p>Value transferred: 63.35K</p>
+      </div>
+      <div className="absolute bottom-3 left-3 flex gap-2">
+        {['M15 19l-7-7 7-7', 'M5 15l7-7 7 7', 'M19 9l-7 7-7-7'].map((d, i) => (
+          <button key={i} type="button" className="w-8 h-8 rounded-full bg-[#22c55e] text-white flex items-center justify-center hover:bg-[#16a34a]">
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
+          </button>
+        ))}
+      </div>
+      <div className="absolute bottom-3 right-3 flex gap-2">
+        <button type="button" className="w-8 h-8 rounded-full bg-[#22c55e] text-white flex items-center justify-center hover:bg-[#16a34a]">
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14" /></svg>
+        </button>
+        <button type="button" className="w-8 h-8 rounded-full bg-[#22c55e] text-white flex items-center justify-center hover:bg-[#16a34a]">
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /></svg>
+        </button>
+      </div>
+    </div>
+  )
+}
+
 const IconEllipsisVertical = () => (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
     <circle cx="10" cy="4" r="1.5" fill="currentColor" />
@@ -442,7 +523,7 @@ function EventCard({ route, units, time, category, priority }) {
 }
 
 /* Insights page – Analytics dashboard */
-const INSIGHTS_TABS = ['Retail', 'Best sellers', 'Business KPIs', 'Assortment KPIs', 'Data exploration']
+const INSIGHTS_TABS = ['Retail', 'Buying', 'Data health', 'Best sellers', 'Business KPIs', 'Assortment KPIs', 'Data exploration']
 const INSIGHTS_FILTER_CHIPS = [
   'Customer new demo', 'Date (Select)', 'Season (Select)', 'Department (Select)', 'Sub department (Select)',
   'Gender (Select)', 'Collection type (Select)', 'Brand (Select)', 'Color (Select)', 'Product ID (Select)',
@@ -451,6 +532,160 @@ const INSIGHTS_FILTER_CHIPS = [
 ]
 const INSIGHTS_ACTIVE_CHIPS = [
   'Metric Volume', 'Retail attribute Department', 'Variance Last year', 'View period Weekly', 'Location attributes Location Type', 'Product attributes Department',
+]
+const BUYING_FILTER_CHIPS_ROW1 = [
+  'Customer new demo',
+  'Min date Last 4 Months (01/10/2025 < 01/02/2026)',
+  'Department (Select)',
+  'Sub department (Select)',
+  'Gender (Select)',
+  'Brand (Select)',
+  'Style (Select)',
+  'Event (Select)',
+  'Season (Select)',
+  'Product ID (Select)',
+]
+const BUYING_FILTER_CHIPS_ROW2 = [
+  'Region (Select)',
+  'Country (Select)',
+  'Location (Select)',
+  'Location type (Select)',
+  'Location attributes Region',
+  'Product attributes Department',
+]
+const BUYING_REPORT_COLUMNS = ['Location attribute', 'Product attribute', 'Products', 'Locations', 'Sales units', 'Sales value', 'Available qty EOP', 'Available value EOP', 'Sell Through', 'Assorted products', 'Mix sales', 'Mix assortment', 'Avg Price (Sell out)']
+const DATA_HEALTH_TABS = ['File validations', 'Ingested data validations', 'Dimension attributes', 'Distribution flow', 'Inventory reliability']
+const DATA_HEALTH_FILTERS = ['Customer new demo', 'File dimensional / transaction (Select)', 'File data type (Select)', 'File received at (Select)']
+const DATA_HEALTH_KPI_CARDS = [
+  { title: 'File processed - completed', desc: '% of files that were successfully processed out of total files...', date: '24/02/2026', value: '100.00%', comparison: 'vs 17/02/2026 (0)', chartColor: '#16a34a' },
+  { title: 'Failed validations', desc: '% of file validation runs that failed checks', date: '24/02/2026', value: '50.00%', comparison: 'vs 17/02/2026 (0)', chartColor: '#ea580c' },
+  { title: 'Daily file upload', desc: 'Number of files uploaded', date: '24/02/2026', value: '4', comparison: '0% vs 17/02/2026 (4)', chartColor: '#7c3aed' },
+  { title: 'Daily failed runs % vs monthly average', desc: "Compares the day's failed validation percentage with the monthly average", date: '24/02/2026', value: '33.33%', comparison: '↑133.33% vs 17/02/2026 (-100.00%)', chartColor: '#ea580c' },
+]
+const FILE_VALIDATIONS_COLUMNS = ['Customer', 'Data type', 'Received at', 'Processing status', 'Failed validations', 'Row count', 'File size', 'Upload ID', 'Distinct dates', 'File name', 'Processing ended at', 'Error message']
+const FILE_VALIDATIONS_ROWS = [
+  { customer: 'Customer A', dataType: 'Sales', receivedAt: '16/12/2025 10:00', status: 'completed', failed: 0, rowCount: 12500, fileSize: '28.4M', uploadId: 'UP-001', distinctDates: 5, fileName: 'sales_dec.xlsx', endedAt: '16/12/2025 10:05', error: '' },
+  { customer: 'Customer B', dataType: 'Inventory', receivedAt: '16/12/2025 11:30', status: 'failed', failed: 3, rowCount: 8200, fileSize: '15.2M', uploadId: 'UP-002', distinctDates: 2, fileName: 'inv_1216.csv', endedAt: '16/12/2025 11:35', error: 'Validation rule 2' },
+  { customer: 'Customer A', dataType: 'Returns', receivedAt: '16/12/2025 12:00', status: 'completed', failed: 0, rowCount: 450, fileSize: '1.1M', uploadId: 'UP-003', distinctDates: 1, fileName: 'returns.xlsx', endedAt: '16/12/2025 12:02', error: '' },
+  { customer: 'Customer C', dataType: 'Sales', receivedAt: '16/12/2025 14:15', status: 'completed', failed: 0, rowCount: 18200, fileSize: '42.8M', uploadId: 'UP-004', distinctDates: 8, fileName: 'sales_data.csv', endedAt: '16/12/2025 14:22', error: '' },
+  { customer: 'Customer B', dataType: 'Transactions', receivedAt: '16/12/2025 15:00', status: 'failed', failed: 1, rowCount: 3200, fileSize: '8.5M', uploadId: 'UP-005', distinctDates: 3, fileName: 'txns_1216.xlsx', endedAt: '16/12/2025 15:04', error: 'Field format' },
+]
+const FILE_VALIDATIONS_SUMMARY = [
+  { label: 'UNIQUE COUNT', value: '1' },
+  { label: 'UNIQUE COUNT', value: '10' },
+  { label: 'TIME PERIOD', value: '16/12/2025...' },
+  { label: 'UNIQUE COUNT', value: '2' },
+  { label: 'TOTAL', value: '55' },
+  { label: 'TOTAL', value: '139.58M' },
+  { label: 'UNIQUE COUNT', value: '32' },
+  { label: 'UNIQUE COUNT', value: '50' },
+  { label: 'UNIQUE COUNT', value: '11' },
+  { label: 'UNIQUE COUNT', value: '37' },
+  { label: 'TIME PERIOD', value: '16/12/2025 12:...' },
+]
+const FAIL_VALIDATION_COLUMNS = ['Customer', 'Data type', 'Run datetime', 'Fields', 'Rule', 'Status', 'Failures', 'Run ID', 'Failures %', 'Row count']
+const FAIL_VALIDATION_ROWS = [
+  { customer: 'New Demo', dataType: 'inventory', runDatetime: '24/02/2026 21:41:37', fields: 'on_hand_qty', rule: 'Field is at least 0', status: 'fail', failures: '5.44K', runId: '1098113', failuresPct: '1.75%', rowCount: '311.28K' },
+  { customer: 'New Demo', dataType: 'warehouse', runDatetime: '24/02/2026 21:38:12', fields: 'on_hand_value', rule: 'Data volume must be within expected range', status: 'fail', failures: '1', runId: '1098096', failuresPct: '0.00%', rowCount: '21.18K' },
+  { customer: 'New Demo', dataType: 'product', runDatetime: '24/02/2026 20:15:22', fields: 'in_warehouse_value', rule: 'Field cannot be null', status: 'fail', failures: '105.25K', runId: '965362', failuresPct: '8.04%', rowCount: '5.8M' },
+  { customer: 'New Demo', dataType: 'inventory', runDatetime: '24/02/2026 19:42:08', fields: '(Empty)', rule: 'Field is at least 0', status: 'fail', failures: '144', runId: '1098021', failuresPct: '15.06%', rowCount: '376.05K' },
+  { customer: 'New Demo', dataType: 'product', runDatetime: '24/02/2026 18:30:15', fields: 'in_warehouse_qty', rule: 'Field cannot be null', status: 'fail', failures: '105', runId: '1097998', failuresPct: '10.88%', rowCount: '956' },
+  { customer: 'New Demo', dataType: 'warehouse', runDatetime: '24/02/2026 17:22:44', fields: 'color_id', rule: 'Field is at least 0', status: 'fail', failures: '2.12K', runId: '1097850', failuresPct: '3.21%', rowCount: '66.02K' },
+  { customer: 'New Demo', dataType: 'product', runDatetime: '24/02/2026 16:10:33', fields: 'material_desc', rule: 'Data volume must be within expected range', status: 'fail', failures: '45', runId: '965340', failuresPct: '0.12%', rowCount: '38.5K' },
+]
+
+const FILE_VALIDATIONS_SAMPLE_COLUMNS = ['Customer', 'Data type', 'Fields', 'Id', 'color_desc', 'color_id', 'Value', 'date']
+const FILE_VALIDATIONS_SAMPLE_ROWS = [
+  { id: 1, colorDesc: '', colorId: '', value: '', date: '2025-08-28' },
+  { id: 2, colorDesc: '', colorId: '', value: '', date: '' },
+  { id: 3, colorDesc: '', colorId: '', value: '', date: '' },
+  { id: 4, colorDesc: '', colorId: '', value: '', date: '2025-11-04' },
+  { id: 5, colorDesc: '', colorId: '', value: '', date: '' },
+  { id: 6, colorDesc: '', colorId: '', value: '', date: '2025-08-08' },
+  { id: 7, colorDesc: '', colorId: '', value: '', date: '' },
+  { id: 8, colorDesc: '', colorId: '', value: '', date: '2025-07-15' },
+  { id: 9, colorDesc: '', colorId: '', value: '', date: '' },
+  { id: 10, colorDesc: '', colorId: '', value: '', date: '' },
+  { id: 11, colorDesc: '', colorId: '', value: '', date: '' },
+]
+
+const OPTIMISER_STATUS_TABS = ['Trips', 'Locations', 'Products', 'Inventory', 'Logic', 'DC to DC', 'Network', 'All runs performance']
+const OPTIMISER_STATUS_FILTERS = [
+  'Customer (Select)', 'Run name (Select)', 'Location (Select)', 'Labels (Select)', 'Department (Select)', 'Sub department (Select)',
+  'Product ID (Select)', 'Sku ID (Select)', 'Gender (Select)', 'Brand (Select)', 'Season (Select)', 'Event (Select)',
+  'From location type (Select)', 'From location (Select)', 'Warehouse availability (Select)', 'From location region (Select)', 'To location region (Select)',
+  'To location country (Select)', 'To location type (Select)', 'To location (Select)', 'Trip type (Select)', 'Trip type detailed (Select)',
+]
+const OPTIMISER_STATUS_ACTIVE_CHIPS = ['Trip parameter value transferred', 'From location attribute Location', 'To location attribute Location']
+const TRIPS_OVERVIEW_KPIS = [
+  { value: '1.15B', label: 'Value transferred' },
+  { value: '4.78M', label: 'Units transferred' },
+  { value: '5.7K', label: 'Trips required' },
+  { value: '9.72K', label: 'Products' },
+  { value: '19.94K', label: 'SKUs' },
+  { value: '279.82K', label: 'Costs' },
+]
+const ESTIMATED_IMPACT_KPIS = [
+  { value: '675.31M', label: 'Revenue increase' },
+  { value: '3.44M', label: 'Stockouts addressed' },
+  { value: '2.46%', label: '% Stockouts addressed' },
+  { value: '1.46K', label: 'Consolidated products' },
+  { value: '5.31K', label: 'Spread products' },
+  { value: '87.57K', label: 'Additional SKU location reach...' },
+]
+const TRIP_TYPE_DONUT_DATA = [
+  { label: 'WH to Store', value: 930.51, unit: 'M', pct: 81.02, color: '#0d9488' },
+  { label: 'Store to Store', value: 181.53, unit: 'M', pct: 15.81, color: '#eab308' },
+  { label: 'WH to WH', value: 36.5, unit: 'M', pct: 3.18, color: '#2563eb' },
+]
+
+const TRIPS_PERFORMANCE_VALUE_COLS = ['Units transferred', 'Value transferred', 'Revenue Increase', 'Costs', 'Stockouts addressed', 'Consolidated products', 'Spread products', 'Products', 'SKUs']
+const TRIPS_PERFORMANCE_ROWS = [
+  { level: 'total', tripType: 'Grand Total', fromLocation: '', toLocation: '', units: '4.78M', value: '1.15B', revenue: '675.31M', costs: '279.82K', stockouts: '3.44M', consolidated: '1.46K', spread: '5.31K', products: '9.72K', skus: '19.94K' },
+  { level: 'group', tripType: 'Replenishment...', fromLocation: '', toLocation: '', units: '4.17M', value: '967.01M', revenue: '562.95M', costs: '243.12K', stockouts: '2.98M', consolidated: '1.21K', spread: '4.65K', products: '8.42K', skus: '17.28K' },
+  { level: 'subgroup', tripType: '', fromLocation: 'DLO WAREHOUSE EUROPE LOUVRES total', toLocation: '', units: '2.71M', value: '895.22M', revenue: '502.66M', costs: '188.45K', stockouts: '2.12M', consolidated: '892', spread: '3.21K', products: '6.18K', skus: '12.45K' },
+  { level: 'detail', tripType: '', fromLocation: '', toLocation: '462 ZV INTERNET', units: '1.4M', value: '411.66M', revenue: '368.75M', costs: '10', stockouts: '1.4M', consolidated: '300', spread: '1.93K', products: '2.02K', skus: '4.12K' },
+  { level: 'detail', tripType: '', fromLocation: '', toLocation: '677 EL CORTE INGLES.COM', units: '892K', value: '268.42M', revenue: '245.18M', costs: '10', stockouts: '892K', consolidated: '185', spread: '1.24K', products: '1.38K', skus: '2.85K' },
+  { level: 'detail', tripType: '', fromLocation: '', toLocation: '395 FARFETCH.COM', units: '456K', value: '142.18M', revenue: '128.45M', costs: '10', stockouts: '456K', consolidated: '125', spread: '612', products: '698', skus: '1.42K' },
+  { level: 'detail', tripType: '', fromLocation: '', toLocation: '531 GL COM MP', units: '312K', value: '95.22M', revenue: '82.15M', costs: '10', stockouts: '312K', consolidated: '98', spread: '428', products: '512', skus: '1.02K' },
+  { level: 'detail', tripType: '', fromLocation: '', toLocation: '563 LYON HERRIOT', units: '218K', value: '68.45M', revenue: '58.32M', costs: '10', stockouts: '218K', consolidated: '72', spread: '298', products: '385', skus: '798' },
+  { level: 'detail', tripType: '', fromLocation: '', toLocation: '310 BORDEAUX VOLTAIRE', units: '185K', value: '55.82M', revenue: '48.12M', costs: '10', stockouts: '185K', consolidated: '58', spread: '245', products: '312', skus: '648' },
+  { level: 'detail', tripType: '', fromLocation: '', toLocation: '238 LAUSANNE PAIX', units: '142K', value: '42.18M', revenue: '36.85M', costs: '10', stockouts: '142K', consolidated: '45', spread: '188', products: '245', skus: '512' },
+  { level: 'detail', tripType: '', fromLocation: '', toLocation: '880 BARCELONE PASEO', units: '118K', value: '35.45M', revenue: '30.22M', costs: '10', stockouts: '118K', consolidated: '38', spread: '156', products: '198', skus: '428' },
+  { level: 'detail', tripType: '', fromLocation: '', toLocation: '395 ZURICH STORCHENGASSEN', units: '95K', value: '28.12M', revenue: '24.08M', costs: '10', stockouts: '95K', consolidated: '32', spread: '128', products: '165', skus: '352' },
+  { level: 'detail', tripType: '', fromLocation: '', toLocation: '330 PARIS CAMBON', units: '78K', value: '22.85M', revenue: '19.42M', costs: '10', stockouts: '78K', consolidated: '28', spread: '98', products: '128', skus: '285' },
+]
+
+const TRIPS_COUNTRIES = [
+  { name: 'Belgium', color: '#ef4444', filled: true },
+  { name: 'Denmark', color: '#2563eb', filled: true },
+  { name: 'France', color: '#22c55e', filled: true },
+  { name: 'Germany', color: '#a855f7', filled: true },
+  { name: 'Greece', color: '#f97316', filled: false },
+  { name: 'Ireland', color: '#22c55e', filled: true },
+  { name: 'Italy', color: '#2563eb', filled: false },
+  { name: 'Luxembourg', color: '#a855f7', filled: false },
+  { name: 'Monaco', color: '#f97316', filled: false },
+  { name: 'Norway', color: '#ef4444', filled: false },
+  { name: 'Portugal', color: '#ef4444', filled: true },
+  { name: 'Spain', color: '#2563eb', filled: false },
+  { name: 'Sweden', color: '#22c55e', filled: false },
+  { name: 'Switzerland', color: '#f97316', filled: false },
+  { name: 'The Netherlands', color: '#84cc16', filled: false },
+  { name: 'United Kingdom', color: '#22c55e', filled: true },
+]
+
+const BUYING_REPORT_ROWS = [
+  { loc: 'Europe Apparel', prod: 'Fragrance & Home', products: 428, locations: 42, salesUnits: '28.12K', salesValue: '0', availQty: '10.42K', availVal: '32.18M', sellThrough: '73%', assorted: 312, mixSales: '72.8%', mixAssort: 4.2, avgPrice: '0' },
+  { loc: 'Europe Apparel', prod: 'Apparel', products: 412, locations: 42, salesUnits: '32.48K', salesValue: '0', availQty: '12.18K', availVal: '38.42M', sellThrough: '71%', assorted: 298, mixSales: '75.2%', mixAssort: 4.1, avgPrice: '0' },
+  { loc: 'Europe Apparel', prod: 'Activewear', products: 356, locations: 38, salesUnits: '24.82K', salesValue: '0', availQty: '8.92K', availVal: '28.14M', sellThrough: '74%', assorted: 265, mixSales: '68.4%', mixAssort: 3.8, avgPrice: '0' },
+  { loc: 'Europe Apparel', prod: 'Jewelry', products: 218, locations: 40, salesUnits: '14.22K', salesValue: '0', availQty: '5.42K', availVal: '16.82M', sellThrough: '54%', assorted: 172, mixSales: '70.1%', mixAssort: 4.0, avgPrice: '0' },
+  { loc: 'Europe Handbags', prod: 'Handbags', products: 198, locations: 22, salesUnits: '8.42K', salesValue: '0', availQty: '3.18K', availVal: '12.48M', sellThrough: '71%', assorted: 145, mixSales: '71.2%', mixAssort: 4.5, avgPrice: '0' },
+  { loc: 'Europe Handbags', prod: 'Watches', products: 124, locations: 18, salesUnits: '4.82K', salesValue: '0', availQty: '2.12K', availVal: '8.42M', sellThrough: '69%', assorted: 92, mixSales: '68.8%', mixAssort: 4.2, avgPrice: '0' },
+  { loc: 'North America Apparel', prod: 'Fragrance & Home', products: 385, locations: 36, salesUnits: '22.18K', salesValue: '0', availQty: '9.42K', availVal: '29.18M', sellThrough: '70%', assorted: 278, mixSales: '71.5%', mixAssort: 4.0, avgPrice: '0' },
+  { loc: 'North America Apparel', prod: 'Jewelry', products: 212, locations: 28, salesUnits: '12.48K', salesValue: '0', availQty: '4.82K', availVal: '15.42M', sellThrough: '72%', assorted: 168, mixSales: '69.2%', mixAssort: 4.1, avgPrice: '0' },
+  { loc: 'Asia Handbags', prod: 'Handbags', products: 156, locations: 18, salesUnits: '6.42K', salesValue: '0', availQty: '2.82K', availVal: '11.28M', sellThrough: '100%', assorted: 118, mixSales: '75.6%', mixAssort: 4.4, avgPrice: '0' },
+  { loc: 'Asia Watches', prod: 'Watches', products: 142, locations: 16, salesUnits: '5.82K', salesValue: '0', availQty: '2.42K', availVal: '9.68M', sellThrough: '100%', assorted: 108, mixSales: '72.4%', mixAssort: 4.3, avgPrice: '0' },
 ]
 const SALES_PERFORMANCE_ROWS = [
   { dept: 'Fragrance & Home', wtd: 89, wtdLy: -62, wtdLyPct: -41.07, mtd: '1.98K', mtdLy: -198, mtdLyPct: -9.09, ytd: '4.12K', ytdLy: -402, ytdLyPct: -8.89 },
@@ -579,6 +814,48 @@ const PARETO_DEPT_DATA = [
   { label: 'Watches', value: 3810 },
   { label: 'Handbags', value: 2170 },
 ]
+
+function TripTypeDonutChart({ data }) {
+  const cx = 110
+  const cy = 110
+  const r = 85
+  const ir = 55
+  let startAngle = -90
+  const segments = data.map((d) => {
+    const angle = (d.pct / 100) * 360
+    const endAngle = startAngle + angle
+    const x1 = cx + r * Math.cos((startAngle * Math.PI) / 180)
+    const y1 = cy + r * Math.sin((startAngle * Math.PI) / 180)
+    const x2 = cx + r * Math.cos((endAngle * Math.PI) / 180)
+    const y2 = cy + r * Math.sin((endAngle * Math.PI) / 180)
+    const ix1 = cx + ir * Math.cos((startAngle * Math.PI) / 180)
+    const iy1 = cy + ir * Math.sin((startAngle * Math.PI) / 180)
+    const ix2 = cx + ir * Math.cos((endAngle * Math.PI) / 180)
+    const iy2 = cy + ir * Math.sin((endAngle * Math.PI) / 180)
+    const largeArc = angle > 180 ? 1 : 0
+    const dPath = `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} L ${ix2} ${iy2} A ${ir} ${ir} 0 ${largeArc} 0 ${ix1} ${iy1} Z`
+    startAngle = endAngle
+    return { ...d, dPath }
+  })
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <svg viewBox="0 0 220 220" className="w-[180px] h-[180px] shrink-0">
+        {segments.map((s) => (
+          <path key={s.label} d={s.dPath} fill={s.color} />
+        ))}
+      </svg>
+      <ul className="space-y-1.5 text-sm shrink-0">
+        {data.map((s) => (
+          <li key={s.label} className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
+            <span className="text-[#0a0a0a]">{s.label} - {s.value}{s.unit} ({s.pct}%)</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 function ParetoChart({ title, xAxisLabel, data, hasExplore = true }) {
   const total = data.reduce((s, d) => s + d.value, 0)
   const scaleMax = 1052600
@@ -855,6 +1132,27 @@ const INSIGHTS_METRIC_CARDS = [
   { title: 'Sales YTD', date: '2026', value: '25.65K', comparison: '↓8.93%', comparisonSuffix: ' vs 2025 (28.16K)', comparisonDown: true, chartType: 'area', chartVariant: 'ytd', hasExplore: false },
 ]
 
+function DataHealthKpiChart({ color = '#155dfc', id }) {
+  const pts = '0,70 40,55 80,65 120,45 160,50 200,55 240,60'
+  const pathD = pts.split(' ').map((p, i) => (i === 0 ? `M${p}` : `L${p}`)).join(' ')
+  const areaD = `${pathD} L240,80 L0,80 Z`
+  const gradId = `dataHealthGrad-${id ?? color.replace('#', '')}`
+  return (
+    <div className="h-[80px] w-full mt-4">
+      <svg viewBox="0 0 240 80" className="w-full h-full" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+            <stop stopColor={color} stopOpacity="0.4" />
+            <stop stopColor={color} stopOpacity="0" offset="1" />
+          </linearGradient>
+        </defs>
+        <path d={areaD} fill={`url(#${gradId})`} />
+        <path d={pathD} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </div>
+  )
+}
+
 const CHART_VARIANTS = {
   daily: '0,55 40,45 80,65 120,30 160,50 200,35 240,55',
   wtd: '0,70 40,65 80,55 120,25 160,45 180,35 210,50 240,60',
@@ -905,9 +1203,15 @@ const LIVEBOARD_RECENT_VIEWERS = [
   { name: 'Adil', initial: 'A', color: 'bg-[#ea580c]' },
 ]
 
-function InsightsPage() {
-  const [activeTab, setActiveTab] = useState('Retail')
+function InsightsPage({ activeTab: activeTabProp, onTabChange }) {
+  const [internalTab, setInternalTab] = useState('Retail')
   const [liveboardModalOpen, setLiveboardModalOpen] = useState(false)
+  const [dataHealthSubTab, setDataHealthSubTab] = useState('File validations')
+  const [optimiserStatusSubTab, setOptimiserStatusSubTab] = useState('Trips')
+  const [optimiserBannerDismissed, setOptimiserBannerDismissed] = useState(false)
+  const [selectViewOpen, setSelectViewOpen] = useState(false)
+  const activeTab = activeTabProp ?? internalTab
+  const handleTabChange = onTabChange ?? setInternalTab
 
   return (
     <>
@@ -916,7 +1220,13 @@ function InsightsPage() {
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-medium text-[#0a0a0a]">Insights</h1>
+            <h1 className="text-2xl font-medium text-[#0a0a0a] flex items-center gap-2">
+              {activeTab === 'Buying' ? 'Buying' : activeTab === 'Data health' ? (
+                <>Data health<span className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center shrink-0" aria-hidden><svg className="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 6l3 3 5-6" /></svg></span></>
+              ) : activeTab === 'Optimiser status' ? (
+                <>Optimiser status - BQ<span className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center shrink-0" aria-hidden><svg className="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 6l3 3 5-6" /></svg></span></>
+              ) : 'Insights'}
+            </h1>
             <div className="flex items-center gap-2">
               <div className="relative group">
                 <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5] hover:text-[#0a0a0a]" aria-label="Liveboard details" onClick={() => setLiveboardModalOpen(true)}>
@@ -957,18 +1267,512 @@ function InsightsPage() {
             </button>
           </div>
         </div>
-        <div className="flex gap-1 border-b border-[#e5e7eb]">
-          {INSIGHTS_TABS.map((tab) => (
-            <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-colors ${activeTab === tab ? 'border-[#155dfc] text-[#155dfc]' : 'border-transparent text-[#4a5565] hover:text-[#0a0a0a]'}`}>
-              {tab}
-            </button>
-          ))}
+        <div className="flex gap-1 border-b border-[#e5e7eb] overflow-x-auto">
+          {activeTab === 'Data health' ? (
+            DATA_HEALTH_TABS.map((tab) => (
+              <button key={tab} type="button" onClick={() => setDataHealthSubTab(tab)} className={`px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-colors shrink-0 ${dataHealthSubTab === tab ? 'border-[#155dfc] text-[#155dfc]' : 'border-transparent text-[#4a5565] hover:text-[#0a0a0a]'}`}>
+                {tab}
+              </button>
+            ))
+          ) : activeTab === 'Optimiser status' ? (
+            OPTIMISER_STATUS_TABS.map((tab) => (
+              <button key={tab} type="button" onClick={() => setOptimiserStatusSubTab(tab)} className={`px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-colors shrink-0 ${optimiserStatusSubTab === tab ? 'border-[#155dfc] text-[#155dfc]' : 'border-transparent text-[#4a5565] hover:text-[#0a0a0a]'}`}>
+                {tab}
+              </button>
+            ))
+          ) : (
+            INSIGHTS_TABS.map((tab) => (
+              <button key={tab} type="button" onClick={() => handleTabChange(tab)} className={`px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-colors shrink-0 ${activeTab === tab ? 'border-[#155dfc] text-[#155dfc]' : 'border-transparent text-[#4a5565] hover:text-[#0a0a0a]'}`}>
+                {tab}
+              </button>
+            ))
+          )}
         </div>
       </div>
 
       {/* Main content: filters + cards + sidebar */}
       <div className="flex gap-6">
         <div className="flex-1 min-w-0">
+          {activeTab === 'Buying' ? (
+            <>
+              {/* Buying filters */}
+              <div className="flex flex-col gap-2 mb-6">
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" className="h-9 px-3 rounded-lg text-sm bg-[#e5e7eb] text-[#0a0a0a]">Customer new demo</button>
+                  <button type="button" className="h-9 px-3 rounded-lg text-sm bg-[#e5e7eb] text-[#0a0a0a]">Min date Last 4 Months (01/10/2025 &lt; 01/02/2026)</button>
+                  {BUYING_FILTER_CHIPS_ROW1.slice(2).map((chip) => (
+                    <button key={chip} type="button" className="h-9 px-3 rounded-lg text-sm bg-[#f3f3f5] text-[#4a5565] hover:bg-[#e5e7eb] flex items-center gap-1">
+                      {chip}
+                      <IconChevronDown className="size-4 opacity-60" />
+                    </button>
+                  ))}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {BUYING_FILTER_CHIPS_ROW2.slice(0, 4).map((chip) => (
+                    <button key={chip} type="button" className="h-9 px-3 rounded-lg text-sm bg-[#f3f3f5] text-[#4a5565] hover:bg-[#e5e7eb] flex items-center gap-1">
+                      {chip}
+                      <IconChevronDown className="size-4 opacity-60" />
+                    </button>
+                  ))}
+                  <button type="button" className="h-9 px-3 rounded-lg text-sm bg-[#364153] text-white flex items-center gap-2">Location attributes Region<IconArrowRight className="size-4" /></button>
+                  <button type="button" className="h-9 px-3 rounded-lg text-sm bg-[#364153] text-white flex items-center gap-2">Product attributes Department<IconArrowRight className="size-4" /></button>
+                </div>
+              </div>
+
+              {/* Buying report */}
+              <h2 className="text-xl font-semibold text-[#0a0a0a] mb-4">Buying report</h2>
+              <div className="bg-white border border-[#e5e7eb] rounded-[14px] overflow-hidden shadow-sm">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-[#f9fafb]">
+                        {BUYING_REPORT_COLUMNS.map((col, i) => (
+                          <th key={col} className={`py-3 px-4 font-medium text-[#0a0a0a] ${i < 2 ? 'text-left' : 'text-right'}`}>
+                            {i === 4 ? (
+                              <span className="inline-flex items-center gap-1">
+                                {col}
+                                <IconChevronDown className="size-4" />
+                              </span>
+                            ) : (
+                              col
+                            )}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {BUYING_REPORT_ROWS.map((row, idx) => (
+                        <tr key={`${row.loc}-${row.prod}-${idx}`} className={`border-t border-[#e5e7eb] ${['Asia Handbags', 'Asia Watches'].includes(row.loc) ? 'bg-[#e0f2fe]' : ''}`}>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.loc}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.prod}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.products}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.locations}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.salesUnits}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.salesValue}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.availQty}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.availVal}</td>
+                          <td className={`py-3 px-4 text-right ${row.sellThrough === '100%' || row.sellThrough === '71%' || row.sellThrough === '54%' ? 'bg-amber-100 text-[#0a0a0a]' : 'text-[#0a0a0a]'}`}>{row.sellThrough}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.assorted}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.mixSales}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.mixAssort}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.avgPrice}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr className="bg-[#f9fafb] border-t-2 border-[#e5e7eb]">
+                        <td className="py-3 px-4 text-[#6a7282] text-left">UNIQUE COUNT 6</td>
+                        <td className="py-3 px-4 text-[#6a7282] text-left">UNIQUE COUNT 6</td>
+                        <td className="py-3 px-4 text-right text-[#6a7282]">TOTAL 2.42K</td>
+                        <td className="py-3 px-4 text-right text-[#6a7282]">TOTAL 232</td>
+                        <td className="py-3 px-4 text-right text-[#6a7282]">TOTAL 164.17K</td>
+                        <td className="py-3 px-4 text-right text-[#6a7282]">TOTAL 0</td>
+                        <td className="py-3 px-4 text-right text-[#6a7282]">TOTAL 58.17K</td>
+                        <td className="py-3 px-4 text-right text-[#6a7282]">TOTAL 180.58M</td>
+                        <td className="py-3 px-4 text-right text-[#6a7282]">AVERAGE 0.53</td>
+                        <td className="py-3 px-4 text-right text-[#6a7282]">TOTAL 1.83K</td>
+                        <td className="py-3 px-4 text-right text-[#6a7282]">TABLE AG... 100%</td>
+                        <td className="py-3 px-4 text-right text-[#6a7282]">TOTAL 4.79</td>
+                        <td className="py-3 px-4 text-right text-[#6a7282]">TOTAL 0</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <p className="text-sm text-[#6a7282] px-4 py-3">Showing {BUYING_REPORT_ROWS.length} of {BUYING_REPORT_ROWS.length} rows</p>
+              </div>
+            </>
+          ) : activeTab === 'Data health' ? (
+            <>
+              {/* Data health filter bar */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                <button type="button" className="h-9 px-3 rounded-lg text-sm bg-[#e5e7eb] text-[#0a0a0a]">Customer new demo</button>
+                {DATA_HEALTH_FILTERS.slice(1).map((f) => (
+                  <button key={f} type="button" className="h-9 px-3 rounded-lg text-sm bg-[#f3f3f5] text-[#4a5565] hover:bg-[#e5e7eb] flex items-center gap-1">
+                    {f}
+                    <IconChevronDown className="size-4 opacity-60" />
+                  </button>
+                ))}
+                <button type="button" className="h-9 px-3 rounded-lg text-sm bg-[#f3f3f5] text-[#4a5565] hover:bg-[#e5e7eb] p-2"><IconArrowRight className="size-4" /></button>
+              </div>
+              {/* Two info cards */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <div className="bg-white border border-[#e5e7eb] rounded-[14px] p-6 shadow-sm">
+                  <h3 className="text-base font-medium text-[#0a0a0a] mb-2">File validations</h3>
+                  <p className="text-sm text-[#6a7282] mb-4">This tab monitors the health of uploaded files across customers and file types. It highlights whether files are being processed successfully, if validation rules are failing, and provides drill-down details and samples for troubleshooting errors.</p>
+                  <ul className="text-sm text-[#6a7282] space-y-2 list-disc list-inside">
+                    <li>Start with <strong className="text-[#0a0a0a]">File validations</strong> to see if files are processed successfully.</li>
+                    <li>Drill into <strong className="text-[#0a0a0a]">Fail validation details</strong> for failed files to see which rules and fields broke (filtering on Upload ID).</li>
+                    <li>Drill into <strong className="text-[#0a0a0a]">File validation - sample</strong> to view example rows with errors for root cause analysis (filtering on Run ID).</li>
+                  </ul>
+                </div>
+                <div className="bg-white border border-[#e5e7eb] rounded-[14px] p-6 shadow-sm">
+                  <h3 className="text-base font-medium text-[#0a0a0a] mb-2">Today uploads</h3>
+                  <p className="text-sm text-[#6a7282] mb-2">Files ingested on the current day...</p>
+                  <p className="text-3xl font-semibold text-[#0a0a0a]">0</p>
+                </div>
+              </div>
+              {/* Main KPIs */}
+              <div className="bg-white border border-[#e5e7eb] rounded-[14px] p-6 shadow-sm">
+                <h3 className="text-base font-medium text-[#0a0a0a] mb-6">Main KPIs - alerting notification</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#e5e7eb] gap-6">
+                  {DATA_HEALTH_KPI_CARDS.map((card, i) => (
+                    <div key={card.title} className="p-4 flex flex-col min-h-[240px]">
+                      <h4 className="text-sm font-medium text-[#0a0a0a]">{card.title}</h4>
+                      <p className="text-xs text-[#6a7282] mt-1">{card.desc}</p>
+                      <p className="text-xs text-[#6a7282] mt-2">{card.date}</p>
+                      <p className="text-2xl font-semibold text-[#0a0a0a] mt-2">{card.value}</p>
+                      <p className="text-xs text-[#6a7282] mt-1">{card.comparison}</p>
+                      <DataHealthKpiChart color={card.chartColor} id={i} />
+                      <p className="text-xs text-[#6a7282] mt-2">As expected</p>
+                      <button type="button" className="text-sm text-[#155dfc] mt-2 underline decoration-[#155dfc] hover:decoration-[#0252cc] w-fit">Analyse change</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* File validations table */}
+              <div className="mt-6 bg-white border border-[#e5e7eb] rounded-[14px] overflow-hidden shadow-sm">
+                <div className="p-6 pb-4">
+                  <h3 className="text-base font-medium text-[#0a0a0a]">File validations</h3>
+                  <p className="text-sm text-[#6a7282] mt-1">Shows file upload validations by customer and data type. Each row represents a file uploaded and its validation outcome. Use this table to identify which files were processed, their size, when they were received, and whether they passed or failed validation checks.</p>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-[#f9fafb]">
+                        {FILE_VALIDATIONS_COLUMNS.map((col) => (
+                          <th key={col} className="text-left py-3 px-4 font-medium text-[#0a0a0a] whitespace-nowrap">{col}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {FILE_VALIDATIONS_ROWS.map((row, idx) => (
+                        <tr key={idx} className="border-t border-[#e5e7eb]">
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.customer}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.dataType}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.receivedAt}</td>
+                          <td className="py-3 px-4">
+                            <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${row.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{row.status}</span>
+                          </td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.failed}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.rowCount.toLocaleString()}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.fileSize}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.uploadId}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.distinctDates}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.fileName}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.endedAt}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.error}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="bg-[#f9fafb] border-t border-[#e5e7eb] px-4 py-3 flex flex-wrap gap-6">
+                  {FILE_VALIDATIONS_SUMMARY.map((s, i) => (
+                    <div key={i} className="flex flex-col gap-0.5">
+                      <span className="text-[10px] uppercase tracking-wider text-[#6a7282]">{s.label}</span>
+                      <span className="text-sm font-semibold text-[#0a0a0a]">{s.value}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-sm text-[#6a7282] px-4 py-3">Showing 50 of 50 rows</p>
+              </div>
+
+              {/* Fail validation details */}
+              <div className="mt-6 bg-white border border-[#e5e7eb] rounded-[14px] overflow-hidden shadow-sm">
+                <div className="flex items-start justify-between gap-4 p-6 pb-4">
+                  <div>
+                    <h3 className="text-base font-medium text-[#0a0a0a]">Fail validation details</h3>
+                    <p className="text-sm text-[#6a7282] mt-1">Lists detailed validation errors for each file run. Each row corresponds to a specific validation rule that failed for a given data type. Use this table to understand which fields and rules are causing issues.</p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button type="button" className="h-9 px-3 rounded-lg border border-[#e5e7eb] bg-white text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">Explore</button>
+                    <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5]"><IconEllipsisVertical /></button>
+                  </div>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-[#f9fafb]">
+                        {FAIL_VALIDATION_COLUMNS.map((col) => (
+                          <th key={col} className="text-left py-3 px-4 font-medium text-[#0a0a0a] whitespace-nowrap">
+                            {col === 'Run datetime' ? (
+                              <span className="inline-flex items-center gap-1">
+                                {col}
+                                <svg className="size-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8 12V4M4 8l4-4 4 4" /></svg>
+                              </span>
+                            ) : (
+                              col
+                            )}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {FAIL_VALIDATION_ROWS.map((row, idx) => (
+                        <tr key={idx} className={`border-t border-[#e5e7eb] ${idx % 2 === 1 ? 'bg-[#f8fafc]' : 'bg-white'}`}>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.customer}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.dataType}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.runDatetime}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.fields}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.rule}</td>
+                          <td className="py-3 px-4">
+                            <span className="inline-block px-2 py-1 rounded text-xs font-medium bg-red-500 text-white">{row.status}</span>
+                          </td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.failures}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a] bg-blue-50">{row.runId}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.failuresPct}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.rowCount}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-sm text-[#6a7282] px-4 py-3">Showing 55 of 55 rows</p>
+              </div>
+
+              {/* File validations - sample */}
+              <div className="mt-6 bg-white border border-[#e5e7eb] rounded-[14px] overflow-hidden shadow-sm">
+                <div className="flex items-start justify-between gap-4 p-6 pb-4">
+                  <div>
+                    <h3 className="text-base font-medium text-[#0a0a0a]">File validations - sample</h3>
+                    <p className="text-sm text-[#6a7282] mt-1">Shows a 10-row sample of actual records that failed validation checks for a specific run. This is used to view the raw data values that triggered the errors</p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button type="button" className="h-9 px-3 rounded-lg border border-[#e5e7eb] bg-[#f3f3f5] text-[#9ca3af] text-sm cursor-not-allowed" disabled>Explore</button>
+                    <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5]"><IconEllipsisVertical /></button>
+                  </div>
+                </div>
+                <div className="overflow-x-auto overflow-y-auto max-h-[320px]">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-[#f9fafb]">
+                        {FILE_VALIDATIONS_SAMPLE_COLUMNS.map((col) => (
+                          <th key={col} className="text-left py-3 px-4 font-medium text-[#0a0a0a] whitespace-nowrap">
+                            {col}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {FILE_VALIDATIONS_SAMPLE_ROWS.map((row, idx) => (
+                        <tr key={row.id} className={`border-t border-[#e5e7eb] ${idx % 2 === 1 ? 'bg-[#f8f8f8]' : 'bg-white'}`}>
+                          {idx === 0 ? (
+                            <>
+                              <td rowSpan={FILE_VALIDATIONS_SAMPLE_ROWS.length} className="py-3 px-4 text-[#0a0a0a] align-top">New Demo</td>
+                              <td rowSpan={FILE_VALIDATIONS_SAMPLE_ROWS.length} className="py-3 px-4 text-[#0a0a0a] align-top">inventory</td>
+                              <td rowSpan={FILE_VALIDATIONS_SAMPLE_ROWS.length} className="py-3 px-4 text-[#0a0a0a] align-top">on_hand_qty</td>
+                            </>
+                          ) : null}
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.id}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.colorDesc}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.colorId}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.value}</td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.date}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="flex items-center justify-between px-4 py-3 border-t border-[#e5e7eb]">
+                  <div className="flex items-center gap-2 text-sm text-[#6a7282]">
+                    <button type="button" className="p-1.5 rounded hover:bg-[#f3f3f5] disabled:opacity-50" aria-label="First page">«</button>
+                    <button type="button" className="p-1.5 rounded hover:bg-[#f3f3f5] disabled:opacity-50" aria-label="Previous page">‹</button>
+                    <span className="px-2">Page 1 of 1</span>
+                    <button type="button" className="p-1.5 rounded hover:bg-[#f3f3f5] disabled:opacity-50" aria-label="Next page">›</button>
+                    <button type="button" className="p-1.5 rounded hover:bg-[#f3f3f5] disabled:opacity-50" aria-label="Last page">»</button>
+                  </div>
+                  <p className="text-sm text-[#6a7282]">Showing 1-11 of 11 items</p>
+                </div>
+              </div>
+            </>
+          ) : activeTab === 'Optimiser status' ? (
+            <>
+              {/* Optimiser status: info banner */}
+              {!optimiserBannerDismissed && (
+                <div className="mb-6 flex items-center gap-2 px-4 py-3 rounded-lg bg-[#eff6ff] text-[#1e40af]">
+                  <IconInfo className="size-5 shrink-0" />
+                  <span className="text-sm flex-1">Liveboard needs to be reverified. <button type="button" className="font-medium underline hover:no-underline">Request verification</button></span>
+                  <button type="button" onClick={() => setOptimiserBannerDismissed(true)} className="p-1 rounded hover:bg-[#bfdbfe] text-[#1e40af] shrink-0" aria-label="Dismiss">
+                    <svg className="size-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 5L5 15M5 5l10 10" /></svg>
+                  </button>
+                </div>
+              )}
+
+              {/* Optimiser status: filters */}
+              <div className="flex flex-col gap-2 mb-6">
+                <div className="flex flex-wrap gap-2 items-center">
+                  <div className="relative">
+                    <button type="button" onClick={() => setSelectViewOpen((o) => !o)} className="h-9 px-3 rounded-lg text-sm bg-transparent text-[#155dfc] hover:underline flex items-center gap-1">
+                      Select view
+                      <IconChevronDown className={`size-4 text-[#155dfc] transition-transform ${selectViewOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {selectViewOpen && (
+                      <>
+                        <div className="fixed inset-0 z-40" onClick={() => setSelectViewOpen(false)} aria-hidden />
+                        <div className="absolute left-0 top-full mt-1 z-50 min-w-[180px] bg-white rounded-lg shadow-lg py-2 border border-[#e5e7eb]">
+                          <button type="button" onClick={() => setSelectViewOpen(false)} className="w-full px-4 py-2 text-left text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">
+                            LPT DC to DC
+                          </button>
+                          <button type="button" onClick={() => setSelectViewOpen(false)} className="w-full px-4 py-2 text-left text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">
+                            Zadig
+                          </button>
+                          <div className="border-t border-[#e5e7eb] my-2" />
+                          <button type="button" onClick={() => setSelectViewOpen(false)} className="w-full px-4 py-2 text-left text-sm text-[#6366f1] hover:bg-[#f3f3f5]">
+                            Save view
+                          </button>
+                          <button type="button" onClick={() => setSelectViewOpen(false)} className="w-full px-4 py-2 text-left text-sm text-[#6366f1] hover:bg-[#f3f3f5]">
+                            Manage views
+                          </button>
+                          <button type="button" onClick={() => setSelectViewOpen(false)} className="w-full px-4 py-2 text-left text-sm text-[#6366f1] hover:bg-[#f3f3f5]">
+                            Reset Liveboard
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  {OPTIMISER_STATUS_ACTIVE_CHIPS.map((chip) => (
+                    <button key={chip} type="button" className="h-9 px-3 rounded-lg text-sm bg-[#364153] text-white">
+                      {chip}
+                    </button>
+                  ))}
+                  {OPTIMISER_STATUS_FILTERS.slice(0, 12).map((f) => (
+                    <button key={f} type="button" className="h-9 px-3 rounded-lg text-sm bg-[#f3f3f5] text-[#4a5565] hover:bg-[#e5e7eb] flex items-center gap-1">
+                      {f}
+                      <IconChevronDown className="size-4 opacity-60" />
+                    </button>
+                  ))}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {OPTIMISER_STATUS_FILTERS.slice(12).map((f) => (
+                    <button key={f} type="button" className="h-9 px-3 rounded-lg text-sm bg-[#f3f3f5] text-[#4a5565] hover:bg-[#e5e7eb] flex items-center gap-1">
+                      {f}
+                      <IconChevronDown className="size-4 opacity-60" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Optimiser status: main content cards */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 flex flex-col gap-6">
+                  <div className="bg-white border border-[#e5e7eb] rounded-[14px] p-6 shadow-sm">
+                    <h3 className="text-base font-medium text-[#0a0a0a] mb-4">Trips overview</h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+                      {TRIPS_OVERVIEW_KPIS.map((kpi) => (
+                        <div key={kpi.label}>
+                          <p className="text-2xl font-semibold text-[#0a0a0a]">{kpi.value}</p>
+                          <p className="text-sm text-[#6a7282] mt-1">{kpi.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="bg-white border border-[#e5e7eb] rounded-[14px] p-6 shadow-sm">
+                    <h3 className="text-base font-medium text-[#0a0a0a] mb-4">Estimated impact</h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+                      {ESTIMATED_IMPACT_KPIS.map((kpi) => (
+                        <div key={kpi.label}>
+                          <p className="text-2xl font-semibold text-[#0a0a0a]">{kpi.value}</p>
+                          <p className="text-sm text-[#6a7282] mt-1">{kpi.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white border border-[#e5e7eb] rounded-[14px] p-6 shadow-sm">
+                  <h3 className="text-base font-medium text-[#0a0a0a] mb-4">Trip type by value transferred</h3>
+                  <TripTypeDonutChart data={TRIP_TYPE_DONUT_DATA} />
+                </div>
+              </div>
+
+              {/* Trips performance table */}
+              <div className="mt-6 bg-white border border-[#e5e7eb] rounded-[14px] overflow-hidden shadow-sm">
+                <div className="flex items-start justify-between gap-4 p-6 pb-4">
+                  <h3 className="text-base font-medium text-[#0a0a0a]">Trips performance</h3>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button type="button" className="h-9 px-3 rounded-lg border border-[#e5e7eb] bg-white text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">Explore</button>
+                    <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5]"><IconEllipsisVertical /></button>
+                  </div>
+                </div>
+                <div className="overflow-x-auto overflow-y-auto max-h-[400px]">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-[#f9fafb]">
+                        <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] whitespace-nowrap">Trip type</th>
+                        <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] whitespace-nowrap">From location</th>
+                        <th className="text-left py-3 px-4 font-medium text-[#0a0a0a] whitespace-nowrap">To location</th>
+                        <th colSpan={9} className="text-left py-3 px-4 font-medium text-[#0a0a0a]">Values</th>
+                      </tr>
+                      <tr className="bg-[#f9fafb]">
+                        <th className="py-2 px-4" />
+                        <th className="py-2 px-4" />
+                        <th className="py-2 px-4" />
+                        {TRIPS_PERFORMANCE_VALUE_COLS.map((col) => (
+                          <th key={col} className="text-left py-2 px-4 font-medium text-[#0a0a0a] whitespace-nowrap">{col}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {TRIPS_PERFORMANCE_ROWS.map((row, idx) => (
+                        <tr
+                          key={idx}
+                          className={`border-t border-[#e5e7eb] ${
+                            row.level === 'total' || row.level === 'group' || row.level === 'subgroup' ? 'bg-[#f8fafc]' : 'bg-white'
+                          }`}
+                        >
+                          <td className="py-3 px-4 text-[#0a0a0a]">
+                            {row.level === 'group' ? (
+                              <span className="inline-flex items-center gap-1">
+                                <IconChevronDown className="size-4" />
+                                {row.tripType}
+                              </span>
+                            ) : (
+                              row.tripType
+                            )}
+                          </td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">
+                            {row.level === 'subgroup' ? (
+                              <span className="inline-flex items-center gap-1">
+                                <IconChevronDown className="size-4" />
+                                {row.fromLocation}
+                              </span>
+                            ) : (
+                              row.fromLocation
+                            )}
+                          </td>
+                          <td className="py-3 px-4 text-[#0a0a0a]">{row.toLocation}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.units}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.value}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.revenue}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.costs}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.stockouts}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.consolidated}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.spread}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.products}</td>
+                          <td className="py-3 px-4 text-right text-[#0a0a0a]">{row.skus}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Trips network graph */}
+              <div className="mt-6 bg-white border border-[#e5e7eb] rounded-[14px] overflow-hidden shadow-sm">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-[#e5e7eb]">
+                  <h3 className="text-base font-medium text-[#0a0a0a]">Trips</h3>
+                  <div className="flex items-center gap-2">
+                    <button type="button" className="h-9 px-3 rounded-lg border border-[#e5e7eb] bg-white text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">Explore</button>
+                    <button type="button" className="p-2 rounded-lg text-[#4a5565] hover:bg-[#f3f3f5]"><IconEllipsisVertical /></button>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <TripsNetworkGraph />
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
           {/* Filter chips */}
           <div className="flex flex-wrap gap-2 mb-6">
             {INSIGHTS_ACTIVE_CHIPS.map((chip, i) => (
@@ -1151,6 +1955,8 @@ function InsightsPage() {
             <ParetoChart title="Sales by Location Type" xAxisLabel="Location attribute" data={PARETO_LOCATION_DATA} hasExplore />
             <ParetoChart title="Sales by Department" xAxisLabel="Product attribute" data={PARETO_DEPT_DATA} hasExplore={false} />
           </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -1360,6 +2166,7 @@ export default function App() {
   const [optimiserOpen, setOptimiserOpen] = useState(false)
   const [insightsOpen, setInsightsOpen] = useState(false)
   const [activeView, setActiveView] = useState('control-panel')
+  const [insightsTab, setInsightsTab] = useState('Retail')
 
   return (
     <div className="h-screen bg-[#f9fafb] flex text-[#0a0a0a] overflow-hidden">
@@ -1381,7 +2188,7 @@ export default function App() {
           <div className="flex flex-col gap-[var(--spacing-xs,6px)] w-full shrink-0">
             <button
               type="button"
-              onClick={() => { setActiveView('insights'); setInsightsOpen((o) => !o); }}
+              onClick={() => { setActiveView('insights'); setInsightsTab('Retail'); setInsightsOpen((o) => !o); }}
               className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] shrink-0 ${activeView === 'insights' ? 'bg-[#0267ff] text-white font-medium' : 'font-normal text-white hover:bg-white/5'}`}
               aria-expanded={insightsOpen}
               aria-haspopup="true"
@@ -1398,13 +2205,13 @@ export default function App() {
             </button>
             {insightsOpen && (
               <div className="flex flex-col gap-[4px] pl-4 pb-2 w-full shrink-0">
-                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                <button type="button" onClick={() => { setActiveView('insights'); setInsightsTab('Buying'); }} className={`min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white shrink-0 ${activeView === 'insights' && insightsTab === 'Buying' ? 'bg-[#0267ff]/50' : 'hover:bg-white/5'}`} data-name="Sidebar element">
                   Buying
                 </button>
-                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                <button type="button" onClick={() => { setActiveView('insights'); setInsightsTab('Data health'); }} className={`min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white shrink-0 ${activeView === 'insights' && insightsTab === 'Data health' ? 'bg-[#0267ff]/50' : 'hover:bg-white/5'}`} data-name="Sidebar element">
                   Data health
                 </button>
-                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                <button type="button" onClick={() => { setActiveView('insights'); setInsightsTab('Optimiser status'); }} className={`min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white shrink-0 ${activeView === 'insights' && insightsTab === 'Optimiser status' ? 'bg-[#0267ff]/50' : 'hover:bg-white/5'}`} data-name="Sidebar element">
                   Optimiser status
                 </button>
                 <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
@@ -1446,7 +2253,7 @@ export default function App() {
               </div>
             )}
           </div>
-          <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7251">
+          <button type="button" onClick={() => { setActiveView('insights'); setInsightsTab('Buying'); setInsightsOpen(true); }} className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7251">
             <IconBuy className="text-[#22272f] size-6 shrink-0" aria-hidden />
             <span>Buying</span>
           </button>
@@ -1525,7 +2332,7 @@ export default function App() {
           </div>
         ) : activeView === 'insights' ? (
           <div className="pt-6">
-            <InsightsPage />
+            <InsightsPage activeTab={insightsTab} onTabChange={setInsightsTab} />
           </div>
         ) : (
         <>
