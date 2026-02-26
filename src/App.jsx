@@ -51,13 +51,6 @@ const IconArrowRight = () => (
     <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
-const IconSparkles = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="shrink-0">
-    <path d="M10 2l1.2 3.6 3.8.2-2.8 2.4 1 3.6L10 10.4l-2.2 2.4 1-3.6L6 5.8l3.8-.2L10 2z" fill="currentColor" />
-    <path d="M16 12l.6 1.8 1.9.1-1.4 1.2.5 1.8-1.6-1.2-1.6 1.2.5-1.8-1.4-1.2 1.9-.1.6-1.8z" fill="currentColor" />
-    <path d="M4 14l.5 1.5 1.5.1-1.1 1 .4 1.5-1.3-1-1.3 1 .4-1.5-1.1-1 1.5-.1.5-1.5z" fill="currentColor" />
-  </svg>
-)
 const IconWarning = () => (
   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="shrink-0">
     <path d="M6 1l5 9H1L6 1z" stroke="currentColor" strokeWidth="1.2" fill="currentColor" fillOpacity="0.2" />
@@ -305,10 +298,10 @@ const IconUpload = () => (
 function TopBar({ title = 'Team', subtitle = 'Manage permissions and invites throughout your team', primaryButtonLabel = '', primaryButtonHref = '#', onPrimaryClick }) {
   return (
     <header className="bg-[#12171e] flex items-center justify-between p-6 shrink-0" data-name="Top bar" data-node-id="12301:65733">
-      <div className="flex flex-1 flex-col gap-1 min-w-0">
+      <div className="flex flex-1 flex-col gap-1 min-w-[520px]">
         <h1 className="font-sans text-2xl font-medium text-white leading-tight">{title}</h1>
         {subtitle && (
-          <p className="font-sans text-sm font-normal text-[#878d94] leading-tight">{subtitle}</p>
+          <p className="font-sans text-sm font-normal text-[#878d94] leading-tight whitespace-nowrap">{subtitle}</p>
         )}
       </div>
       <div className="flex flex-1 gap-1.5 items-center justify-end min-w-0 shrink-0">
@@ -345,15 +338,15 @@ const WEEK_DAYS = [
 
 const ALERTS = [
   { type: 'critical', title: 'Data age - critical warning', badge: '41 hours', body: 'Your data has not been updated for 41 hours. Older data can cause multiple issues across the platform.' },
-  { type: 'high', title: 'Low stock alert - winter jackets', badge: '12% remaining', body: 'SKU #WJ-2024 is at 12% stock level in Northeast region' },
-  { type: 'high', title: 'Declining sales - London flagship', badge: '-18% WoW', body: 'Week-over-week sales down 18% compared to last month' },
+  { type: 'high', title: 'Recommendation - winter jackets', badge: '12% remaining', body: 'SKU #WJ-2024 is at 12% stock level in Northeast region' },
+  { type: 'high', title: 'Recommendation - London flagship', badge: '-18% WoW', body: 'Week-over-week sales down 18% compared to last month' },
   { type: 'high', title: 'High return rate - summer dresses', badge: '24% returns', body: 'Return rate of 24% detected for SKU #SD-1245' },
 ]
 
 const RECOMMENDATIONS = [
-  { title: 'Increase order - athletic wear', confidence: '94% confident', body: 'Based on current sell-through rate, increase next order by 35%', impact: '+£45K potential revenue' },
-  { title: 'Redistribute inventory - accessories', confidence: '88% confident', body: 'Move 450 units from Manchester to Birmingham for better turnover', impact: '+22% faster sell-through' },
-  { title: 'Markdown opportunity - spring collection', confidence: '91% confident', body: 'Apply 20% discount to clear slow-moving spring items before season end', impact: '£28K inventory clearance' },
+  { title: 'Increase order - athletic wear', body: 'Based on the forecast, increase next order by 35%', impact: '+£45K potential revenue' },
+  { title: 'Redistribute inventory - accessories', body: 'Move 450 units from Manchester to Birmingham for better turnover', impact: '+22% faster sell-through' },
+  { title: 'Markdown opportunity - spring collection', body: 'Apply 20% discount to clear slow-moving spring items before season end', impact: '£28K inventory clearance' },
 ]
 
 const VALUE_CARDS = [
@@ -527,7 +520,7 @@ export default function App() {
         <nav className={`flex-1 flex flex-col gap-[var(--spacing-xs,6px)] items-start w-full min-h-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${optimiserOpen ? 'overflow-visible' : 'overflow-y-auto'}`} data-name="Container" data-node-id="14404:7246">
           <button type="button" onClick={() => setActiveView('control-panel')} className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-medium shrink-0 ${activeView === 'control-panel' ? 'bg-[#0267ff] text-white' : 'text-white hover:bg-white/5'}`} data-name="Sidebar element" data-node-id="14404:7247">
             <IconGrid className={`size-6 shrink-0 ${activeView === 'control-panel' ? 'text-white' : 'text-[#22272f]'}`} aria-hidden />
-            <span>Control Panel</span>
+            <span>Overview</span>
           </button>
           <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element" data-node-id="14404:7252">
             <IconBars className="text-[#22272f] size-6 shrink-0" aria-hidden />
@@ -634,8 +627,8 @@ export default function App() {
       <div className="flex flex-col flex-1 min-w-0 min-h-0 w-full overflow-hidden">
         <div className="shrink-0">
           <TopBar
-            title={activeView === 'optimiser' ? 'Optimiser' : 'Control Panel'}
-            subtitle={activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : 'Control Panel for managing all of your inventory and scheduling needs.'}
+            title={activeView === 'optimiser' ? 'Optimiser' : 'Overview'}
+            subtitle={activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"}
           />
         </div>
 
@@ -675,31 +668,6 @@ export default function App() {
         </header>
 
         <div className="pt-6 space-y-6">
-          {/* AI Assistant card */}
-          <section className="rounded-[14px] border border-[#e9d4ff] bg-gradient-to-br from-[#faf5ff] to-[#eff6ff] p-6 space-y-4">
-            <div className="flex items-center gap-2 flex-wrap">
-              <div className="w-9 h-9 rounded-lg bg-[#9810fa] flex items-center justify-center text-white">
-                <IconSparkles />
-              </div>
-              <h2 className="text-lg text-[#0a0a0a]">How can we help today?</h2>
-              <span className="text-xs text-white bg-[#9810fa] px-2 py-1 rounded-full">AI assistant</span>
-            </div>
-            <div className="relative">
-              <input type="text" placeholder="Ask anything about your inventory, sales, or recommendations..." className="w-full h-12 pl-4 pr-12 rounded-lg border border-[#d1d5dc] bg-white text-base placeholder:text-[#0a0a0a]/50" />
-              <button type="button" className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-[#9810fa] flex items-center justify-center text-white">
-                <IconArrowRight />
-              </button>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <span className="text-sm text-[#4a5565] mr-1">Quick actions:</span>
-              {['Show me inventory alerts', 'What are my top performing products?', 'Analyze sales trends', 'Optimize my stock levels'].map((label) => (
-                <button key={label} type="button" className="px-4 py-1.5 rounded-full border border-[#e9d4ff] bg-white text-[#8200db] text-sm hover:bg-[#faf5ff]">
-                  {label}
-                </button>
-              ))}
-            </div>
-          </section>
-
           {/* Inventory schedule */}
           <section className="bg-white border border-[#e5e7eb] rounded-[14px] p-6">
             <div className="flex items-start justify-between gap-4 mb-4">
@@ -712,7 +680,7 @@ export default function App() {
               </div>
               <button type="button" className="shrink-0 h-10 px-4 rounded-lg bg-[#155dfc] text-white text-sm font-medium flex items-center gap-2">
                 <IconPlus />
-                Add exceptional event
+                Add schedule
               </button>
             </div>
             <div className="flex items-center gap-4 pb-3 mb-4 border-b border-[#e5e7eb] text-sm text-[#4a5565]">
@@ -791,10 +759,7 @@ export default function App() {
                       {i === 2 && <IconTag />}
                     </div>
                     <div className="min-w-0">
-                      <div className="flex items-start justify-between gap-2 flex-wrap">
-                        <h3 className="text-sm font-medium text-[#0a0a0a]">{rec.title}</h3>
-                        <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded shrink-0">{rec.confidence}</span>
-                      </div>
+                      <h3 className="text-sm font-medium text-[#0a0a0a]">{rec.title}</h3>
                       <p className="text-sm text-[#4a5565] mt-1">{rec.body}</p>
                       <p className="text-sm text-[#1447e6] mt-1">{rec.impact}</p>
                     </div>
