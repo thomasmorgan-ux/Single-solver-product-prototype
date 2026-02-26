@@ -355,6 +355,16 @@ const VALUE_CARDS = [
   { value: '43%', unit: 'increase', title: 'Margin improvements', body: 'Enhanced profitability through optimized pricing', icon: IconChart, bg: 'bg-purple-50', iconBg: 'bg-purple-100' },
 ]
 
+const PARAMETERS = [
+  { name: 'Minimum display quantity', value: '24 units', lastUpdated: '2025-01-15', outdated: false },
+  { name: 'Max units per trip', value: '500 units', lastUpdated: '2024-11-03', outdated: true },
+]
+
+const RECOMMENDED_PARAMETER_ADJUSTMENTS = [
+  { parameter: 'Minimum display quantity', current: '24 units', recommended: '18 units', reason: 'Reducing Product-ID-X from 24 to 18 could unlock £12K revenue by avoiding unnecessary inventory pushes', reasonBold: 'Product-ID-X', impact: '+£12K potential revenue' },
+  { parameter: 'Max units per trip', current: '500 units', recommended: '650 units', reason: 'Increasing max units per trip would allow the optimiser to make better recommendations', impact: '-8% transport costs' },
+]
+
 function EventCard({ route, units, time, category, priority }) {
   const styles = {
     critical: 'bg-red-50 border-l-4 border-red-500 text-red-900',
@@ -500,10 +510,20 @@ function OptimiserPage() {
   )
 }
 
+const USER_TYPES = ['Operator', 'Executive', 'C-suite', 'Team A', 'Team B', 'Team C']
+const LOCATION_OPTIONS = ['All locations', 'Region', 'Country', 'City', 'Store']
+const PRODUCT_OPTIONS = ['All products', 'Collections', 'Sub-products', 'SKUs', 'Etc']
+
 export default function App() {
   const [assignee, setAssignee] = useState({})
   const [optimiserOpen, setOptimiserOpen] = useState(false)
   const [activeView, setActiveView] = useState('control-panel')
+  const [userTypeFilter, setUserTypeFilter] = useState(null)
+  const [userTypesDropdownOpen, setUserTypesDropdownOpen] = useState(false)
+  const [locationFilter, setLocationFilter] = useState('All locations')
+  const [locationsDropdownOpen, setLocationsDropdownOpen] = useState(false)
+  const [productFilter, setProductFilter] = useState('All products')
+  const [productsDropdownOpen, setProductsDropdownOpen] = useState(false)
 
   return (
     <div className="h-screen bg-[#f9fafb] flex text-[#0a0a0a] overflow-hidden">
@@ -644,17 +664,69 @@ export default function App() {
         <header className="w-[calc(100%+4rem)] min-w-0 -ml-8 bg-white border-b border-[#e5e7eb] pt-6 pb-4 px-8">
           <div className="flex flex-wrap items-center gap-3 w-full min-w-0">
             <div className="shrink-0 mr-2 min-w-0">
-              <h1 className="text-xl font-semibold text-[#0a0a0a] leading-tight">Welcome back, Tamir</h1>
+              <h1 className="text-xl font-medium text-[#0a0a0a] leading-tight">Welcome back, Tamir</h1>
               <p className="text-sm text-[#6a7282]">Monday, February 23, 2026</p>
             </div>
             <div className="flex flex-wrap items-center gap-3 ml-auto min-w-0 justify-end">
               <span className="text-sm text-[#4a5565] shrink-0">Filter views by</span>
-              {['All products', 'All locations', 'All user types'].map((label) => (
-                <button key={label} type="button" className="h-10 shrink-0 bg-[#f3f3f5] rounded-lg pl-3 pr-3 flex items-center justify-between gap-2 text-sm text-[#0a0a0a] min-w-[100px]">
-                  <span className="truncate">{label}</span>
-                  <IconChevronDown className="shrink-0" />
+              <div className="relative shrink-0">
+                <button type="button" onClick={() => setProductsDropdownOpen((o) => !o)} className="h-10 shrink-0 bg-[#f3f3f5] rounded-lg pl-3 pr-3 flex items-center justify-between gap-2 text-sm text-[#0a0a0a] min-w-[100px]">
+                  <span className="truncate">{productFilter}</span>
+                  <IconChevronDown className={`shrink-0 transition-transform ${productsDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
-              ))}
+                {productsDropdownOpen && (
+                  <>
+                    <div className="fixed inset-0 z-10" aria-hidden onClick={() => setProductsDropdownOpen(false)} />
+                    <div className="absolute right-0 top-full mt-1 z-20 min-w-[160px] rounded-lg border border-[#e5e7eb] bg-white shadow-lg py-2">
+                      {PRODUCT_OPTIONS.map((opt) => (
+                        <button key={opt} type="button" onClick={() => { setProductFilter(opt); setProductsDropdownOpen(false); }} className="w-full px-4 py-2.5 text-left text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="relative shrink-0">
+                <button type="button" onClick={() => setLocationsDropdownOpen((o) => !o)} className="h-10 shrink-0 bg-[#f3f3f5] rounded-lg pl-3 pr-3 flex items-center justify-between gap-2 text-sm text-[#0a0a0a] min-w-[100px]">
+                  <span className="truncate">{locationFilter}</span>
+                  <IconChevronDown className={`shrink-0 transition-transform ${locationsDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {locationsDropdownOpen && (
+                  <>
+                    <div className="fixed inset-0 z-10" aria-hidden onClick={() => setLocationsDropdownOpen(false)} />
+                    <div className="absolute right-0 top-full mt-1 z-20 min-w-[160px] rounded-lg border border-[#e5e7eb] bg-white shadow-lg py-2">
+                      {LOCATION_OPTIONS.map((opt) => (
+                        <button key={opt} type="button" onClick={() => { setLocationFilter(opt); setLocationsDropdownOpen(false); }} className="w-full px-4 py-2.5 text-left text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="relative shrink-0">
+                <button type="button" onClick={() => setUserTypesDropdownOpen((o) => !o)} className="h-10 shrink-0 bg-[#f3f3f5] rounded-lg pl-3 pr-3 flex items-center justify-between gap-2 text-sm text-[#0a0a0a] min-w-[100px]">
+                  <span className="truncate">{userTypeFilter ?? 'All user types'}</span>
+                  <IconChevronDown className={`shrink-0 transition-transform ${userTypesDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {userTypesDropdownOpen && (
+                  <>
+                    <div className="fixed inset-0 z-10" aria-hidden onClick={() => setUserTypesDropdownOpen(false)} />
+                    <div className="absolute right-0 top-full mt-1 z-20 min-w-[220px] rounded-lg border border-[#e5e7eb] bg-white shadow-lg py-2">
+                      <p className="px-4 py-3 text-sm text-[#4a5565] border-b border-[#e5e7eb]">Change user type to view more specifically tailored data</p>
+                      <button type="button" onClick={() => { setUserTypeFilter(null); setUserTypesDropdownOpen(false); }} className="w-full px-4 py-2.5 text-left text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">
+                        All user types
+                      </button>
+                      {USER_TYPES.map((type) => (
+                        <button key={type} type="button" onClick={() => { setUserTypeFilter(type); setUserTypesDropdownOpen(false); }} className="w-full px-4 py-2.5 text-left text-sm text-[#0a0a0a] hover:bg-[#f3f3f5]">
+                          {type}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
               <div className="flex items-center w-[280px] sm:w-[325px] shrink-0 h-[42px] rounded-[10px] border border-[#d1d5dc] bg-white overflow-hidden">
                 <span className="pl-3 flex items-center justify-center text-[#4a5565] shrink-0" aria-hidden>
                   <IconSearch />
@@ -704,6 +776,55 @@ export default function App() {
                   </div>
                 </div>
               ))}
+            </div>
+          </section>
+
+          {/* Parameter configurations */}
+          <section className="bg-white border border-[#e5e7eb] rounded-[14px] p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <IconGears className="text-[#4a5565] size-6 shrink-0" />
+              <h2 className="text-lg text-[#0a0a0a]">Parameter configurations</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {PARAMETERS.map((param, i) => (
+                <div key={i} className={`rounded-lg border p-4 ${param.outdated ? 'border-amber-300 bg-amber-50/50' : 'border-[#e5e7eb] bg-[#f9fafb]'}`}>
+                  <div className="flex items-start justify-between gap-2 flex-wrap">
+                    <h3 className="text-sm font-medium text-[#0a0a0a]">{param.name}</h3>
+                    <span className={`text-xs px-2 py-0.5 rounded ${param.outdated ? 'bg-amber-200 text-amber-900' : 'bg-green-100 text-green-700'}`}>
+                      {param.outdated ? 'Outdated' : 'Up to date'}
+                    </span>
+                  </div>
+                  <p className="text-base font-medium text-[#0a0a0a] mt-2">{param.value}</p>
+                  <p className="text-xs text-[#6a7282] mt-1">Last updated: {param.lastUpdated}</p>
+                </div>
+              ))}
+            </div>
+            <div>
+              <h3 className="text-base font-medium text-[#0a0a0a] mb-1">Recommended parameter adjustments</h3>
+              <p className="text-sm text-[#4a5565] mb-4">Proactive adjustments to unlock more revenue and generate better recommendations.</p>
+              <div className="space-y-3">
+                {RECOMMENDED_PARAMETER_ADJUSTMENTS.map((rec, i) => (
+                  <div key={i} className="rounded-lg border border-[#bedbff] bg-gradient-to-r from-[#eff6ff] to-white p-4 flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-sm font-medium text-[#0a0a0a]">{rec.parameter}</h4>
+                      <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-[#4a5565]">
+                        <span>Current: <span className="font-medium text-[#0a0a0a]">{rec.current}</span></span>
+                        <span>→</span>
+                        <span>Recommended: <span className="font-medium text-[#155dfc]">{rec.recommended}</span></span>
+                      </div>
+                      <p className="text-sm text-[#4a5565] mt-2">
+                        {rec.reasonBold
+                          ? <>{(rec.reason.split(rec.reasonBold))[0]}<strong className="font-medium text-[#0a0a0a]">{rec.reasonBold}</strong>{(rec.reason.split(rec.reasonBold))[1]}</>
+                          : rec.reason}
+                      </p>
+                    </div>
+                    <div className="shrink-0 flex items-center gap-3">
+                      <span className="text-sm font-medium text-[#1447e6]">{rec.impact}</span>
+                      <button type="button" className="h-9 px-3 rounded-lg bg-[#155dfc] text-white text-sm font-medium hover:bg-[#0252cc]">Apply</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
 
