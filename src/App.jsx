@@ -175,7 +175,9 @@ export default function App() {
         <div className="shrink-0">
           <TopBar
             title={activeView === 'optimiser' && optimiserSubView === 'scope' ? 'Scope' : activeView === 'optimiser' ? 'Optimiser' : activeView === 'insights' ? 'Insights' : 'Overview'}
-            subtitle={activeView === 'optimiser' && optimiserSubView === 'scope' ? null : activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : activeView === 'insights' ? 'Analytics and insights across your inventory.' : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"}
+            subtitle={activeView === 'optimiser' && optimiserSubView === 'scope' ? null : activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : activeView === 'insights' ? 'Analytics and statistics for your sales performance.' : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"}
+            primaryButtonLabel={activeView === 'insights' ? 'Add Insights' : undefined}
+            showMenuButton={activeView === 'insights'}
             onBack={activeView === 'optimiser' && optimiserSubView === 'scope' ? () => setOptimiserSubView('schedule') : undefined}
           />
         </div>

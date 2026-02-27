@@ -1,6 +1,6 @@
-import { IconArrowLeft } from './icons'
+import { IconArrowLeft, IconEllipsisVertical } from './icons'
 
-export default function TopBar({ title = 'Team', subtitle = 'Manage permissions and invites throughout your team', primaryButtonLabel = '', primaryButtonHref = '#', onPrimaryClick, onBack }) {
+export default function TopBar({ title = 'Team', subtitle = 'Manage permissions and invites throughout your team', primaryButtonLabel = '', primaryButtonHref = '#', onPrimaryClick, onBack, showMenuButton }) {
   return (
     <header className="bg-[#12171e] flex items-center justify-between p-6 shrink-0" data-name="Top bar" data-node-id="12301:65733">
       <div className="flex flex-1 items-center gap-3 min-w-0">
@@ -17,6 +17,11 @@ export default function TopBar({ title = 'Team', subtitle = 'Manage permissions 
         </div>
       </div>
       <div className="flex flex-1 gap-1.5 items-center justify-end min-w-0 shrink-0">
+        {showMenuButton && (
+          <button type="button" className="flex items-center justify-center size-10 rounded-[4px] text-white hover:bg-white/10 shrink-0" aria-label="More options">
+            <IconEllipsisVertical className="size-5" />
+          </button>
+        )}
         {primaryButtonLabel && (
           onPrimaryClick
             ? (
