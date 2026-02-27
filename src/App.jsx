@@ -529,11 +529,10 @@ export default function App() {
   const [optimiserOpen, setOptimiserOpen] = useState(false)
   const [insightsOpen, setInsightsOpen] = useState(false)
   const [activeView, setActiveView] = useState('control-panel')
-  const [insightsTab, setInsightsTab] = useState('Retail')
+  const [optimiserSubView, setOptimiserSubView] = useState('schedule')
 
   return (
     <div className="h-screen bg-[#f9fafb] flex text-[#0a0a0a] overflow-hidden">
-      {/* App shell: fixed sidebar – Figma 14404:7242 OptimiserSidebar/Expanded/Default */}
       <aside className={`min-w-[220px] w-max h-full shrink-0 bg-[#12171e] flex flex-col px-[var(--spacing-l,16px)] py-[var(--spacing-2xl,32px)] overflow-y-auto overflow-x-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`} data-name="OptimiserSidebar/Expanded/Default" data-node-id="14404:7242">
         <div className="flex flex-col gap-[var(--spacing-2xl,32px)] min-w-0 flex-1 min-h-0" data-name="Container" data-node-id="14404:7243">
         <div className="flex flex-row items-center justify-between gap-2 w-full px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] shrink-0" data-name="Logo container" data-node-id="14404:7244">
@@ -554,9 +553,6 @@ export default function App() {
               onClick={() => { setActiveView('insights'); setInsightsTab('Retail'); setInsightsOpen((o) => !o); }}
               className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] shrink-0 ${activeView === 'insights' ? 'bg-[#0267ff] text-white font-medium' : 'font-normal text-white hover:bg-white/5'}`}
               aria-expanded={insightsOpen}
-              aria-haspopup="true"
-              aria-expanded={insightsOpen}
-              aria-haspopup="true"
               data-name="Sidebar element"
               data-node-id="14404:7252"
             >
@@ -587,10 +583,9 @@ export default function App() {
           <div className="flex flex-col gap-[var(--spacing-xs,6px)] w-full shrink-0">
             <button
               type="button"
-              onClick={() => { setActiveView('optimiser'); setOptimiserOpen((o) => !o); }}
+              onClick={() => { setActiveView('optimiser'); setOptimiserSubView('schedule'); setOptimiserOpen((o) => !o); }}
               className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] shrink-0 ${activeView === 'optimiser' ? 'bg-[#0267ff] text-white font-medium' : 'font-normal text-white hover:bg-white/5'}`}
               aria-expanded={optimiserOpen}
-              aria-haspopup="true"
               data-name="Sidebar element"
               data-node-id="14404:7825"
             >
@@ -643,7 +638,6 @@ export default function App() {
           )}
         </nav>
 
-        {/* Sidebar footer – Figma 145:935 */}
         <div className="flex flex-col gap-[var(--spacing-xs,6px)] items-start w-full shrink-0 mt-auto" data-name="Container" data-node-id="145:935">
           <button type="button" className="flex h-[40px] w-full shrink-0 items-center justify-center gap-[var(--spacing-m,12px)] rounded-[var(--border-radius-s,4px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] text-left text-[14px] font-normal text-white hover:bg-white/5" data-name="Sidebar element" data-node-id="145:936">
             <IconClockSidebar className="text-emerald-400 size-6 shrink-0" aria-hidden />
@@ -678,16 +672,15 @@ export default function App() {
         </div>
       </aside>
 
-      {/* App shell: fixed top bar + scrollable main */}
       <div className="flex flex-col flex-1 min-w-0 min-h-0 w-full overflow-hidden">
         <div className="shrink-0">
           <TopBar
-            title={activeView === 'optimiser' ? 'Optimiser' : activeView === 'insights' ? 'Insights' : 'Overview'}
-            subtitle={activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : activeView === 'insights' ? 'Analytics and reporting for your retail performance.' : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"}
+            title={activeView === 'optimiser' && optimiserSubView === 'scope' ? 'Scope' : activeView === 'optimiser' ? 'Optimiser' : activeView === 'insights' ? 'Insights' : 'Overview'}
+            subtitle={activeView === 'optimiser' && optimiserSubView === 'scope' ? null : activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : activeView === 'insights' ? 'Analytics and insights across your inventory.' : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"}
+            onBack={activeView === 'optimiser' && optimiserSubView === 'scope' ? () => setOptimiserSubView('schedule') : undefined}
           />
         </div>
 
-        {/* Main: scrollable content panel */}
         <main className="flex-1 min-h-0 min-w-0 w-full pl-8 pr-8 pb-12 overflow-y-auto overflow-x-hidden">
         {activeView === 'optimiser' ? (
           <div className="pt-6">
