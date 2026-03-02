@@ -131,7 +131,7 @@ export default function App() {
                 <span>Events</span>
               </button>
               <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
-                <IconGears className="text-[#22272f] size-6 shrink-0" aria-hidden />
+                <IconGears className="text-white size-6 shrink-0" aria-hidden />
                 <span>Parameters</span>
               </button>
               <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
@@ -203,7 +203,7 @@ export default function App() {
               {!insightSubView && <InsightsPage />}
             </div>
           ) : (
-            <OverviewPage assignee={assignee} setAssignee={setAssignee} />
+            <OverviewPage assignee={assignee} setAssignee={setAssignee} onAddJob={() => { setActiveView('optimiser'); setOptimiserSubView('scope'); }} />
           )}
         </main>
       </div>
