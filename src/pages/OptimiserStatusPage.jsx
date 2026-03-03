@@ -188,17 +188,17 @@ function renderTripsRows(data, expandedIds, onToggle, level = 0) {
           })
           rows.push(
             <tr key={`${child.id}-total`} className="border-b border-[#e5e7eb] bg-[#f5f5f5]">
-              <td className="py-2 px-4 font-semibold text-[#0a0a0a]" style={{ paddingLeft: pl + 40 }}>{child.label} total</td>
+              <td className="py-2 px-4 font-medium text-[#0a0a0a]" style={{ paddingLeft: pl + 40 }}>{child.label} total</td>
               <td className="py-2 px-4">—</td>
-              <td className="py-2 px-4 text-right font-bold text-[#0a0a0a]">{child.total.units}</td>
-              <td className="py-2 px-4 text-right font-bold text-[#0a0a0a]">{child.total.value}</td>
-              <td className="py-2 px-4 text-right font-bold text-[#0a0a0a]">{child.total.revenue}</td>
-              <td className="py-2 px-4 text-right font-bold text-[#0a0a0a]">{child.total.costs}</td>
-              <td className="py-2 px-4 text-right font-bold text-[#0a0a0a]">{child.total.stockouts}</td>
-              <td className="py-2 px-4 text-right font-bold text-[#0a0a0a]">{child.total.consolidated}</td>
-              <td className="py-2 px-4 text-right font-bold text-[#0a0a0a]">{child.total.spread}</td>
-              <td className="py-2 px-4 text-right font-bold text-[#0a0a0a]">{child.total.products}</td>
-              <td className="py-2 px-4 text-right font-bold text-[#0a0a0a]">{child.total.skus}</td>
+              <td className="py-2 px-4 text-right font-medium text-[#0a0a0a]">{child.total.units}</td>
+              <td className="py-2 px-4 text-right font-medium text-[#0a0a0a]">{child.total.value}</td>
+              <td className="py-2 px-4 text-right font-medium text-[#0a0a0a]">{child.total.revenue}</td>
+              <td className="py-2 px-4 text-right font-medium text-[#0a0a0a]">{child.total.costs}</td>
+              <td className="py-2 px-4 text-right font-medium text-[#0a0a0a]">{child.total.stockouts}</td>
+              <td className="py-2 px-4 text-right font-medium text-[#0a0a0a]">{child.total.consolidated}</td>
+              <td className="py-2 px-4 text-right font-medium text-[#0a0a0a]">{child.total.spread}</td>
+              <td className="py-2 px-4 text-right font-medium text-[#0a0a0a]">{child.total.products}</td>
+              <td className="py-2 px-4 text-right font-medium text-[#0a0a0a]">{child.total.skus}</td>
             </tr>
           )
         }
@@ -592,51 +592,51 @@ export default function OptimiserStatusPage() {
                 <tr className="bg-[#f5f5f5] font-medium border-t-2 border-[#e5e7eb]">
                   <td className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">UNIQUE COUNT</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">456</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">456</span>
                   </td>
                   <td className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">UNIQUE COUNT</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">480</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">480</span>
                   </td>
                   <td className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">UNIQUE COUNT</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">73</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">73</span>
                   </td>
                   <td className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">UNIQUE COUNT</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">169</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">169</span>
                   </td>
                   <td className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">UNIQUE COUNT</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">66</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">66</span>
                   </td>
                   <td className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">UNIQUE COUNT</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">9,723</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">9,723</span>
                   </td>
                   <td className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">UNIQUE COUNT</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">19,943</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">19,943</span>
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="text-xs text-[#6a7282] block">TOTAL</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">4.78M</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">4.78M</span>
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="text-xs text-[#6a7282] block">TOTAL</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">1.15B</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">1.15B</span>
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="text-xs text-[#6a7282] block">TOTAL</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">675.31M</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">675.31M</span>
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="text-xs text-[#6a7282] block">TOTAL</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">90.77M</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">90.77M</span>
                   </td>
                   <td className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">MAXIM</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">21.5</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">21.5</span>
                   </td>
                 </tr>
               </tfoot>

@@ -327,27 +327,27 @@ export default function DataHealthPage() {
                 <tr className="bg-[#f5f5f5] font-medium border-t-2 border-[#e5e7eb]">
                   <td colSpan={3} className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">UNIQUE COUNT</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">1</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">1</span>
                   </td>
                   <td colSpan={2} className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">UNIQUE COUNT</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">10</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">10</span>
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="text-xs text-[#6a7282] block">TIME PERIOD</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">16/12/2025...</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">16/12/2025...</span>
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="text-xs text-[#6a7282] block">TOTAL</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">139.58M</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">139.58M</span>
                   </td>
                   <td className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">UNIQUE COUNT</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">2</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">2</span>
                   </td>
                   <td className="py-3 px-4">
                     <span className="text-xs text-[#6a7282] block">TOTAL</span>
-                    <span className="text-base font-bold text-[#0a0a0a]">55</span>
+                    <span className="text-base font-medium text-[#0a0a0a]">55</span>
                   </td>
                 </tr>
               </tfoot>
