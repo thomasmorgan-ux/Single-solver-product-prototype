@@ -10,6 +10,7 @@ export default function TopBar({
   showMenuButton,
   headerActions,
   onCreateSchedule,
+  onUseLatestRecommendations,
 }) {
   return (
     <header className="bg-[#12171e] flex items-center justify-between p-6 shrink-0" data-name="Top bar" data-node-id="12301:65733">
@@ -28,6 +29,15 @@ export default function TopBar({
       </div>
       <div className="flex flex-1 gap-1.5 items-center justify-end min-w-0 shrink-0">
         {headerActions}
+        {onUseLatestRecommendations && (
+          <button
+            type="button"
+            onClick={onUseLatestRecommendations}
+            className="h-10 px-4 rounded-[4px] bg-[#0267ff] text-white text-sm font-medium flex items-center gap-2 shrink-0 hover:bg-[#0252cc]"
+          >
+            +Use latest recommendations
+          </button>
+        )}
         {onCreateSchedule && (
           <button
             type="button"

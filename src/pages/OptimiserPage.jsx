@@ -118,7 +118,7 @@ const MODULE_OPTIONS = [
   { id: 'rebalancing', label: 'Rebalancing' },
 ]
 
-export default function OptimiserPage({ onAddJob, openScheduleDrawer }) {
+export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob, resetToUpcoming }) {
   const [scheduleDrawerOpen, setScheduleDrawerOpen] = useState(false)
   const [editingScheduleEntry, setEditingScheduleEntry] = useState(null)
   const [drawerForm, setDrawerForm] = useState(DEFAULT_DRAWER_FORM)
@@ -369,6 +369,16 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer }) {
     setScheduleDrawerDays({ Wed: true, Sat: true })
     setScheduleDrawerOpen(true)
   }, [openScheduleDrawer])
+
+  useEffect(() => {
+    if (!openAddJob) return
+    if (onAddJob) onAddJob()
+  }, [openAddJob, onAddJob])
+
+  useEffect(() => {
+    if (!resetToUpcoming) return
+    setActiveStatusTab('upcoming')
+  }, [resetToUpcoming])
 
   return (
     <div className="flex flex-col gap-6">

@@ -35,6 +35,8 @@ export default function App() {
   const [optimiserSubView, setOptimiserSubView] = useState('schedule')
   const [insightSubView, setInsightSubView] = useState(null)
   const [openScheduleDrawerSignal, setOpenScheduleDrawerSignal] = useState(0)
+  const [openAddJobSignal, setOpenAddJobSignal] = useState(0)
+  const [resetToUpcomingSignal, setResetToUpcomingSignal] = useState(0)
 
   return (
     <div className="h-screen bg-[#f5f5f5] flex text-[#0a0a0a] overflow-hidden">
@@ -200,17 +202,18 @@ export default function App() {
             }
             primaryButtonLabel={undefined}
             showMenuButton={activeView === 'insights'}
-            onBack={activeView === 'optimiser' && optimiserSubView === 'scope' ? () => setOptimiserSubView('schedule') : undefined}
-            headerActions={
+            onBack={
+              activeView === 'optimiser' && optimiserSubView === 'scope'
+                ? () => {
+                    setOptimiserSubView('schedule')
+                    setResetToUpcomingSignal((n) => n + 1)
+                  }
+                : undefined
+            }
+            headerActions={undefined}
+            onUseLatestRecommendations={
               activeView === 'optimiser'
-                ? (
-                    <button
-                      type="button"
-                      className="h-10 px-4 rounded-[4px] bg-[#0267ff] text-white text-sm font-medium flex items-center gap-2 shrink-0 hover:bg-[#0252cc]"
-                    >
-                      +Use latest recommendations
-                    </button>
-                  )
+                ? () => setOpenAddJobSignal((n) => n + 1)
                 : undefined
             }
             onCreateSchedule={
@@ -229,6 +232,8 @@ export default function App() {
               <OptimiserPage
                 onAddJob={() => setOptimiserSubView('scope')}
                 openScheduleDrawer={openScheduleDrawerSignal}
+                openAddJob={openAddJobSignal}
+                resetToUpcoming={resetToUpcomingSignal}
               />
             </div>
           ) : activeView === 'insights' ? (
