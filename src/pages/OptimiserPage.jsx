@@ -698,9 +698,14 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
               onClick={() => toggleAccordion('scope')}
               className="w-full flex items-center justify-between px-4 py-3 text-left"
             >
-              <span className="text-[14px] font-medium text-[#0a0a0a]">
-                Scope
-              </span>
+              <div className="flex flex-col">
+                <span className="text-[14px] font-medium text-[#0a0a0a]">
+                  Scope
+                </span>
+                <span className="text-[12px] font-normal text-[#4b535c]">
+                  Define which products and locations are included in this schedule
+                </span>
+              </div>
               <IconChevronDown
                 className={`size-4 text-[#4b535c] transition-transform ${
                   accordionOpen.scope ? 'rotate-180' : ''
