@@ -938,9 +938,14 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
               onClick={() => toggleAccordion('exceptions')}
               className="w-full flex items-center justify-between px-4 py-3 text-left"
             >
-              <span className="text-[14px] font-medium text-[#0a0a0a]">
-                Manage by exceptions
-              </span>
+              <div className="flex flex-col">
+                <span className="text-[14px] font-medium text-[#0a0a0a]">
+                  Manage approvals
+                </span>
+                <span className="text-[12px] font-normal text-[#4b535c]">
+                  Set which recommendations you want to review, the rest will be auto-approved
+                </span>
+              </div>
               <IconChevronDown
                 className={`size-4 text-[#4b535c] transition-transform ${
                   accordionOpen.exceptions ? 'rotate-180' : ''
@@ -948,7 +953,11 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
               />
             </button>
             {accordionOpen.exceptions && (
-              <div className="px-4 pb-4" />
+              <div className="px-4 pb-4 pt-1 flex flex-col gap-3">
+                <p className="text-[12px] font-normal italic text-[#4b535c]">
+                  These approval rules will apply at the unique trip level. If you create a set, it will save
+                </p>
+              </div>
             )}
           </div>
         </div>
