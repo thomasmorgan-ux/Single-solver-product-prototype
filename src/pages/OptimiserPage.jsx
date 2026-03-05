@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { IconCalendarSidebar, IconPlus, IconReplenishment, IconReorder, IconRebalancing, IconChevronDown, IconList, IconCalendarNote, IconTruck, IconTrendUp, IconLightbulb, IconEdit, IconClose, IconChevronDownSelect } from '../components/icons'
 
 const SAMPLE_CALENDAR_ENTRY = {
@@ -118,7 +118,7 @@ const MODULE_OPTIONS = [
   { id: 'rebalancing', label: 'Rebalancing' },
 ]
 
-export default function OptimiserPage({ onAddJob }) {
+export default function OptimiserPage({ onAddJob, onRegisterCreateScheduleHandler }) {
   const [scheduleDrawerOpen, setScheduleDrawerOpen] = useState(false)
   const [editingScheduleEntry, setEditingScheduleEntry] = useState(null)
   const [drawerForm, setDrawerForm] = useState(DEFAULT_DRAWER_FORM)
@@ -299,6 +299,16 @@ export default function OptimiserPage({ onAddJob }) {
   const isSameDay = (a, b) => a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate()
   const eventDatePickerPrevMonth = () => setEventDatePickerViewDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1))
   const eventDatePickerNextMonth = () => setEventDatePickerViewDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1))
+
+  useEffect(() => {
+    if (!onRegisterCreateScheduleHandler) return
+    onRegisterCreateScheduleHandler(() => {
+      setEditingScheduleEntry(null)
+      setDrawerForm(DEFAULT_DRAWER_FORM)
+      setScheduleDrawerDays({ Wed: true, Sat: true })
+      setScheduleDrawerOpen(true)
+    })
+  }, [onRegisterCreateScheduleHandler])
 
   return (
     <div className="flex flex-col gap-6">

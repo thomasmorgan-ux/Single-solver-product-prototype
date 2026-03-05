@@ -34,6 +34,7 @@ export default function App() {
   const [activeView, setActiveView] = useState('control-panel')
   const [optimiserSubView, setOptimiserSubView] = useState('schedule')
   const [insightSubView, setInsightSubView] = useState(null)
+  const [openScheduleFromHeader, setOpenScheduleFromHeader] = useState(null)
 
   return (
     <div className="h-screen bg-[#f5f5f5] flex text-[#0a0a0a] overflow-hidden">
@@ -184,6 +185,25 @@ export default function App() {
             primaryButtonLabel={undefined}
             showMenuButton={activeView === 'insights'}
             onBack={activeView === 'optimiser' && optimiserSubView === 'scope' ? () => setOptimiserSubView('schedule') : undefined}
+            headerActions={activeView === 'optimiser'
+              ? (
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      className="text-sm font-medium text-white hover:text-white/80"
+                    >
+                      +Use latest recommendations
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { if (openScheduleFromHeader) openScheduleFromHeader() }}
+                      className="text-sm font-medium text-white hover:text-white/80"
+                    >
+                      +Create schedule
+                    </button>
+                  </div>
+                )
+              : undefined}
           />
         </div>
 
@@ -192,7 +212,7 @@ export default function App() {
             <ScopePage />
           ) : activeView === 'optimiser' ? (
             <div className="pt-6">
-              <OptimiserPage onAddJob={() => setOptimiserSubView('scope')} />
+              <OptimiserPage onAddJob={() => setOptimiserSubView('scope')} onRegisterCreateScheduleHandler={setOpenScheduleFromHeader} />
             </div>
           ) : activeView === 'insights' ? (
             <div>
