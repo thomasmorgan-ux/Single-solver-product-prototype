@@ -949,9 +949,12 @@ export default function OptimiserPage({ onAddJob, onRegisterCreateScheduleHandle
           )}
         </>
       ) : activeStatusTab === 'next' ? (
-        <div className="mt-4 space-y-4">
+        <div className="mt-4 space-y-6">
           {nextSchedules.map((schedule) => (
-            <div key={schedule.id} className="bg-white border border-[#e5e7eb] rounded-[14px] p-6 flex flex-col gap-5 max-w-4xl">
+            <div
+              key={schedule.id}
+              className="bg-white border border-[#e5e7eb] border-l-4 border-l-[#0267ff] rounded-[14px] p-6 flex flex-col gap-5 max-w-4xl"
+            >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-xl font-semibold text-[#0a0a0a]">{schedule.name}</h2>
               </div>
@@ -978,16 +981,37 @@ export default function OptimiserPage({ onAddJob, onRegisterCreateScheduleHandle
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {schedule.metrics.map((metric) => (
-                  <div key={metric.label} className="rounded-[12px] border border-[#e5e7eb] bg-[#eff6ff] px-4 py-3 flex flex-col">
+                {schedule.metrics.map((metric) => {
+                  const bgClass =
+                    metric.label === 'Unique trips'
+                      ? 'bg-[#eff6ff]'
+                      : metric.label === 'Recommended transfers'
+                        ? 'bg-[#f3e8ff]'
+                        : metric.label === 'Revenue increase'
+                          ? 'bg-[#ecfdf3]'
+                          : 'bg-[#fef2f2]'
+                  return (
+                    <div
+                      key={metric.label}
+                      className={`rounded-[12px] border border-[#e5e7eb] px-4 py-3 flex flex-col ${bgClass}`}
+                    >
                     <span className="text-2xl md:text-3xl font-semibold tracking-tight text-[#0a0a0a]">
                       {metric.value}
                     </span>
                     <span className="mt-1 text-xs text-[#4b535c]">
                       {metric.label}
                     </span>
-                  </div>
-                ))}
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="h-9 px-4 rounded-[4px] border border-[#0267ff] text-sm font-medium text-[#0267ff] bg-white hover:bg-[#ebf3ff]"
+                >
+                  Review schedule
+                </button>
               </div>
             </div>
           ))}
