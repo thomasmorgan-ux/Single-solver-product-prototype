@@ -163,6 +163,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     exceptions: false,
   })
   const [scopeOption, setScopeOption] = useState('include-all')
+  const [savedApprovalRule, setSavedApprovalRule] = useState('')
   const [productFilterOpen, setProductFilterOpen] = useState({
     departments: false,
     subDepartments: false,
@@ -953,10 +954,41 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
               />
             </button>
             {accordionOpen.exceptions && (
-              <div className="px-4 pb-4 pt-1 flex flex-col gap-3">
+              <div className="px-4 pb-4 pt-1 flex flex-col gap-4">
                 <p className="text-[12px] font-normal italic text-[#4b535c]">
                   These approval rules will apply at the unique trip level. If you create a set, it will save
                 </p>
+                <div className="flex flex-col gap-2">
+                  <label className="text-[14px] font-normal text-[#4b535c]">Saved approval rules</label>
+                  <div className="relative max-w-sm">
+                    <select
+                      value={savedApprovalRule}
+                      onChange={(ev) => setSavedApprovalRule(ev.target.value)}
+                      className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none"
+                    >
+                      <option value="">Select</option>
+                      <option value="liberty">Liberty exceptions</option>
+                      <option value="paris">Paris stores</option>
+                      <option value="create-new">Create new approval set</option>
+                    </select>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                      <IconChevronDownSelect />
+                    </span>
+                  </div>
+                </div>
+                {savedApprovalRule === 'liberty' && (
+                  <p className="text-[13px] font-normal text-[#4b535c]">
+                    Using saved rule: Liberty exceptions
+                  </p>
+                )}
+                {savedApprovalRule === 'paris' && (
+                  <p className="text-[13px] font-normal text-[#4b535c]">
+                    Using saved rule: Paris stores
+                  </p>
+                )}
+                {savedApprovalRule === 'create-new' && (
+                  <div className="min-h-[120px] rounded-[8px] border border-[#e5e7eb] bg-[#fafafa]" />
+                )}
               </div>
             )}
           </div>
