@@ -196,6 +196,10 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     sendingLocations: false,
     receivingLocations: false,
   })
+  const [advancedApprovalRows, setAdvancedApprovalRows] = useState(() => [
+    { id: 'adv-1', mainColumn: '', condition: '', value: '' },
+  ])
+  const [advancedRowNextId, setAdvancedRowNextId] = useState(2)
   const reviewStatusFilterOptions = [
     { id: 'in review', label: 'In review' },
     { id: 'upcoming', label: 'Upcoming' },
@@ -461,6 +465,42 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
       [key]: !prev[key],
     }))
   }
+
+  const addAdvancedApprovalRow = () => {
+    const id = `adv-${advancedRowNextId}`
+    setAdvancedRowNextId((n) => n + 1)
+    setAdvancedApprovalRows((prev) => [...prev, { id, mainColumn: '', condition: '', value: '' }])
+  }
+
+  const removeAdvancedApprovalRow = (id) => {
+    setAdvancedApprovalRows((prev) => prev.filter((r) => r.id !== id))
+  }
+
+  const updateAdvancedApprovalRow = (id, field, value) => {
+    setAdvancedApprovalRows((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, [field]: value } : r))
+    )
+  }
+
+  const MAIN_COLUMN_OPTIONS = [
+    'L30D sales',
+    'Understocks',
+    'Transfer units',
+    'Understocks after rebalance',
+    'Overstocks',
+    'Overstocks after rebalance',
+    'Sales uplift',
+    'Sales uplift units',
+    'L7D sales',
+    'Forecast sales rate',
+  ]
+  const CONDITION_OPTIONS = [
+    'Equal to',
+    'Greater than',
+    'Lower than',
+    'Greater than or equal to',
+    'Lower than or equal to',
+  ]
 
   if (isCreateSchedulePage) {
     return (
@@ -1195,6 +1235,98 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                             </div>
                           )
                         })}
+                      </div>
+                    </section>
+
+                    <section className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-[13px] font-semibold text-[#0a0a0a] uppercase tracking-[0.04em]">
+                          Advanced
+                        </h3>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setAdvancedApprovalRows([{ id: 'adv-1', mainColumn: '', condition: '', value: '' }])
+                            setAdvancedRowNextId(2)
+                          }}
+                          className="text-[12px] font-medium text-[#4b535c] hover:text-[#0a0a0a]"
+                        >
+                          Clear all
+                        </button>
+                      </div>
+                      <div className="mt-1 flex flex-col gap-3 border-t border-[#e5e7eb] pt-3">
+                        {advancedApprovalRows.map((row) => (
+                          <div
+                            key={row.id}
+                            className="flex flex-wrap items-end gap-3 p-3 rounded-[8px] border border-[#e5e7eb] bg-[#fafafa]"
+                          >
+                            <span className="text-[13px] font-medium text-[#0a0a0a] w-full sm:w-auto sm:min-w-[48px]">
+                              Where
+                            </span>
+                            <div className="flex flex-col gap-1 min-w-[140px] flex-1">
+                              <label className="text-[12px] font-normal text-[#4b535c]">Main column</label>
+                              <div className="relative">
+                                <select
+                                  value={row.mainColumn}
+                                  onChange={(e) => updateAdvancedApprovalRow(row.id, 'mainColumn', e.target.value)}
+                                  className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[13px] text-[#0a0a0a] appearance-none"
+                                >
+                                  <option value="">Select</option>
+                                  {MAIN_COLUMN_OPTIONS.map((opt) => (
+                                    <option key={opt} value={opt}>{opt}</option>
+                                  ))}
+                                </select>
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                                  <IconChevronDownSelect />
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex flex-col gap-1 min-w-[160px] flex-1">
+                              <label className="text-[12px] font-normal text-[#4b535c]">Condition</label>
+                              <div className="relative">
+                                <select
+                                  value={row.condition}
+                                  onChange={(e) => updateAdvancedApprovalRow(row.id, 'condition', e.target.value)}
+                                  className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[13px] text-[#0a0a0a] appearance-none"
+                                >
+                                  <option value="">Select</option>
+                                  {CONDITION_OPTIONS.map((opt) => (
+                                    <option key={opt} value={opt}>{opt}</option>
+                                  ))}
+                                </select>
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                                  <IconChevronDownSelect />
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex flex-col gap-1 min-w-[100px] flex-1">
+                              <label className="text-[12px] font-normal text-[#4b535c]">Enter a value</label>
+                              <input
+                                type="number"
+                                placeholder="Value"
+                                value={row.value}
+                                onChange={(e) => updateAdvancedApprovalRow(row.id, 'value', e.target.value)}
+                                className="w-full h-10 px-3 rounded-[4px] border border-[#e9eaeb] bg-white text-[13px] text-[#0a0a0a]"
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeAdvancedApprovalRow(row.id)}
+                              className="h-10 w-10 flex items-center justify-center rounded-[4px] text-[#4b535c] hover:bg-[#e5e7eb] shrink-0"
+                              aria-label="Remove row"
+                            >
+                              <IconClose className="size-4" />
+                            </button>
+                          </div>
+                        ))}
+                        <button
+                          type="button"
+                          onClick={addAdvancedApprovalRow}
+                          className="self-start h-9 px-3 rounded-[4px] border border-[#0267ff] text-[13px] font-medium text-[#0267ff] hover:bg-[#ebf3ff] flex items-center gap-2"
+                        >
+                          <IconPlus className="size-4" />
+                          Add row
+                        </button>
                       </div>
                     </section>
                   </div>
