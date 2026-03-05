@@ -209,8 +209,8 @@ export default function OptimiserPage({ onAddJob, onRegisterCreateScheduleHandle
     {
       id: 'uk-weekly-replen',
       name: 'UK weekly replenishment',
-      created: '20/02/2026',
-      deadline: '22/02/2026',
+      created: '04/05/2026',
+      deadline: '06/05/2026',
       status: 'Ready to review',
       exceptions: '5',
       approved: '42',
@@ -989,10 +989,16 @@ export default function OptimiserPage({ onAddJob, onRegisterCreateScheduleHandle
             return (
             <div
               key={schedule.id}
-              className="bg-white border border-[#e5e7eb] border-l-4 border-l-[#0267ff] rounded-[14px] p-4 flex flex-col gap-4 max-w-4xl"
+              className="bg-white border border-[#e5e7eb] border-l-4 border-l-[#0267ff] rounded-[14px] p-4 flex flex-col gap-4 w-full"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-xl md:text-2xl font-semibold text-[#0a0a0a]">{schedule.name}</h2>
+                <button
+                  type="button"
+                  className="h-9 px-4 rounded-[4px] border border-[#0267ff] text-sm font-medium text-[#0267ff] bg-white hover:bg-[#ebf3ff]"
+                >
+                  Submit
+                </button>
               </div>
               <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-[#4b535c]">
                 <span>Created: {schedule.created}</span>
@@ -1078,14 +1084,6 @@ export default function OptimiserPage({ onAddJob, onRegisterCreateScheduleHandle
                   )}
                 </div>
               )}
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="h-9 px-4 rounded-[4px] border border-[#0267ff] text-sm font-medium text-[#0267ff] bg-white hover:bg-[#ebf3ff]"
-                >
-                  Submit
-                </button>
-              </div>
             </div>
             )
           })}
