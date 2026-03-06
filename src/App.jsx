@@ -32,7 +32,7 @@ export default function App() {
   const [optimiserOpen, setOptimiserOpen] = useState(false)
   const [insightsOpen, setInsightsOpen] = useState(false)
   const [activeView, setActiveView] = useState('control-panel')
-  const [optimiserSubView, setOptimiserSubView] = useState('schedule')
+  const [optimiserSubView, setOptimiserSubView] = useState(null)
   const [insightSubView, setInsightSubView] = useState(null)
   const [openScheduleDrawerSignal, setOpenScheduleDrawerSignal] = useState(0)
   const [openAddJobSignal, setOpenAddJobSignal] = useState(0)
@@ -91,7 +91,7 @@ export default function App() {
           <div className="flex flex-col gap-[var(--spacing-xs,6px)] w-full shrink-0">
             <button
               type="button"
-              onClick={() => { setActiveView('optimiser'); setOptimiserSubView('schedule'); setOptimiserOpen((o) => !o); }}
+              onClick={() => { setActiveView('optimiser'); setOptimiserSubView(null); setOptimiserOpen((o) => !o); }}
               className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] shrink-0 ${activeView === 'optimiser' ? 'bg-[#0267ff] text-white font-medium' : 'font-normal text-white hover:bg-white/5'}`}
               aria-expanded={optimiserOpen}
               data-name="Sidebar element"
@@ -206,8 +206,9 @@ export default function App() {
             onBack={
               activeView === 'optimiser' && optimiserSubView === 'scope'
                 ? () => {
-                    setOptimiserSubView('schedule')
+                    setOptimiserSubView(null)
                     setResetToUpcomingSignal((n) => n + 1)
+                    setOpenAddJobSignal(0)
                   }
                 : undefined
             }
