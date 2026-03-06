@@ -57,6 +57,8 @@ const VIEW_OPTIONS = [
   'Exception: Europe monthly rebal',
 ]
 
+const EDITED_EXCEPTION_IDS = [3, 5]
+
 function IconCheck() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0" aria-hidden>
@@ -341,6 +343,8 @@ export default function ScheduleDetailPage() {
                   {tripsRows.map((row) => {
                     const isExceptionRow = row.to === 'Opéra'
                     const isApproved = !!approvedTrips[row.id]
+                    const isEdited = isExceptionRow && EDITED_EXCEPTION_IDS.includes(row.id) && !isApproved
+
                     return (
                       <tr key={row.id} className="border-b border-[#e5e7eb] hover:bg-[#f9fafb]">
                         <td className="py-3 px-3 align-top">
@@ -401,7 +405,19 @@ export default function ScheduleDetailPage() {
                           <span className="text-[#0a0a0a]">{row.products}</span>
                         </td>
                         <td className="py-3 px-3 align-top">
-                          {isExceptionRow && isApproved ? (
+                          {isExceptionRow ? (
+                            isApproved ? (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#ecfdf3] text-[11px] text-[#166534]">
+                                Approved
+                              </span>
+                            ) : isEdited ? (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#fef3c7] text-[11px] text-[#92400e]">
+                                Edited
+                              </span>
+                            ) : (
+                              <span className="inline-block h-5" aria-hidden />
+                            )
+                          ) : viewShowsFullDataset ? (
                             <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#ecfdf3] text-[11px] text-[#166534]">
                               Approved
                             </span>
@@ -418,6 +434,10 @@ export default function ScheduleDetailPage() {
                             >
                               Approve
                             </button>
+                          ) : !isExceptionRow && viewShowsFullDataset ? (
+                            <span className="inline-flex items-center justify-center text-[#16a34a]">
+                              <IconCheck />
+                            </span>
                           ) : null}
                         </td>
                       </tr>
