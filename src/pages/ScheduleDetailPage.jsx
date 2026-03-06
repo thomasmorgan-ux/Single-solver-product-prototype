@@ -67,13 +67,42 @@ function IconCheck() {
 
 export default function ScheduleDetailPage() {
   const [activeTab, setActiveTab] = useState('trips')
-  const [filtersCleared, setFiltersCleared] = useState(false)
+  const [viewShowsFullDataset, setViewShowsFullDataset] = useState(false)
   const [selectedView, setSelectedView] = useState('Exception: Europe monthly rebal')
   const [viewDropdownOpen, setViewDropdownOpen] = useState(false)
-  const tripsRows = filtersCleared ? TRIPS_ALL : TRIPS_OPERA
-  const summaryTransfers = filtersCleared ? '2,000 units' : '203 units'
-  const summaryRevenue = filtersCleared ? '€435.3K' : '€41.3K'
-  const summaryRecommended = filtersCleared ? '2,105 units' : '203 units'
+  const [approvedTrips, setApprovedTrips] = useState({})
+
+  const tripsRows = viewShowsFullDataset ? TRIPS_ALL : TRIPS_OPERA
+  const summaryTransfers = viewShowsFullDataset ? '2,000 units' : '203 units'
+  const summaryRevenue = viewShowsFullDataset ? '€435.3K' : '€41.3K'
+  const summaryRecommended = viewShowsFullDataset ? '2,105 units' : '203 units'
+
+  function handleSelectView(option) {
+    setSelectedView(option)
+    setViewDropdownOpen(false)
+    if (option === 'Show everything') {
+      setViewShowsFullDataset(true)
+    } else if (option === 'Exception: Europe monthly rebal') {
+      setViewShowsFullDataset(false)
+    }
+    // Saved views: Dresses - UK & Spain, Hoodies drop — leave view unchanged
+  }
+
+  const handleApproveRow = (id) => {
+    setApprovedTrips((prev) => ({ ...prev, [id]: true }))
+  }
+
+  const handleApproveAllVisible = () => {
+    const idsToApprove = tripsRows.filter((row) => row.to === 'Opéra').map((row) => row.id)
+    if (!idsToApprove.length) return
+    setApprovedTrips((prev) => {
+      const next = { ...prev }
+      idsToApprove.forEach((id) => {
+        next[id] = true
+      })
+      return next
+    })
+  }
 
   return (
     <div className="pt-6 flex flex-col gap-6">
@@ -172,10 +201,7 @@ export default function ScheduleDetailPage() {
                       <li key={option} role="option" aria-selected={isSelected}>
                         <button
                           type="button"
-                          onClick={() => {
-                            setSelectedView(option)
-                            setViewDropdownOpen(false)
-                          }}
+                          onClick={() => handleSelectView(option)}
                           className="w-full flex items-center justify-between gap-2 px-3 py-2 text-left text-[14px] text-[#0a0a0a] hover:bg-[#f3f4f6]"
                         >
                           <span>{option}</span>
@@ -238,8 +264,8 @@ export default function ScheduleDetailPage() {
               </button>
             </div>
 
-            {!filtersCleared && (
-              <div className="flex flex-wrap items-center gap-2 text-[12px] mt-1">
+            <div className="flex flex-wrap items-center gap-2 text-[12px] mt-1">
+              {!viewShowsFullDataset && (
                 <div className="flex flex-wrap items-center gap-2">
                   {[
                     'Receiving location: Opéra',
@@ -255,15 +281,29 @@ export default function ScheduleDetailPage() {
                     </span>
                   ))}
                 </div>
+              )}
+              <div className="ml-auto flex items-center gap-3">
+                {!viewShowsFullDataset && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setViewShowsFullDataset(true)
+                      setSelectedView('Show everything')
+                    }}
+                    className="text-[12px] font-medium text-[#4b535c] hover:text-[#0a0a0a]"
+                  >
+                    Clear filters
+                  </button>
+                )}
                 <button
                   type="button"
-                  onClick={() => setFiltersCleared(true)}
-                  className="ml-auto text-[12px] font-medium text-[#4b535c] hover:text-[#0a0a0a]"
+                  onClick={handleApproveAllVisible}
+                  className="h-8 px-3 rounded-[4px] border border-[#e5e7eb] bg-white text-[12px] text-[#0a0a0a] hover:bg-[#f3f4f6]"
                 >
-                  Clear filters
+                  Approve all
                 </button>
               </div>
-            )}
+            </div>
 
             <div className="border border-[#e5e7eb] rounded-[10px] overflow-hidden mt-2">
               <table className="w-full text-[14px]">
@@ -282,6 +322,8 @@ export default function ScheduleDetailPage() {
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Revenue increase</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Recommended transfers</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Products</th>
+                    <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Approval status</th>
+                    <th className="py-3 px-3" />
                   </tr>
                   <tr className="border-b border-[#e5e7eb]">
                     <th className="py-2 px-3" />
@@ -291,70 +333,96 @@ export default function ScheduleDetailPage() {
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]">{summaryRevenue}</th>
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]">{summaryRecommended}</th>
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]">N/A</th>
+                    <th className="py-2 px-3" />
+                    <th className="py-2 px-3" />
                   </tr>
                 </thead>
                 <tbody>
-                  {tripsRows.map((row) => (
-                    <tr key={row.id} className="border-b border-[#e5e7eb] hover:bg-[#f9fafb]">
-                      <td className="py-3 px-3 align-top">
-                        <input
-                          type="checkbox"
-                          className="size-4 rounded border-[#d1d5db] text-[#0267ff] focus:ring-[#0267ff]"
-                          aria-label={`Select trip ${row.from} to ${row.to}`}
-                        />
-                      </td>
-                      <td className="py-3 px-3 align-top">
-                        <div className="flex flex-col">
-                          <span className="text-[#0a0a0a] font-medium">{row.from}</span>
-                          <span className="text-[12px] text-[#4b535c]">{row.fromCode}</span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-3 align-top">
-                        <div className="flex flex-col">
-                          <span className="text-[#0a0a0a] font-medium">{row.to}</span>
-                          <span className="text-[12px] text-[#4b535c]">{row.toCode}</span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-3 align-top">
-                        <div className="flex flex-col">
-                          <span className="text-[#0a0a0a]">{row.transfers}</span>
-                          <span className="text-[12px] text-[#4b535c]">max 200</span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-3 align-top">
-                        <div className="flex flex-col">
-                          <span className="text-[#0a0a0a]">{row.revenue}</span>
-                          <span className="text-[12px] text-[#4b535c]">min €500</span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-3 align-top">
-                        <div className="flex flex-col gap-1">
-                          <span className="text-[#0a0a0a]">{row.recommended}</span>
-                          <span className="text-[12px] text-[#4b535c]">max 200</span>
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {row.badges?.includes('MDQ') && (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#eff6ff] text-[11px] text-[#1d4ed8]">
-                                MDQ
-                              </span>
-                            )}
-                            {row.badges?.includes('VIS') && (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#f3e8ff] text-[11px] text-[#6b21a8]">
-                                VIS
-                              </span>
-                            )}
-                            {row.badges?.includes('REV') && (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#ecfdf3] text-[11px] text-[#166534]">
-                                REV
-                              </span>
-                            )}
+                  {tripsRows.map((row) => {
+                    const isExceptionRow = row.to === 'Opéra'
+                    const isApproved = !!approvedTrips[row.id]
+                    return (
+                      <tr key={row.id} className="border-b border-[#e5e7eb] hover:bg-[#f9fafb]">
+                        <td className="py-3 px-3 align-top">
+                          <input
+                            type="checkbox"
+                            className="size-4 rounded border-[#d1d5db] text-[#0267ff] focus:ring-[#0267ff]"
+                            aria-label={`Select trip ${row.from} to ${row.to}`}
+                          />
+                        </td>
+                        <td className="py-3 px-3 align-top">
+                          <div className="flex flex-col">
+                            <span className="text-[#0a0a0a] font-medium">{row.from}</span>
+                            <span className="text-[12px] text-[#4b535c]">{row.fromCode}</span>
                           </div>
-                        </div>
-                      </td>
-                      <td className="py-3 px-3 align-top">
-                        <span className="text-[#0a0a0a]">{row.products}</span>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="py-3 px-3 align-top">
+                          <div className="flex flex-col">
+                            <span className="text-[#0a0a0a] font-medium">{row.to}</span>
+                            <span className="text-[12px] text-[#4b535c]">{row.toCode}</span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-3 align-top">
+                          <div className="flex flex-col">
+                            <span className="text-[#0a0a0a]">{row.transfers}</span>
+                            <span className="text-[12px] text-[#4b535c]">max 200</span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-3 align-top">
+                          <div className="flex flex-col">
+                            <span className="text-[#0a0a0a]">{row.revenue}</span>
+                            <span className="text-[12px] text-[#4b535c]">min €500</span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-3 align-top">
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[#0a0a0a]">{row.recommended}</span>
+                            <span className="text-[12px] text-[#4b535c]">max 200</span>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {row.badges?.includes('MDQ') && (
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#eff6ff] text-[11px] text-[#1d4ed8]">
+                                  MDQ
+                                </span>
+                              )}
+                              {row.badges?.includes('VIS') && (
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#f3e8ff] text-[11px] text-[#6b21a8]">
+                                  VIS
+                                </span>
+                              )}
+                              {row.badges?.includes('REV') && (
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#ecfdf3] text-[11px] text-[#166534]">
+                                  REV
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-3 px-3 align-top">
+                          <span className="text-[#0a0a0a]">{row.products}</span>
+                        </td>
+                        <td className="py-3 px-3 align-top">
+                          {isExceptionRow && isApproved ? (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#ecfdf3] text-[11px] text-[#166534]">
+                              Approved
+                            </span>
+                          ) : (
+                            <span className="inline-block h-5" aria-hidden />
+                          )}
+                        </td>
+                        <td className="py-3 px-3 align-top text-right">
+                          {isExceptionRow && !isApproved ? (
+                            <button
+                              type="button"
+                              onClick={() => handleApproveRow(row.id)}
+                              className="inline-flex items-center justify-center h-8 px-3 rounded-[4px] border border-[#e5e7eb] bg-white text-[12px] text-[#0a0a0a] hover:bg-[#f3f4f6]"
+                            >
+                              Approve
+                            </button>
+                          ) : null}
+                        </td>
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             </div>
