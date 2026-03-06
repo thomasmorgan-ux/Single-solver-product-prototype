@@ -25,27 +25,243 @@ function IconFilterFunnel() {
 }
 
 const TRIPS_OPERA = [
-  { id: 1, from: 'Cannes', fromCode: 'A1R', to: 'Opéra', toCode: 'A1A', transfers: '119', revenue: '€23.5K', recommended: '119', products: 68, badges: ['VIS', 'REV'] },
-  { id: 2, from: 'G.I cap 3000', fromCode: 'A3E', to: 'Opéra', toCode: 'A1A', transfers: '35', revenue: '€5.73K', recommended: '35', products: 23, badges: ['VIS', 'REV'] },
-  { id: 3, from: 'Printemps toulon', fromCode: 'A5O', to: 'Opéra', toCode: 'A1A', transfers: '24', revenue: '€5.09K', recommended: '24', products: 16, badges: ['VIS', 'REV'] },
-  { id: 4, from: 'Pr.com', fromCode: 'A9E', to: 'Opéra', toCode: 'A1A', transfers: '6', revenue: '€2.76K', recommended: '6', products: 2, badges: ['REV'] },
-  { id: 5, from: 'Bruxelles', fromCode: 'A2F', to: 'Opéra', toCode: 'A1A', transfers: '15', revenue: '€2.28K', recommended: '15', products: 12, badges: ['VIS', 'REV'] },
-  { id: 6, from: 'G.I annecy', fromCode: 'A3C', to: 'Opéra', toCode: 'A1A', transfers: '4', revenue: '€1.98K', recommended: '4', products: 4, badges: ['REV'] },
+  {
+    id: 1,
+    from: 'Cannes',
+    fromCode: 'A1R',
+    to: 'Opéra',
+    toCode: 'A1A',
+    transfers: '119',
+    revenue: '€23.5K',
+    recommended: '119',
+    products: 68,
+    movementType: 'Rebalancing',
+    badges: ['VIS', 'REV'],
+  },
+  {
+    id: 2,
+    from: 'G.I cap 3000',
+    fromCode: 'A3E',
+    to: 'Opéra',
+    toCode: 'A1A',
+    transfers: '35',
+    revenue: '€5.73K',
+    recommended: '35',
+    products: 23,
+    movementType: 'Rebalancing',
+    badges: ['VIS', 'REV'],
+  },
+  {
+    id: 3,
+    from: 'Printemps toulon',
+    fromCode: 'A5O',
+    to: 'Opéra',
+    toCode: 'A1A',
+    transfers: '24',
+    revenue: '€5.09K',
+    recommended: '24',
+    products: 16,
+    movementType: 'Replenishment',
+    badges: ['VIS', 'REV'],
+  },
+  {
+    id: 4,
+    from: 'Pr.com',
+    fromCode: 'A9E',
+    to: 'Opéra',
+    toCode: 'A1A',
+    transfers: '6',
+    revenue: '€2.76K',
+    recommended: '6',
+    products: 2,
+    movementType: 'Rebalancing',
+    badges: ['REV'],
+  },
+  {
+    id: 5,
+    from: 'Bruxelles',
+    fromCode: 'A2F',
+    to: 'Opéra',
+    toCode: 'A1A',
+    transfers: '15',
+    revenue: '€2.28K',
+    recommended: '15',
+    products: 12,
+    movementType: 'Reorder',
+    badges: ['VIS', 'REV'],
+  },
+  {
+    id: 6,
+    from: 'G.I annecy',
+    fromCode: 'A3C',
+    to: 'Opéra',
+    toCode: 'A1A',
+    transfers: '4',
+    revenue: '€1.98K',
+    recommended: '4',
+    products: 4,
+    movementType: 'Replenishment',
+    badges: ['REV'],
+  },
 ]
 
 const TRIPS_OTHER = [
-  { id: 7, from: 'Miramas', fromCode: 'MRS01', to: 'Romans', toCode: 'ROM02', transfers: '180', revenue: '€52.4K', recommended: '192', products: 18, badges: ['MDQ', 'VIS', 'REV'] },
-  { id: 8, from: 'Troyes', fromCode: 'TRY03', to: 'Grenoble', toCode: 'GRE04', transfers: '164', revenue: '€41.7K', recommended: '176', products: 14, badges: ['MDQ', 'VIS', 'REV'] },
-  { id: 9, from: 'Cannes', fromCode: 'CAN05', to: 'Nice', toCode: 'NCE06', transfers: '192', revenue: '€38.2K', recommended: '200', products: 12, badges: ['MDQ', 'VIS', 'REV'] },
-  { id: 10, from: 'Miramas', fromCode: 'MRS01', to: 'Toulon', toCode: 'TLN07', transfers: '175', revenue: '€36.9K', recommended: '188', products: 9, badges: ['MDQ', 'VIS', 'REV'] },
-  { id: 11, from: 'Grenoble', fromCode: 'GRE04', to: 'Cannes', toCode: 'CAN05', transfers: '162', revenue: '€34.1K', recommended: '170', products: 11, badges: ['MDQ', 'VIS', 'REV'] },
-  { id: 12, from: 'Romans', fromCode: 'ROM02', to: 'Troyes', toCode: 'TRY03', transfers: '148', revenue: '€29.8K', recommended: '159', products: 10, badges: ['MDQ', 'VIS', 'REV'] },
-  { id: 13, from: 'Troyes', fromCode: 'TRY03', to: 'Cannes', toCode: 'CAN05', transfers: '136', revenue: '€27.5K', recommended: '144', products: 8, badges: ['MDQ', 'VIS', 'REV'] },
-  { id: 14, from: 'Nice', fromCode: 'NCE06', to: 'Grenoble', toCode: 'GRE04', transfers: '142', revenue: '€26.3K', recommended: '151', products: 7, badges: ['MDQ', 'VIS', 'REV'] },
-  { id: 15, from: 'Cannes', fromCode: 'CAN05', to: 'Romans', toCode: 'ROM02', transfers: '128', revenue: '€24.7K', recommended: '136', products: 6, badges: ['MDQ', 'VIS', 'REV'] },
-  { id: 16, from: 'Toulon', fromCode: 'TLN07', to: 'Miramas', toCode: 'MRS01', transfers: '120', revenue: '€22.4K', recommended: '129', products: 5, badges: ['MDQ', 'VIS', 'REV'] },
-  { id: 17, from: 'Grenoble', fromCode: 'GRE04', to: 'Romans', toCode: 'ROM02', transfers: '138', revenue: '€21.3K', recommended: '145', products: 6, badges: ['MDQ', 'VIS', 'REV'] },
-  { id: 18, from: 'Nice', fromCode: 'NCE06', to: 'Toulon', toCode: 'TLN07', transfers: '112', revenue: '€18.7K', recommended: '120', products: 4, badges: ['MDQ', 'VIS', 'REV'] },
+  {
+    id: 7,
+    from: 'Miramas',
+    fromCode: 'MRS01',
+    to: 'Romans',
+    toCode: 'ROM02',
+    transfers: '180',
+    revenue: '€52.4K',
+    recommended: '192',
+    products: 18,
+    movementType: 'Replenishment',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
+  {
+    id: 8,
+    from: 'Troyes',
+    fromCode: 'TRY03',
+    to: 'Grenoble',
+    toCode: 'GRE04',
+    transfers: '164',
+    revenue: '€41.7K',
+    recommended: '176',
+    products: 14,
+    movementType: 'Rebalancing',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
+  {
+    id: 9,
+    from: 'Cannes',
+    fromCode: 'CAN05',
+    to: 'Nice',
+    toCode: 'NCE06',
+    transfers: '192',
+    revenue: '€38.2K',
+    recommended: '200',
+    products: 12,
+    movementType: 'Reorder',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
+  {
+    id: 10,
+    from: 'Miramas',
+    fromCode: 'MRS01',
+    to: 'Toulon',
+    toCode: 'TLN07',
+    transfers: '175',
+    revenue: '€36.9K',
+    recommended: '188',
+    products: 9,
+    movementType: 'Replenishment',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
+  {
+    id: 11,
+    from: 'Grenoble',
+    fromCode: 'GRE04',
+    to: 'Cannes',
+    toCode: 'CAN05',
+    transfers: '162',
+    revenue: '€34.1K',
+    recommended: '170',
+    products: 11,
+    movementType: 'Rebalancing',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
+  {
+    id: 12,
+    from: 'Romans',
+    fromCode: 'ROM02',
+    to: 'Troyes',
+    toCode: 'TRY03',
+    transfers: '148',
+    revenue: '€29.8K',
+    recommended: '159',
+    products: 10,
+    movementType: 'Replenishment',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
+  {
+    id: 13,
+    from: 'Troyes',
+    fromCode: 'TRY03',
+    to: 'Cannes',
+    toCode: 'CAN05',
+    transfers: '136',
+    revenue: '€27.5K',
+    recommended: '144',
+    products: 8,
+    movementType: 'Rebalancing',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
+  {
+    id: 14,
+    from: 'Nice',
+    fromCode: 'NCE06',
+    to: 'Grenoble',
+    toCode: 'GRE04',
+    transfers: '142',
+    revenue: '€26.3K',
+    recommended: '151',
+    products: 7,
+    movementType: 'Replenishment',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
+  {
+    id: 15,
+    from: 'Cannes',
+    fromCode: 'CAN05',
+    to: 'Romans',
+    toCode: 'ROM02',
+    transfers: '128',
+    revenue: '€24.7K',
+    recommended: '136',
+    products: 6,
+    movementType: 'Rebalancing',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
+  {
+    id: 16,
+    from: 'Toulon',
+    fromCode: 'TLN07',
+    to: 'Miramas',
+    toCode: 'MRS01',
+    transfers: '120',
+    revenue: '€22.4K',
+    recommended: '129',
+    products: 5,
+    movementType: 'Replenishment',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
+  {
+    id: 17,
+    from: 'Grenoble',
+    fromCode: 'GRE04',
+    to: 'Romans',
+    toCode: 'ROM02',
+    transfers: '138',
+    revenue: '€21.3K',
+    recommended: '145',
+    products: 6,
+    movementType: 'Rebalancing',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
+  {
+    id: 18,
+    from: 'Nice',
+    fromCode: 'NCE06',
+    to: 'Toulon',
+    toCode: 'TLN07',
+    transfers: '112',
+    revenue: '€18.7K',
+    recommended: '120',
+    products: 4,
+    movementType: 'Replenishment',
+    badges: ['MDQ', 'VIS', 'REV'],
+  },
 ]
 
 const TRIPS_ALL = [...TRIPS_OPERA, ...TRIPS_OTHER]
@@ -110,12 +326,16 @@ export default function ScheduleDetailPage() {
     <div className="pt-6 flex flex-col gap-6">
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex flex-col gap-2 min-w-0">
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-[20px] md:text-[24px] font-medium text-[#0a0a0a]">
-              Europe monthly rebal
-            </h1>
-            <span className="text-[13px] text-[#4b535c]">
-              Created: 24/02/2026
+          <h1 className="text-[20px] md:text-[24px] font-medium text-[#0a0a0a]">
+            Europe monthly rebal
+          </h1>
+          <div className="flex flex-wrap items-center gap-3 text-[13px] text-[#4b535c]">
+            <span>Created: 24/02/2026</span>
+            <span className="flex items-center gap-2">
+              <span>Submission deadline:</span>
+              <span className="px-2 py-1 rounded-full text-[12px] font-medium bg-[#fef3c7] text-[#92400e]">
+                28/02/2026
+              </span>
             </span>
             <button
               type="button"
@@ -148,6 +368,11 @@ export default function ScheduleDetailPage() {
           </button>
         </div>
       </header>
+
+      <div className="rounded-[8px] border border-[#e5e7eb] bg-[#f9fafb] px-4 py-3 text-[14px] text-[#4b535c] flex flex-col gap-1">
+        <span className="font-semibold text-[#b91c1c]">12 exceptions still to approve</span>
+        <span>The next scheduled recommendations are the UK weekly replenishment running on 10/03/2026.</span>
+      </div>
 
       <div className="flex flex-col gap-4">
         <div className="border-b border-[#e5e7eb] flex items-center justify-between gap-4">
@@ -319,6 +544,7 @@ export default function ScheduleDetailPage() {
                       />
                     </th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Sending location</th>
+                    <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Movement type</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Receiving location</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Transfers</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Revenue increase</th>
@@ -329,6 +555,7 @@ export default function ScheduleDetailPage() {
                   </tr>
                   <tr className="border-b border-[#e5e7eb]">
                     <th className="py-2 px-3" />
+                    <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]" />
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]" />
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]" />
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]">{summaryTransfers}</th>
@@ -344,6 +571,13 @@ export default function ScheduleDetailPage() {
                     const isExceptionRow = row.to === 'Opéra'
                     const isApproved = !!approvedTrips[row.id]
                     const isEdited = isExceptionRow && EDITED_EXCEPTION_IDS.includes(row.id) && !isApproved
+                    const movementType = row.movementType || 'Rebalancing'
+                    const movementBadgeClass =
+                      movementType === 'Rebalancing'
+                        ? 'bg-[#e0edff] text-[#1d4ed8]'
+                        : movementType === 'Replenishment'
+                          ? 'bg-[#ecfdf3] text-[#166534]'
+                          : 'bg-[#f3e8ff] text-[#6b21a8]'
 
                     return (
                       <tr key={row.id} className="border-b border-[#e5e7eb] hover:bg-[#f9fafb]">
@@ -359,6 +593,13 @@ export default function ScheduleDetailPage() {
                             <span className="text-[#0a0a0a] font-medium">{row.from}</span>
                             <span className="text-[12px] text-[#4b535c]">{row.fromCode}</span>
                           </div>
+                        </td>
+                        <td className="py-3 px-3 align-top">
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${movementBadgeClass}`}
+                          >
+                            {movementType}
+                          </span>
                         </td>
                         <td className="py-3 px-3 align-top">
                           <div className="flex flex-col">
