@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { IconSearch, IconChevronDown, IconShare, IconDocument, IconClose } from '../components/icons'
+import { IconSearch, IconChevronDown, IconShare, IconDocument, IconClose, IconArrowLeft } from '../components/icons'
 
 function IconColumnSettings() {
   return (
@@ -290,11 +290,242 @@ const VIEW_OPTIONS = [
 
 const EDITED_EXCEPTION_IDS = [3, 5]
 
+// Mock products for trip drilldown (keyed by trip id)
+const PRODUCTS_BY_TRIP = {
+  1: [
+    { id: 1, name: 'Croi-sac zip l', sku: 'A1398810', colour: 'Noir', transfers: 3, transfersSub: 1, revenue: '€1.48K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '8 -> 5', depth: '5.0 -> 5.0' },
+    { id: 2, name: 'Pre-sac seau m', sku: 'A101080', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€1.12K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0' },
+    { id: 3, name: 'Ang-sac pte main m', sku: 'A1252810', colour: 'Figue', transfers: 3, transfersSub: 2, revenue: '€1.89K', recommended: 3, recommendedBadges: ['REV', 'VIS'], recommendedSub: 1, salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '1 -> 0', locations: '2 -> 2', overstocks: '5 -> 2', understocks: '6 -> 3', depth: '4.2 -> 4.8' },
+    { id: 4, name: 'Croi-sac zip s', sku: 'A1398811', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.98K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.32, stockouts: '0 -> 0', locations: '1 -> 2', overstocks: '2 -> 1', understocks: '4 -> 2', depth: '5.0 -> 5.0' },
+    { id: 5, name: 'Pre-sac seau s', sku: 'A101081', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€0.76K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0' },
+    { id: 6, name: 'Ang-sac pte main s', sku: 'A1252811', colour: 'Figue', transfers: 1, transfersSub: 1, revenue: '€0.65K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 0, salesL30: 1, forecast: 0.21, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '3 -> 1', depth: '4.0 -> 4.5' },
+  ],
+  2: [
+    { id: 7, name: 'Sac zip l', sku: 'B200001', colour: 'Noir', transfers: 2, transfersSub: 1, revenue: '€0.89K', recommended: 2, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '2 -> 1', understocks: '5 -> 3', depth: '4.5 -> 5.0' },
+    { id: 8, name: 'Sac seau m', sku: 'B200002', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.52K', recommended: 1, recommendedBadges: ['VIS'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.28, stockouts: '0 -> 1', locations: '1 -> 2', overstocks: '1 -> 0', understocks: '3 -> 1', depth: '3.6 -> 4.3' },
+  ],
+}
+
+// Default products when trip not in PRODUCTS_BY_TRIP
+const DEFAULT_PRODUCTS = PRODUCTS_BY_TRIP[1]
+
 function IconCheck() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0" aria-hidden>
       <path d="M13 4L6 11 3 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+  )
+}
+
+function ProductsDrilldown({ trip, onBack, productsTripType, setProductsTripType, productsIncludeZero, setProductsIncludeZero }) {
+  const products = PRODUCTS_BY_TRIP[trip.id] || DEFAULT_PRODUCTS
+  const breadcrumbFrom = `${trip.from} [${trip.fromCode}]`
+  const breadcrumbTo = trip.to.length > 12 ? `${trip.to.slice(0, 10)}...` : trip.to
+  const summaryTransfers = products.reduce((s, p) => s + p.transfers + (p.transfersSub || 0), 0)
+  const summaryRevenue = products.reduce((s, p) => {
+    const m = p.revenue.replace(/[€K]/g, '')
+    return s + parseFloat(m || 0)
+  }, 0)
+  const summaryRecommended = products.reduce((s, p) => s + p.recommended + (p.recommendedSub || 0), 0)
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={onBack}
+          className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e5e7eb] bg-white text-[#4b535c] hover:bg-[#f3f4f6] shrink-0"
+          aria-label="Back to trips"
+        >
+          <IconArrowLeft className="size-5" />
+        </button>
+        <nav className="flex items-center gap-2 text-[14px] text-[#4b535c]">
+          <button type="button" onClick={onBack} className="hover:text-[#0a0a0a] hover:underline">
+            {breadcrumbFrom}
+          </button>
+          <span>→</span>
+          <span className="text-[#0a0a0a]">{breadcrumbTo}</span>
+          <span>→</span>
+          <span className="font-medium text-[#0a0a0a]">Products</span>
+        </nav>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-[12px] text-[#4b535c]">Trip type:</span>
+          <div className="flex p-1 gap-2 rounded-[4px] border border-[#E9EAEB] bg-white">
+            {['Rebalancing', 'Replenishment'].map((opt) => (
+              <button
+                key={opt}
+                type="button"
+                onClick={() => setProductsTripType(opt)}
+                className={`px-3 py-2 rounded-[2px] text-[14px] ${
+                  productsTripType === opt ? 'bg-[#F8F8F8] font-medium text-[#0a0a0a]' : 'text-[#4b535c] hover:bg-[#f8f8f8]'
+                }`}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[12px] text-[#4b535c]">Include zero transfers</span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={productsIncludeZero}
+            onClick={() => setProductsIncludeZero((v) => !v)}
+            className={`relative w-11 h-6 rounded-full transition-colors ${
+              productsIncludeZero ? 'bg-[#0267ff]' : 'bg-[#e5e7eb]'
+            }`}
+          >
+            <span
+              className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
+                productsIncludeZero ? 'left-6' : 'left-1'
+              }`}
+            />
+          </button>
+        </div>
+        <div className="flex-1 min-w-[200px] max-w-[280px]">
+          <div className="relative">
+            <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#9ca3af] pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Revenue increase"
+              className="h-10 w-full pl-9 pr-4 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] placeholder:text-[#9ca3af]"
+            />
+          </div>
+        </div>
+        <button type="button" className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e9eaeb] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Filter">
+          <IconFilterFunnel />
+        </button>
+        <button type="button" className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e9eaeb] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Column settings">
+          <IconColumnSettings />
+        </button>
+      </div>
+
+      <div className="border border-[#e5e7eb] rounded-[4px] overflow-hidden bg-white">
+        <table className="w-full text-[14px]">
+          <thead className="bg-[#F8F8F8]">
+            <tr className="border-b border-[#E9EAEB]">
+              <th className="w-12 py-3 px-4 text-left">
+                <input type="checkbox" className="size-4 rounded border-[#E9EAEB] text-[#0267ff]" aria-label="Select all" />
+              </th>
+              <th className="text-left py-3 px-4 font-medium text-[#00050A]">Product details</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">Transfers</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="inline-flex items-center gap-1">Revenue increase <IconInfo /></span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="inline-flex items-center gap-1">Recommended transfers <IconInfo /></span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="flex flex-col items-end">
+                  Sales
+                  <span className="text-[11px] font-normal text-[#4b535c]">L7D / L30D</span>
+                </span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="flex flex-col items-end">
+                  <span className="inline-flex items-center gap-1">Forecast <IconInfo /></span>
+                  <span className="text-[11px] font-normal text-[#4b535c]">per wk</span>
+                </span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">Stockouts</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">Locations</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="inline-flex items-center gap-1">Overstocks <IconInfo /></span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="inline-flex items-center gap-1">Understocks <IconInfo /></span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="inline-flex items-center gap-1">Depth <IconInfo /></span>
+              </th>
+            </tr>
+            <tr className="border-b border-[#E9EAEB] bg-[#F8F8F8]">
+              <th className="py-2 px-4" />
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c]" />
+              <th className="py-2 px-4 text-[12px] font-semibold text-[#0a0a0a] text-right">{summaryTransfers} units</th>
+              <th className="py-2 px-4 text-[12px] font-semibold text-[#0a0a0a] text-right">€{summaryRevenue.toFixed(1)}K</th>
+              <th className="py-2 px-4 text-[12px] font-semibold text-[#0a0a0a] text-right">{summaryRecommended} units</th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((p) => (
+              <tr key={p.id} className="border-b border-[#E9EAEB] hover:bg-[#f9fafb]">
+                <td className="py-3 px-4">
+                  <input type="checkbox" className="size-4 rounded border-[#E9EAEB] text-[#0267ff]" aria-label={`Select ${p.name}`} />
+                </td>
+                <td className="py-3 px-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-[4px] bg-[#f3f4f6] shrink-0" />
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-medium text-[#0a0a0a]">{p.name}</span>
+                      <span className="text-[12px] text-[#4b535c]">{p.sku}</span>
+                      <span className="text-[12px] text-[#4b535c]">{p.colour}</span>
+                    </div>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end">
+                    <span className="text-[#0a0a0a]">{p.transfers}</span>
+                    <span className="text-[12px] text-[#4b535c]">{p.transfersSub}</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.revenue}</td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end gap-1">
+                    <span className="text-[#0a0a0a]">
+                      {p.recommended}
+                      {p.recommendedBadges?.map((b) => (
+                        <span key={b} className="ml-1 inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#1d4ed8] text-[11px] font-medium text-white">
+                          {b === 'VIS' ? 'VS' : b}
+                        </span>
+                      ))}
+                    </span>
+                    <span className="text-[12px] text-[#4b535c]">{p.recommendedSub}</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end">
+                    <span className="text-[#0a0a0a]">{p.salesL7}</span>
+                    <span className="text-[12px] text-[#4b535c]">{p.salesL30}</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.forecast}</td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.stockouts}</td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.locations}</td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.overstocks}</td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.understocks}</td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.depth}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="flex items-center justify-between px-4 py-3 border-t border-[#E9EAEB] bg-white">
+          <span className="text-[14px] text-[#4b535c]">1,123 rows</span>
+          <span className="text-[14px] text-[#4b535c]">1 of 23</span>
+          <div className="flex items-center gap-2">
+            <button type="button" className="h-10 w-10 flex items-center justify-center rounded-[4px] opacity-50" aria-label="Previous page" disabled>
+              <IconArrowLeft className="size-5" />
+            </button>
+            <button type="button" className="h-10 w-10 flex items-center justify-center rounded-[4px] hover:bg-[#f3f4f6]" aria-label="Next page">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="rotate-180">
+                <path d="M13 8H3M7 4l-4 4 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -304,6 +535,9 @@ export default function ScheduleDetailPage() {
   const [selectedView, setSelectedView] = useState('Exception: Europe monthly rebal')
   const [viewDropdownOpen, setViewDropdownOpen] = useState(false)
   const [approvedTrips, setApprovedTrips] = useState({})
+  const [selectedTrip, setSelectedTrip] = useState(null)
+  const [productsTripType, setProductsTripType] = useState('Rebalancing')
+  const [productsIncludeZero, setProductsIncludeZero] = useState(true)
 
   const tripsRows = viewShowsFullDataset ? TRIPS_ALL : TRIPS_OPERA
   const summaryTransfers = viewShowsFullDataset ? '2,000 units' : '203 units'
@@ -472,6 +706,16 @@ export default function ScheduleDetailPage() {
         </div>
 
         {activeTab === 'trips' ? (
+          selectedTrip ? (
+            <ProductsDrilldown
+              trip={selectedTrip}
+              onBack={() => setSelectedTrip(null)}
+              productsTripType={productsTripType}
+              setProductsTripType={setProductsTripType}
+              productsIncludeZero={productsIncludeZero}
+              setProductsIncludeZero={setProductsIncludeZero}
+            />
+          ) : (
           <div className="flex flex-col gap-4">
             <div className="flex flex-wrap items-center gap-2">
               <div className="relative flex-1 min-w-[200px] max-w-[280px]">
@@ -618,8 +862,20 @@ export default function ScheduleDetailPage() {
                           : 'bg-[#f3e8ff] text-[#6b21a8]'
 
                     return (
-                      <tr key={row.id} className="border-b border-[#e5e7eb] hover:bg-[#f9fafb]">
-                        <td className="py-3 px-3 align-top">
+                      <tr
+                        key={row.id}
+                        className="border-b border-[#e5e7eb] hover:bg-[#f9fafb] cursor-pointer"
+                        onClick={() => setSelectedTrip(row)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            setSelectedTrip(row)
+                          }
+                        }}
+                      >
+                        <td className="py-3 px-3 align-top" onClick={(e) => e.stopPropagation()}>
                           <input
                             type="checkbox"
                             className="size-4 rounded border-[#d1d5db] text-[#0267ff] focus:ring-[#0267ff]"
@@ -699,11 +955,14 @@ export default function ScheduleDetailPage() {
                             <span className="inline-block h-5" aria-hidden />
                           )}
                         </td>
-                        <td className="py-3 px-3 align-top text-right">
+                        <td className="py-3 px-3 align-top text-right" onClick={(e) => e.stopPropagation()}>
                           {isExceptionRow && !isApproved ? (
                             <button
                               type="button"
-                              onClick={() => handleApproveRow(row.id)}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleApproveRow(row.id)
+                              }}
                               className="inline-flex items-center justify-center h-8 px-4 rounded-[4px] border border-[#d1d5db] bg-white text-[13px] font-medium text-[#212B36] hover:bg-[#f9fafb] hover:border-[#9ca3af]"
                             >
                               Approve
@@ -721,6 +980,7 @@ export default function ScheduleDetailPage() {
               </table>
             </div>
           </div>
+          )
         ) : (
           <div className="border border-dashed border-[#e5e7eb] rounded-[8px] p-6 text-[14px] text-[#4b535c]">
             {activeTab === 'products' ? 'Products view coming soon.' : 'Locations view coming soon.'}
