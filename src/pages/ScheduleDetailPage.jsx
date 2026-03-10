@@ -315,20 +315,20 @@ const PRODUCTS_EDITED_IDS = [1, 3]
 // Mock locations for stock analysis drilldown (keyed by product id)
 const LOCATIONS_BY_PRODUCT = {
   1: [
-    { id: 1, name: 'Opéra', code: 'A1A', stock: '6 → 12', tu: '6 → 12', tuWarehouse: 6, tuTruck: [3, 3], salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 → 0', coverage: '0% → 100%', targetWeeks: 6 },
-    { id: 2, name: 'G.L. Haussmann Maro', code: 'AIA', stock: '6 → 6', tu: '4 → 5', tuWarehouse: 3, tuTruck: [1], salesL7: 0, salesL30: 0, forecast: 0, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 4 },
-    { id: 3, name: 'La Défense', code: 'A2B', stock: '5 → 5', tu: '4 → 5', tuWarehouse: 3, tuTruck: [1], salesL7: 1, salesL30: 1, forecast: 0.76, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 4 },
-    { id: 4, name: 'Cap 3000', code: 'A3E', stock: '4 → 4', tu: '0 → 1', tuWarehouse: null, tuTruck: [1], salesL7: 0, salesL30: 2, forecast: 0.32, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 4 },
-    { id: 5, name: 'Lyon Herriot', code: 'A4C', stock: '5 → 5', tu: '0 → 1', tuWarehouse: null, tuTruck: [1], salesL7: 1, salesL30: 1, forecast: 0.54, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 4 },
-    { id: 6, name: 'Printemps Lille', code: 'ASF', stock: '8 → 8', tu: '0 → 20', tuWarehouse: 4, tuTruck: [20], salesL7: 2, salesL30: 4, forecast: 2.1, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 6 },
+    { id: 1, name: 'Opéra', code: 'A1A', stock: '6 → 12', tu: '6 → 12', tuWarehouse: 6, tuTruck: [3, 3], salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 → 0', coverage: '0% → 100%', targetWeeks: 6, recommendationReason: 'Increase revenue', revenueIncrease: '€679' },
+    { id: 2, name: 'G.L. Haussmann Maro', code: 'AIA', stock: '6 → 6', tu: '4 → 5', tuWarehouse: 3, tuTruck: [1], salesL7: 0, salesL30: 0, forecast: 0, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 4, recommendationReason: 'Reduce overstock', revenueIncrease: '€120' },
+    { id: 3, name: 'La Défense', code: 'A2B', stock: '5 → 5', tu: '4 → 5', tuWarehouse: 3, tuTruck: [1], salesL7: 1, salesL30: 1, forecast: 0.76, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 4, recommendationReason: 'Increase revenue', revenueIncrease: '€245' },
+    { id: 4, name: 'Cap 3000', code: 'A3E', stock: '4 → 4', tu: '0 → 1', tuWarehouse: null, tuTruck: [1], salesL7: 0, salesL30: 2, forecast: 0.32, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 4, recommendationReason: 'Improve coverage', revenueIncrease: '€89' },
+    { id: 5, name: 'Lyon Herriot', code: 'A4C', stock: '5 → 5', tu: '0 → 1', tuWarehouse: null, tuTruck: [1], salesL7: 1, salesL30: 1, forecast: 0.54, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 4, recommendationReason: 'Increase revenue', revenueIncrease: '€156' },
+    { id: 6, name: 'Printemps Lille', code: 'ASF', stock: '8 → 8', tu: '0 → 20', tuWarehouse: 4, tuTruck: [20], salesL7: 2, salesL30: 4, forecast: 2.1, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 6, recommendationReason: 'Increase revenue', revenueIncrease: '€1.2K' },
   ],
   2: [
-    { id: 1, name: 'Opéra', code: 'A1A', stock: '4 → 4', tu: '4 → 4', tuWarehouse: 4, tuTruck: [], salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 4 },
-    { id: 2, name: 'La Défense', code: 'A2B', stock: '3 → 3', tu: '3 → 3', tuWarehouse: 3, tuTruck: [], salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 4 },
+    { id: 1, name: 'Opéra', code: 'A1A', stock: '4 → 4', tu: '4 → 4', tuWarehouse: 4, tuTruck: [], salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 4, recommendationReason: 'Increase revenue', revenueIncrease: '€312' },
+    { id: 2, name: 'La Défense', code: 'A2B', stock: '3 → 3', tu: '3 → 3', tuWarehouse: 3, tuTruck: [], salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 4, recommendationReason: 'Reduce understock', revenueIncrease: '€98' },
   ],
   3: [
-    { id: 1, name: 'Opéra', code: 'A1A', stock: '6 → 6', tu: '6 → 6', tuWarehouse: 6, tuTruck: [], salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 6 },
-    { id: 2, name: 'G.L. Haussmann Maro', code: 'AIA', stock: '5 → 5', tu: '5 → 5', tuWarehouse: 5, tuTruck: [], salesL7: 0, salesL30: 0, forecast: 0, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 5 },
+    { id: 1, name: 'Opéra', code: 'A1A', stock: '6 → 6', tu: '6 → 6', tuWarehouse: 6, tuTruck: [], salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 6, recommendationReason: 'Increase revenue', revenueIncrease: '€445' },
+    { id: 2, name: 'G.L. Haussmann Maro', code: 'AIA', stock: '5 → 5', tu: '5 → 5', tuWarehouse: 5, tuTruck: [], salesL7: 0, salesL30: 0, forecast: 0, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 5, recommendationReason: 'Improve coverage', revenueIncrease: '€0' },
   ],
 }
 
@@ -493,22 +493,82 @@ function StockAnalysisDrilldown({ product, trip, onBack }) {
                     <span className="text-[#0a0a0a]">{loc.tu}</span>
                     <div className="flex flex-wrap gap-1 justify-end">
                       {loc.tuWarehouse != null && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-[#A234DA] text-[12px] font-medium text-white cursor-pointer transition-[filter,box-shadow] hover:brightness-90 hover:shadow-[0px_2px_4px_rgba(0,0,0,0.1)]">
-                          <IconWarehouse />
-                          {loc.tuWarehouse}
-                        </span>
+                        <div className="relative group">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-[#A234DA] text-[12px] font-medium text-white cursor-pointer transition-[filter,box-shadow] hover:brightness-90 hover:shadow-[0px_2px_4px_rgba(0,0,0,0.1)]">
+                            <IconWarehouse />
+                            {loc.tuWarehouse}
+                          </span>
+                          {(loc.recommendationReason != null || loc.revenueIncrease != null) && (
+                            <div className="absolute left-0 bottom-full mb-1 w-[max-content] max-w-[250px] p-3 bg-white border border-[#E9EAEB] rounded-[4px] shadow-[0_4px_12px_rgba(0,0,0,0.08)] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                              <div className="space-y-2">
+                                {loc.recommendationReason != null && (
+                                  <>
+                                    <div className="text-[12px] text-[#6b7280]">Recommendation reason</div>
+                                    <div className="text-[14px] text-[#0a0a0a]">{loc.recommendationReason}</div>
+                                  </>
+                                )}
+                                {loc.revenueIncrease != null && (
+                                  <div className="flex justify-between items-center gap-4 text-[14px]">
+                                    <span className="text-[#0a0a0a]">Revenue increase</span>
+                                    <span className="text-[#0a0a0a] font-medium">{loc.revenueIncrease}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       )}
                       {loc.tuTruck?.map((n, i) => (
-                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-[#0267FF] text-[12px] font-medium text-white cursor-pointer transition-[filter,box-shadow] hover:brightness-90 hover:shadow-[0px_2px_4px_rgba(0,0,0,0.1)]">
-                          <IconTruck />
-                          {n}
-                        </span>
+                        <div key={i} className="relative group">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-[#0267FF] text-[12px] font-medium text-white cursor-pointer transition-[filter,box-shadow] hover:brightness-90 hover:shadow-[0px_2px_4px_rgba(0,0,0,0.1)]">
+                            <IconTruck />
+                            {n}
+                          </span>
+                          {(loc.recommendationReason != null || loc.revenueIncrease != null) && (
+                            <div className="absolute left-0 bottom-full mb-1 w-[max-content] max-w-[250px] p-3 bg-white border border-[#E9EAEB] rounded-[4px] shadow-[0_4px_12px_rgba(0,0,0,0.08)] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                              <div className="space-y-2">
+                                {loc.recommendationReason != null && (
+                                  <>
+                                    <div className="text-[12px] text-[#6b7280]">Recommendation reason</div>
+                                    <div className="text-[14px] text-[#0a0a0a]">{loc.recommendationReason}</div>
+                                  </>
+                                )}
+                                {loc.revenueIncrease != null && (
+                                  <div className="flex justify-between items-center gap-4 text-[14px]">
+                                    <span className="text-[#0a0a0a]">Revenue increase</span>
+                                    <span className="text-[#0a0a0a] font-medium">{loc.revenueIncrease}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       ))}
                       {loc.tuWarehouse == null && !loc.tuTruck?.length && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] border border-[#4B535C] text-[12px] font-medium text-[#4b535c] opacity-80 cursor-pointer transition-[filter,box-shadow] hover:brightness-90 hover:shadow-[0px_2px_4px_rgba(0,0,0,0.1)]">
-                          <IconTruck />
-                          {loc.tu.split(' → ')[1] || '—'}
-                        </span>
+                        <div className="relative group">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] border border-[#4B535C] text-[12px] font-medium text-[#4b535c] opacity-80 cursor-pointer transition-[filter,box-shadow] hover:brightness-90 hover:shadow-[0px_2px_4px_rgba(0,0,0,0.1)]">
+                            <IconTruck />
+                            {loc.tu.split(' → ')[1] || '—'}
+                          </span>
+                          {(loc.recommendationReason != null || loc.revenueIncrease != null) && (
+                            <div className="absolute left-0 bottom-full mb-1 w-[max-content] max-w-[250px] p-3 bg-white border border-[#E9EAEB] rounded-[4px] shadow-[0_4px_12px_rgba(0,0,0,0.08)] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                              <div className="space-y-2">
+                                {loc.recommendationReason != null && (
+                                  <>
+                                    <div className="text-[12px] text-[#6b7280]">Recommendation reason</div>
+                                    <div className="text-[14px] text-[#0a0a0a]">{loc.recommendationReason}</div>
+                                  </>
+                                )}
+                                {loc.revenueIncrease != null && (
+                                  <div className="flex justify-between items-center gap-4 text-[14px]">
+                                    <span className="text-[#0a0a0a]">Revenue increase</span>
+                                    <span className="text-[#0a0a0a] font-medium">{loc.revenueIncrease}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>
