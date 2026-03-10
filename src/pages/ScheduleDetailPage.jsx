@@ -317,7 +317,7 @@ function IconCheck() {
   )
 }
 
-function ProductsDrilldown({ trip, onBack, productsTripType, setProductsTripType, productsIncludeZero, setProductsIncludeZero }) {
+function ProductsDrilldown({ trip, onBack }) {
   const products = PRODUCTS_BY_TRIP[trip.id] || DEFAULT_PRODUCTS
   const breadcrumbFrom = `${trip.from} [${trip.fromCode}]`
   const breadcrumbTo = trip.to.length > 12 ? `${trip.to.slice(0, 10)}...` : trip.to
@@ -350,56 +350,27 @@ function ProductsDrilldown({ trip, onBack, productsTripType, setProductsTripType
         </nav>
       </div>
 
-      <div className="flex flex-wrap items-center gap-4">
-        <div className="flex items-center gap-2">
-          <span className="text-[12px] text-[#4b535c]">Trip type:</span>
-          <div className="flex p-1 gap-2 rounded-[4px] border border-[#E9EAEB] bg-white">
-            {['Rebalancing', 'Replenishment'].map((opt) => (
-              <button
-                key={opt}
-                type="button"
-                onClick={() => setProductsTripType(opt)}
-                className={`px-3 py-2 rounded-[2px] text-[14px] ${
-                  productsTripType === opt ? 'bg-[#F8F8F8] font-medium text-[#0a0a0a]' : 'text-[#4b535c] hover:bg-[#f8f8f8]'
-                }`}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
+      <div className="flex flex-row flex-nowrap items-center gap-[8px]">
+        <div className="relative shrink-0">
+          <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-[#9ca3af] pointer-events-none" />
+          <input
+            type="text"
+            placeholder="Revenue increase"
+            className="h-12 pl-10 pr-4 rounded-[4px] border border-[#E9EAEB] bg-white text-[14px] text-[#0a0a0a] placeholder:text-[#9ca3af] w-[200px]"
+          />
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-[12px] text-[#4b535c]">Include zero transfers</span>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={productsIncludeZero}
-            onClick={() => setProductsIncludeZero((v) => !v)}
-            className={`relative w-11 h-6 rounded-full transition-colors ${
-              productsIncludeZero ? 'bg-[#0267ff]' : 'bg-[#e5e7eb]'
-            }`}
-          >
-            <span
-              className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
-                productsIncludeZero ? 'left-6' : 'left-1'
-              }`}
-            />
-          </button>
+        <div className="relative">
+          <select className="h-12 pl-4 pr-10 rounded-[4px] border border-[#E9EAEB] bg-white text-[14px] text-[#0a0a0a] appearance-none min-w-[160px]">
+            <option>First sales date</option>
+          </select>
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#4b535c]">
+            <IconChevronDown className="size-4" />
+          </span>
         </div>
-        <div className="flex-1 min-w-[200px] max-w-[280px]">
-          <div className="relative">
-            <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#9ca3af] pointer-events-none" />
-            <input
-              type="text"
-              placeholder="Revenue increase"
-              className="h-10 w-full pl-9 pr-4 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] placeholder:text-[#9ca3af]"
-            />
-          </div>
-        </div>
-        <button type="button" className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e9eaeb] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Filter">
+        <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Filter">
           <IconFilterFunnel />
         </button>
-        <button type="button" className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e9eaeb] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Column settings">
+        <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Column settings">
           <IconColumnSettings />
         </button>
       </div>
@@ -536,8 +507,6 @@ export default function ScheduleDetailPage() {
   const [viewDropdownOpen, setViewDropdownOpen] = useState(false)
   const [approvedTrips, setApprovedTrips] = useState({})
   const [selectedTrip, setSelectedTrip] = useState(null)
-  const [productsTripType, setProductsTripType] = useState('Rebalancing')
-  const [productsIncludeZero, setProductsIncludeZero] = useState(true)
 
   const tripsRows = viewShowsFullDataset ? TRIPS_ALL : TRIPS_OPERA
   const summaryTransfers = viewShowsFullDataset ? '2,000 units' : '203 units'
@@ -707,14 +676,7 @@ export default function ScheduleDetailPage() {
 
         {activeTab === 'trips' ? (
           selectedTrip ? (
-            <ProductsDrilldown
-              trip={selectedTrip}
-              onBack={() => setSelectedTrip(null)}
-              productsTripType={productsTripType}
-              setProductsTripType={setProductsTripType}
-              productsIncludeZero={productsIncludeZero}
-              setProductsIncludeZero={setProductsIncludeZero}
-            />
+            <ProductsDrilldown trip={selectedTrip} onBack={() => setSelectedTrip(null)} />
           ) : (
           <div className="flex flex-col gap-4">
             <div className="flex flex-wrap items-center gap-2">
