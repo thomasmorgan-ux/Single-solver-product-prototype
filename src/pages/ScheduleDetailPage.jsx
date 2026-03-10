@@ -23,6 +23,21 @@ function IconFilterFunnel() {
     </svg>
   )
 }
+function IconInfo() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0 text-[#9ca3af]" aria-hidden>
+      <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M7 6v4M7 4.5v.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  )
+}
+function IconSortDown() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="shrink-0 text-[#9ca3af]" aria-hidden>
+      <path d="M3 5l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
 
 const TRIPS_OPERA = [
   {
@@ -369,14 +384,14 @@ export default function ScheduleDetailPage() {
         </div>
       </header>
 
-      <div className="rounded-[8px] border border-[#e5e7eb] bg-[#f9fafb] px-4 py-3 text-[14px] text-[#4b535c] flex items-start justify-between gap-3">
+      <div className="rounded-[4px] border border-[#fde047] bg-[#fef9c3] px-4 py-3 text-[14px] text-[#713f12] flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <span className="font-semibold text-[#b91c1c]">12 exceptions still to approve</span>
-          <span>The next scheduled recommendations are the UK weekly replenishment running on 10/03/2026.</span>
+          <span className="font-semibold text-[#713f12]">12 exceptions still to approve</span>
+          <span className="text-[#92400e]">The next scheduled recommendations are the UK weekly replenishment running on 10/03/2026.</span>
         </div>
         <button
           type="button"
-          className="mt-0.5 text-[#9ca3af] hover:text-[#4b535c]"
+          className="mt-0.5 p-1 rounded-[4px] text-[#92400e] hover:bg-[#fde047]/30 hover:text-[#713f12]"
           aria-label="Dismiss exceptions info"
         >
           <IconClose className="size-4" />
@@ -412,7 +427,7 @@ export default function ScheduleDetailPage() {
             <button
               type="button"
               onClick={() => setViewDropdownOpen((o) => !o)}
-              className="flex items-center gap-2 h-9 px-3 rounded-[4px] border border-[#e5e7eb] bg-white text-[14px] text-[#0a0a0a] hover:bg-[#f9fafb] min-w-[180px] justify-between"
+              className="flex items-center gap-2 h-10 px-4 rounded-[4px] border border-[#EAEAEA] bg-white text-[14px] font-medium text-[#212B36] hover:bg-[#f8f8f8] min-w-[200px] justify-between"
               aria-haspopup="listbox"
               aria-expanded={viewDropdownOpen}
               aria-label="Select view"
@@ -429,7 +444,7 @@ export default function ScheduleDetailPage() {
                 />
                 <ul
                   role="listbox"
-                  className="absolute right-0 top-full z-20 mt-1 min-w-[240px] rounded-[4px] border border-[#e5e7eb] bg-white py-1 shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
+                  className="absolute right-0 top-full z-20 mt-1 min-w-[240px] rounded-[4px] border border-[#EAEAEA] bg-white py-1 shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
                 >
                   {VIEW_OPTIONS.map((option) => {
                     const isSelected = selectedView === option
@@ -459,16 +474,13 @@ export default function ScheduleDetailPage() {
         {activeTab === 'trips' ? (
           <div className="flex flex-col gap-4">
             <div className="flex flex-wrap items-center gap-2">
-              <div className="relative">
-                <select
-                  className="h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none min-w-[220px]"
-                  defaultValue="stockouts"
-                >
-                  <option value="stockouts">Stockouts before rebalance</option>
-                </select>
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
-                  <IconChevronDown className="size-4" />
-                </span>
+              <div className="relative flex-1 min-w-[200px] max-w-[280px]">
+                <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#9ca3af] pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Revenue increase"
+                  className="h-10 w-full pl-9 pr-4 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] placeholder:text-[#9ca3af]"
+                />
               </div>
               <button
                 type="button"
@@ -510,10 +522,16 @@ export default function ScheduleDetailPage() {
                   ].map((label) => (
                     <span
                       key={label}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#f3f4f6] text-[#4b535c] border border-[#e5e7eb]"
+                      className="inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 rounded-[4px] bg-[#f3f4f6] text-[#4b535c] border border-[#e5e7eb]"
                     >
                       <span>{label}</span>
-                      <IconClose className="size-3 text-[#9ca3af]" />
+                      <button
+                        type="button"
+                        className="p-0.5 rounded-[4px] text-[#6b7280] hover:bg-[#e5e7eb] hover:text-[#374151]"
+                        aria-label={`Remove filter: ${label}`}
+                      >
+                        <IconClose className="size-3.5" />
+                      </button>
                     </span>
                   ))}
                 </div>
@@ -556,8 +574,19 @@ export default function ScheduleDetailPage() {
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Receiving location</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Movement type</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Transfers</th>
-                    <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Revenue increase</th>
-                    <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Recommended transfers</th>
+                    <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">
+                      <span className="inline-flex items-center gap-1">
+                        Revenue increase
+                        <IconInfo />
+                        <IconSortDown />
+                      </span>
+                    </th>
+                    <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">
+                      <span className="inline-flex items-center gap-1">
+                        Recommended transfers
+                        <IconInfo />
+                      </span>
+                    </th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Products</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Approval status</th>
                     <th className="py-3 px-3" />
@@ -567,9 +596,9 @@ export default function ScheduleDetailPage() {
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]" />
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]" />
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]" />
-                    <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]">{summaryTransfers}</th>
-                    <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]">{summaryRevenue}</th>
-                    <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]">{summaryRecommended}</th>
+                    <th className="py-2 px-3 text-[12px] font-semibold text-[#0a0a0a]">{summaryTransfers}</th>
+                    <th className="py-2 px-3 text-[12px] font-semibold text-[#0a0a0a]">{summaryRevenue}</th>
+                    <th className="py-2 px-3 text-[12px] font-semibold text-[#0a0a0a]">{summaryRecommended}</th>
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]">N/A</th>
                     <th className="py-2 px-3" />
                     <th className="py-2 px-3" />
@@ -617,34 +646,29 @@ export default function ScheduleDetailPage() {
                           </span>
                         </td>
                         <td className="py-3 px-3 align-top">
-                          <div className="flex flex-col">
-                            <span className="text-[#0a0a0a]">{row.transfers}</span>
-                            <span className="text-[12px] text-[#4b535c]">max 200</span>
-                          </div>
+                          <span className="text-[#0a0a0a]">{row.transfers}</span>
+                          <span className="text-[12px] text-[#4b535c] ml-1">(max 200)</span>
                         </td>
                         <td className="py-3 px-3 align-top">
-                          <div className="flex flex-col">
-                            <span className="text-[#0a0a0a]">{row.revenue}</span>
-                            <span className="text-[12px] text-[#4b535c]">min €500</span>
-                          </div>
+                          <span className="text-[#0a0a0a]">{row.revenue}</span>
+                          <span className="text-[12px] text-[#4b535c] ml-1">(min 6903)</span>
                         </td>
                         <td className="py-3 px-3 align-top">
                           <div className="flex flex-col gap-1">
                             <span className="text-[#0a0a0a]">{row.recommended}</span>
-                            <span className="text-[12px] text-[#4b535c]">max 200</span>
                             <div className="flex flex-wrap gap-1 mt-1">
                               {row.badges?.includes('MDQ') && (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#eff6ff] text-[11px] text-[#1d4ed8]">
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#1d4ed8] text-[11px] font-medium text-white">
                                   MDQ
                                 </span>
                               )}
                               {row.badges?.includes('VIS') && (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#f3e8ff] text-[11px] text-[#6b21a8]">
-                                  VIS
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#1d4ed8] text-[11px] font-medium text-white">
+                                  VS
                                 </span>
                               )}
                               {row.badges?.includes('REV') && (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#ecfdf3] text-[11px] text-[#166534]">
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#1d4ed8] text-[11px] font-medium text-white">
                                   REV
                                 </span>
                               )}
@@ -680,7 +704,7 @@ export default function ScheduleDetailPage() {
                             <button
                               type="button"
                               onClick={() => handleApproveRow(row.id)}
-                              className="inline-flex items-center justify-center h-8 px-3 rounded-[4px] border border-[#e5e7eb] bg-white text-[12px] text-[#0a0a0a] hover:bg-[#f3f4f6]"
+                              className="inline-flex items-center justify-center h-8 px-4 rounded-[4px] border border-[#d1d5db] bg-white text-[13px] font-medium text-[#212B36] hover:bg-[#f9fafb] hover:border-[#9ca3af]"
                             >
                               Approve
                             </button>
