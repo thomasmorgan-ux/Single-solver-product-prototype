@@ -504,50 +504,47 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
 
   if (isCreateSchedulePage) {
     return (
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => setIsCreateSchedulePage(false)}
-            className="flex items-center justify-center w-9 h-9 rounded-[4px] text-[#0a0a0a] hover:bg-[#e5e7eb]"
+            className="flex items-center justify-center w-8 h-8 rounded-[4px] text-[#0a0a0a] hover:bg-[#e5e7eb]"
             aria-label="Back to recommendations"
           >
-            <IconArrowLeft className="size-4" />
+            <IconArrowLeft className="size-5" />
           </button>
-          <h1 className="text-[20px] md:text-[24px] font-medium text-[#0a0a0a]">
+          <h1 className="text-[24px] font-medium text-[#0a0a0a] leading-[100%]">
             Create schedule
           </h1>
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="border border-[#e5e7eb] rounded-[10px] bg-white">
+          <div className="border border-[#EAEAEA] rounded-[4px] bg-white overflow-hidden">
             <button
               type="button"
               onClick={() => toggleAccordion('details')}
-              className="w-full flex items-center justify-between px-4 py-3 text-left"
+              className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#f8f8f8] transition-colors"
             >
-              <div className="flex flex-col">
-                <span className="text-[14px] font-medium text-[#0a0a0a]">
+              <div className="flex flex-col gap-1">
+                <span className="text-[20px] font-medium text-[#212B36] leading-[150%]">
                   Schedule details
                 </span>
-                <span className="text-[12px] font-normal text-[#4b535c]">
+                <span className="text-[14px] font-normal text-[#4b535c]">
                   Configure how you want your schedule to run
                 </span>
               </div>
               <IconChevronDown
-                className={`size-4 text-[#4b535c] transition-transform ${
+                className={`size-5 text-[#4b535c] transition-transform shrink-0 ${
                   accordionOpen.details ? 'rotate-180' : ''
                 }`}
               />
             </button>
             {accordionOpen.details && (
-              <div className="px-4 pb-4 pt-1 flex flex-col gap-4">
+              <div className="px-5 pb-6 pt-2 flex flex-col gap-6 border-t border-[#EAEAEA]">
                 <section className="flex flex-col gap-2">
-                  <p className="text-[14px] font-medium text-[#0a0a0a]">
-                    Choose movement type
-                  </p>
-                  <label className="text-[14px] font-normal text-[#4b535c]">Movement type</label>
-                  <div className="relative max-w-sm">
+                  <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Movement type</label>
+                  <div className="relative">
                     <select
                       value={drawerForm.module}
                       onChange={(ev) =>
@@ -556,7 +553,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                           module: ev.target.value,
                         }))
                       }
-                      className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none"
+                      className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
                     >
                       <option value="">Select</option>
                       {MODULE_OPTIONS.map((opt) => (
@@ -565,15 +562,14 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                         </option>
                       ))}
                     </select>
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
                       <IconChevronDownSelect />
                     </span>
                   </div>
                 </section>
 
                 <section className="flex flex-col gap-2">
-                  <p className="text-[14px] font-medium text-[#0a0a0a]">Give your schedule a name:</p>
-                  <label className="text-[14px] font-normal text-[#4b535c]">Name schedule</label>
+                  <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Name schedule</label>
                   <input
                     type="text"
                     placeholder="Placeholder"
@@ -584,21 +580,18 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                         name: ev.target.value,
                       }))
                     }
-                    className="w-full max-w-md h-10 px-3 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] placeholder:text-[#4b535c]"
+                    className="w-full h-14 px-4 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] placeholder:text-[#9CA1AE]"
                   />
                   <p className="text-[12px] font-normal text-[#4b535c]">
                     If not assigned, name will be given automatically
                   </p>
                 </section>
 
-                <section className="flex flex-col gap-2">
+                <section className="flex flex-col gap-4">
                   <p className="text-[14px] font-medium text-[#0a0a0a]">Scheduling Dates</p>
-                </section>
-
-                <section className="flex flex-col gap-2">
-                  <div className="flex flex-wrap gap-3">
-                    <div className="flex flex-col gap-1 min-w-[140px]">
-                      <label className="text-[14px] font-normal text-[#4b535c]">Repeats</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Repeats</label>
                       <div className="relative">
                         <select
                           value={drawerForm.repeats}
@@ -608,19 +601,19 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                               repeats: ev.target.value,
                             }))
                           }
-                          className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none"
+                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
                         >
                           <option value="weekly">Weekly</option>
                           <option value="biweekly">Bi-weekly (Every 2 weeks)</option>
                           <option value="monthly">Monthly</option>
                         </select>
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
                           <IconChevronDownSelect />
                         </span>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-1 min-w-[100px]">
-                      <label className="text-[14px] font-normal text-[#4b535c]">Time</label>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Time</label>
                       <div className="relative">
                         <select
                           value={drawerForm.time}
@@ -630,20 +623,20 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                               time: ev.target.value,
                             }))
                           }
-                          className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none"
+                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
                         >
                           <option value="">Select time</option>
                           <option value="09:00 AM">09:00 AM</option>
                           <option value="10:00 AM">10:00 AM</option>
                           <option value="12:00 PM">12:00 PM</option>
                         </select>
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
                           <IconChevronDownSelect />
                         </span>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-1 min-w-[160px]">
-                      <label className="text-[14px] font-normal text-[#4b535c]">Time zone</label>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Time zone</label>
                       <div className="relative">
                         <select
                           value={drawerForm.timeZone}
@@ -653,21 +646,21 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                               timeZone: ev.target.value,
                             }))
                           }
-                          className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none"
+                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
                         >
                           <option value="pst">PST</option>
                           <option value="gmt+1">(GMT +1) Central Europe</option>
                         </select>
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
                           <IconChevronDownSelect />
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3 max-w-xl">
-                    <div className="flex flex-col gap-1">
-                      <label className="text-[14px] font-normal text-[#4b535c]">Start date</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Start date</label>
                       <div className="relative">
                         <select
                           value={drawerForm.startDateDay || ''}
@@ -677,7 +670,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                               startDateDay: ev.target.value,
                             }))
                           }
-                          className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none"
+                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
                         >
                           <option value="">Select</option>
                           {DAY_OPTIONS.map((day) => (
@@ -686,13 +679,13 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                             </option>
                           ))}
                         </select>
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
                           <IconChevronDownSelect />
                         </span>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <label className="text-[14px] font-normal text-[#4b535c]">End date</label>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">End date</label>
                       <div className="relative">
                         <select
                           value={drawerForm.endDateDay || ''}
@@ -702,7 +695,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                               endDateDay: ev.target.value,
                             }))
                           }
-                          className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none"
+                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
                         >
                           <option value="">Select</option>
                           {DAY_OPTIONS.map((day) => (
@@ -711,13 +704,13 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                             </option>
                           ))}
                         </select>
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
                           <IconChevronDownSelect />
                         </span>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <label className="text-[14px] font-normal text-[#4b535c]">Submission deadline</label>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Submission deadline</label>
                       <div className="relative">
                         <select
                           value={drawerForm.submissionDeadlineDay || ''}
@@ -727,7 +720,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                               submissionDeadlineDay: ev.target.value,
                             }))
                           }
-                          className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none"
+                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
                         >
                           <option value="">Select</option>
                           {DAY_OPTIONS.map((day) => (
@@ -736,7 +729,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                             </option>
                           ))}
                         </select>
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
                           <IconChevronDownSelect />
                         </span>
                       </div>
@@ -756,35 +749,35 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                         notify: ev.target.value,
                       }))
                     }
-                    className="w-full max-w-md h-10 px-3 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] placeholder:text-[#4b535c]"
+                    className="w-full h-14 px-4 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] placeholder:text-[#9CA1AE]"
                   />
                 </section>
               </div>
             )}
           </div>
 
-          <div className="border border-[#e5e7eb] rounded-[10px] bg-white">
+          <div className="border border-[#EAEAEA] rounded-[4px] bg-white overflow-hidden">
             <button
               type="button"
               onClick={() => toggleAccordion('scope')}
-              className="w-full flex items-center justify-between px-4 py-3 text-left"
+              className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#f8f8f8] transition-colors"
             >
-              <div className="flex flex-col">
-                <span className="text-[14px] font-medium text-[#0a0a0a]">
+              <div className="flex flex-col gap-1">
+                <span className="text-[20px] font-medium text-[#212B36] leading-[150%]">
                   Scope
                 </span>
-                <span className="text-[12px] font-normal text-[#4b535c]">
+                <span className="text-[14px] font-normal text-[#4b535c]">
                   Define which products and locations are included in this schedule
                 </span>
               </div>
               <IconChevronDown
-                className={`size-4 text-[#4b535c] transition-transform ${
+                className={`size-5 text-[#4b535c] transition-transform shrink-0 ${
                   accordionOpen.scope ? 'rotate-180' : ''
                 }`}
               />
             </button>
             {accordionOpen.scope && (
-              <div className="px-4 pb-4 pt-1 flex flex-col gap-4">
+              <div className="px-5 pb-6 pt-2 flex flex-col gap-6 border-t border-[#EAEAEA]">
                 <div className="flex flex-col gap-3">
                   <label className="flex items-start gap-3 p-4 rounded-[10px] border border-[#e5e7eb] bg-white cursor-pointer hover:border-[#0267ff]/40 has-[:checked]:border-[#0267ff]">
                     <input
@@ -1003,28 +996,28 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
             )}
           </div>
 
-          <div className="border border-[#e5e7eb] rounded-[10px] bg-white">
+          <div className="border border-[#EAEAEA] rounded-[4px] bg-white overflow-hidden">
             <button
               type="button"
               onClick={() => toggleAccordion('exceptions')}
-              className="w-full flex items-center justify-between px-4 py-3 text-left"
+              className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#f8f8f8] transition-colors"
             >
-              <div className="flex flex-col">
-                <span className="text-[14px] font-medium text-[#0a0a0a]">
+              <div className="flex flex-col gap-1">
+                <span className="text-[20px] font-medium text-[#212B36] leading-[150%]">
                   Manage approvals
                 </span>
-                <span className="text-[12px] font-normal text-[#4b535c]">
+                <span className="text-[14px] font-normal text-[#4b535c]">
                   Set which recommendations you want to review, the rest will be auto-approved
                 </span>
               </div>
               <IconChevronDown
-                className={`size-4 text-[#4b535c] transition-transform ${
+                className={`size-5 text-[#4b535c] transition-transform shrink-0 ${
                   accordionOpen.exceptions ? 'rotate-180' : ''
                 }`}
               />
             </button>
             {accordionOpen.exceptions && (
-              <div className="px-4 pb-4 pt-1 flex flex-col gap-4">
+              <div className="px-5 pb-6 pt-2 flex flex-col gap-6 border-t border-[#EAEAEA]">
                 <p className="text-[12px] font-normal italic text-[#4b535c]">
                   These approval rules will apply at the unique trip level. If you create a set, it will save
                 </p>
@@ -1034,7 +1027,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                     <select
                       value={savedApprovalRule}
                       onChange={(ev) => setSavedApprovalRule(ev.target.value)}
-                      className="w-full h-10 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none"
+                      className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
                     >
                       <option value="">Select</option>
                       <option value="liberty">Liberty exceptions</option>
@@ -1336,19 +1329,17 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-2">
+        <div className="flex items-center justify-end gap-3 pt-6">
           <button
             type="button"
             onClick={() => setIsCreateSchedulePage(false)}
-            className="h-10 px-4 rounded-[4px] text-[14px] font-medium text-[#0a0a0a] hover:bg-[#e5e7eb]"
-          >
+            className="h-12 px-6 rounded-[6px] text-[16px] font-medium text-[#0a0a0a] hover:bg-[#f3f4f6]">
             Cancel
           </button>
           <button
             type="button"
             onClick={() => setIsCreateSchedulePage(false)}
-            className="h-10 px-4 rounded-[4px] bg-[#0267ff] text-white text-[14px] font-medium hover:bg-[#0252cc]"
-          >
+            className="h-12 px-6 rounded-[6px] bg-[#0267FF] text-white text-[16px] font-medium hover:bg-[#0252cc]">
             Create schedule
           </button>
         </div>
