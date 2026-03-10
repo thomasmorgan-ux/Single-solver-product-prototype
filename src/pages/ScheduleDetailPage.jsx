@@ -312,6 +312,28 @@ const DEFAULT_PRODUCTS = PRODUCTS_BY_TRIP[1]
 // Product IDs that show 'Edited' badge in Products drilldown
 const PRODUCTS_EDITED_IDS = [1, 3]
 
+// Mock locations for stock analysis drilldown (keyed by product id)
+const LOCATIONS_BY_PRODUCT = {
+  1: [
+    { id: 1, name: 'Opéra', code: 'A1A', stock: '6 → 12', tu: '6 → 12', tuWarehouse: 6, tuTruck: [3, 3], salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 → 0', coverage: '0% → 100%', targetWeeks: 6 },
+    { id: 2, name: 'G.L. Haussmann Maro', code: 'AIA', stock: '6 → 6', tu: '4 → 5', tuWarehouse: 3, tuTruck: [1], salesL7: 0, salesL30: 0, forecast: 0, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 4 },
+    { id: 3, name: 'La Défense', code: 'A2B', stock: '5 → 5', tu: '4 → 5', tuWarehouse: 3, tuTruck: [1], salesL7: 1, salesL30: 1, forecast: 0.76, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 4 },
+    { id: 4, name: 'Cap 3000', code: 'A3E', stock: '4 → 4', tu: '0 → 1', tuWarehouse: null, tuTruck: [1], salesL7: 0, salesL30: 2, forecast: 0.32, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 4 },
+    { id: 5, name: 'Lyon Herriot', code: 'A4C', stock: '5 → 5', tu: '0 → 1', tuWarehouse: null, tuTruck: [1], salesL7: 1, salesL30: 1, forecast: 0.54, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 4 },
+    { id: 6, name: 'Printemps Lille', code: 'ASF', stock: '8 → 8', tu: '0 → 20', tuWarehouse: 4, tuTruck: [20], salesL7: 2, salesL30: 4, forecast: 2.1, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 6 },
+  ],
+  2: [
+    { id: 1, name: 'Opéra', code: 'A1A', stock: '4 → 4', tu: '4 → 4', tuWarehouse: 4, tuTruck: [], salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 4 },
+    { id: 2, name: 'La Défense', code: 'A2B', stock: '3 → 3', tu: '3 → 3', tuWarehouse: 3, tuTruck: [], salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 4 },
+  ],
+  3: [
+    { id: 1, name: 'Opéra', code: 'A1A', stock: '6 → 6', tu: '6 → 6', tuWarehouse: 6, tuTruck: [], salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '0 → 0', coverage: '100% → 100%', targetWeeks: 6 },
+    { id: 2, name: 'G.L. Haussmann Maro', code: 'AIA', stock: '5 → 5', tu: '5 → 5', tuWarehouse: 5, tuTruck: [], salesL7: 0, salesL30: 0, forecast: 0, stockouts: '0 → 0', coverage: '0% → 0%', targetWeeks: 5 },
+  ],
+}
+
+const DEFAULT_LOCATIONS = LOCATIONS_BY_PRODUCT[1]
+
 function IconCheck() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0" aria-hidden>
@@ -320,8 +342,213 @@ function IconCheck() {
   )
 }
 
-function ProductsDrilldown({ trip, onBack }) {
+function IconWarehouse() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0" aria-hidden>
+      <rect x="1" y="5" width="12" height="8" stroke="currentColor" strokeWidth="1.5" rx="1" />
+      <path d="M1 5l6-4 6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function IconTruck() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0" aria-hidden>
+      <rect x="1" y="4" width="8" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M9 7h2l2 2v2h-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="4" cy="11" r="1.5" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="11" cy="11" r="1.5" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  )
+}
+
+function StockAnalysisDrilldown({ product, trip, onBack }) {
+  const locations = LOCATIONS_BY_PRODUCT[product.id] || DEFAULT_LOCATIONS
+  const breadcrumbFrom = `${trip.from} [${trip.fromCode}]`
+  const breadcrumbTo = trip.to.length > 12 ? `${trip.to.slice(0, 10)}...` : trip.to
+  const productLabel = product.name.length > 16 ? `${product.name.slice(0, 14)}...` : product.name
+  const productSku = product.sku
+
+  const summaryStock = locations.reduce(
+    (acc, loc) => {
+      const [before, after] = loc.stock.split(' → ').map(Number)
+      return { before: acc.before + (before || 0), after: acc.after + (after || 0) }
+    },
+    { before: 0, after: 0 }
+  )
+  const summaryTU = locations.reduce(
+    (acc, loc) => {
+      const [before, after] = loc.tu.split(' → ').map(Number)
+      return { before: acc.before + (before || 0), after: acc.after + (after || 0) }
+    },
+    { before: 0, after: 0 }
+  )
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={onBack}
+          className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e5e7eb] bg-white text-[#4b535c] hover:bg-[#f3f4f6] shrink-0"
+          aria-label="Back to products"
+        >
+          <IconArrowLeft className="size-5" />
+        </button>
+        <nav className="flex items-center gap-2 text-[14px] text-[#4b535c]">
+          <button type="button" onClick={onBack} className="hover:text-[#0a0a0a] hover:underline">
+            {breadcrumbFrom}→{breadcrumbTo}
+          </button>
+          <span>→</span>
+          <span className="text-[#0a0a0a]">{productLabel} [{productSku}]</span>
+          <span>→</span>
+          <span className="font-medium text-[#0a0a0a]">Transfers</span>
+        </nav>
+      </div>
+
+      <div className="flex flex-row flex-nowrap items-center gap-[8px]">
+        <div className="relative shrink-0">
+          <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-[#9ca3af] pointer-events-none" />
+          <input
+            type="text"
+            placeholder="Stock after"
+            className="h-12 pl-10 pr-4 rounded-[4px] border border-[#E9EAEB] bg-white text-[14px] text-[#0a0a0a] placeholder:text-[#9ca3af] w-[200px]"
+          />
+        </div>
+        <div className="relative">
+          <select className="h-12 pl-4 pr-10 rounded-[4px] border border-[#E9EAEB] bg-white text-[14px] text-[#0a0a0a] appearance-none min-w-[160px]">
+            <option>Sort by</option>
+          </select>
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#4b535c]">
+            <IconChevronDown className="size-4" />
+          </span>
+        </div>
+        <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Filter">
+          <IconFilterFunnel />
+        </button>
+        <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Column settings">
+          <IconColumnSettings />
+        </button>
+      </div>
+
+      <div className="border border-[#e5e7eb] rounded-[4px] overflow-x-auto bg-white">
+        <table className="w-full text-[14px]">
+          <thead className="bg-[#F8F8F8]">
+            <tr className="border-b border-[#E9EAEB]">
+              <th className="w-12 py-3 px-4 text-left">
+                <input type="checkbox" className="size-4 rounded border-[#E9EAEB] text-[#0267ff]" aria-label="Select all" />
+              </th>
+              <th className="text-left py-3 px-4 font-medium text-[#00050A]">Locations</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="inline-flex items-center gap-1">Stock <IconSortDown /></span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="inline-flex items-center gap-1">TU <IconInfo /></span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="flex flex-col items-end">
+                  Sales
+                  <span className="text-[11px] font-normal text-[#4b535c]">L7D / L30D</span>
+                </span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="flex flex-col items-end">
+                  <span className="inline-flex items-center gap-1">Forecast <IconInfo /></span>
+                  <span className="text-[11px] font-normal text-[#4b535c]">per wk</span>
+                </span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">Stockouts</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A]">Coverage</th>
+            </tr>
+            <tr className="border-b border-[#E9EAEB] bg-[#F8F8F8]">
+              <th className="py-2 px-4" />
+              <th className="py-2 px-4" />
+              <th className="py-2 px-4 text-[12px] font-semibold text-[#0a0a0a] text-right">
+                {summaryStock.before} → {summaryStock.after}
+              </th>
+              <th className="py-2 px-4 text-[12px] font-semibold text-[#0a0a0a] text-right">
+                {summaryTU.before} → {summaryTU.after}
+              </th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">7.01 per wk</th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
+            </tr>
+          </thead>
+          <tbody>
+            {locations.map((loc, idx) => (
+              <tr key={loc.id} className={`border-b border-[#E9EAEB] hover:bg-[#f9fafb] ${idx === 0 ? 'bg-[#F8F8F8]' : 'bg-white'}`}>
+                <td className="py-3 px-4">
+                  <input type="checkbox" className="size-4 rounded border-[#E9EAEB] text-[#0267ff]" aria-label={`Select ${loc.name}`} />
+                </td>
+                <td className="py-3 px-4">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="font-medium text-[#0a0a0a]">{loc.name}</span>
+                    <span className="text-[12px] text-[#4b535c]">{loc.code}</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]">{loc.stock}</td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end gap-1">
+                    <span className="text-[#0a0a0a]">{loc.tu}</span>
+                    <div className="flex flex-wrap gap-1 justify-end">
+                      {loc.tuWarehouse != null && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-[#A234DA] text-[12px] font-medium text-white">
+                          <IconWarehouse />
+                          {loc.tuWarehouse}
+                        </span>
+                      )}
+                      {loc.tuTruck?.map((n, i) => (
+                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-[#0267FF] text-[12px] font-medium text-white">
+                          <IconTruck />
+                          {n}
+                        </span>
+                      ))}
+                      {loc.tuWarehouse == null && !loc.tuTruck?.length && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] border border-[#4B535C] text-[12px] font-medium text-[#4b535c] opacity-80">
+                          <IconTruck />
+                          {loc.tu.split(' → ')[1] || '—'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end">
+                    <span className="text-[#0a0a0a]">{loc.salesL7}</span>
+                    <span className="text-[12px] text-[#4b535c]">{loc.salesL30}</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]">{loc.forecast}</td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]">{loc.stockouts}</td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end">
+                    <span className="text-[#0a0a0a]">{loc.coverage}</span>
+                    <span className="text-[12px] text-[#4b535c]">{loc.targetWeeks}</span>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
+function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
+  const [selectedProduct, setSelectedProduct] = useState(null)
   const products = PRODUCTS_BY_TRIP[trip.id] || DEFAULT_PRODUCTS
+
+  if (selectedProduct) {
+    return (
+      <StockAnalysisDrilldown
+        product={selectedProduct}
+        trip={trip}
+        onBack={() => setSelectedProduct(null)}
+      />
+    )
+  }
   const breadcrumbFrom = `${trip.from} [${trip.fromCode}]`
   const breadcrumbTo = trip.to.length > 12 ? `${trip.to.slice(0, 10)}...` : trip.to
   const summaryTransfers = products.reduce((s, p) => s + p.transfers + (p.transfersSub || 0), 0)
@@ -334,20 +561,26 @@ function ProductsDrilldown({ trip, onBack }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={onBack}
-          className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e5e7eb] bg-white text-[#4b535c] hover:bg-[#f3f4f6] shrink-0"
-          aria-label="Back to trips"
-        >
-          <IconArrowLeft className="size-5" />
-        </button>
-        <nav className="flex items-center gap-2 text-[14px] text-[#4b535c]">
-          <button type="button" onClick={onBack} className="hover:text-[#0a0a0a] hover:underline">
-            {breadcrumbFrom}
+        {showBackButton && (
+          <button
+            type="button"
+            onClick={onBack}
+            className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e5e7eb] bg-white text-[#4b535c] hover:bg-[#f3f4f6] shrink-0"
+            aria-label="Back to trips"
+          >
+            <IconArrowLeft className="size-5" />
           </button>
-          <span>→</span>
-          <span className="text-[#0a0a0a]">{breadcrumbTo}</span>
+        )}
+        <nav className="flex items-center gap-2 text-[14px] text-[#4b535c]">
+          {showBackButton ? (
+            <>
+              <button type="button" onClick={onBack} className="hover:text-[#0a0a0a] hover:underline">
+                {breadcrumbFrom}
+              </button>
+              <span>→</span>
+            </>
+          ) : null}
+          <span className="text-[#0a0a0a]">{showBackButton ? breadcrumbTo : `${breadcrumbFrom} → ${breadcrumbTo}`}</span>
           <span>→</span>
           <span className="font-medium text-[#0a0a0a]">Products</span>
         </nav>
@@ -438,8 +671,20 @@ function ProductsDrilldown({ trip, onBack }) {
           </thead>
           <tbody>
             {products.map((p) => (
-              <tr key={p.id} className="border-b border-[#E9EAEB] hover:bg-[#f9fafb]">
-                <td className="py-3 px-4">
+              <tr
+                key={p.id}
+                className="border-b border-[#E9EAEB] hover:bg-[#f9fafb] cursor-pointer"
+                onClick={() => setSelectedProduct(p)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setSelectedProduct(p)
+                  }
+                }}
+              >
+                <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
                   <input type="checkbox" className="size-4 rounded border-[#E9EAEB] text-[#0267ff]" aria-label={`Select ${p.name}`} />
                 </td>
                 <td className="py-3 px-4">
@@ -491,7 +736,7 @@ function ProductsDrilldown({ trip, onBack }) {
                     </span>
                   ) : null}
                 </td>
-                <td className="py-3 px-4 text-right bg-white sticky right-0 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.05)]">
+                <td className="py-3 px-4 text-right bg-white sticky right-0 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.05)]" onClick={(e) => e.stopPropagation()}>
                   <button
                     type="button"
                     className="inline-flex items-center justify-center h-8 px-3 rounded-[4px] border border-[#E9EAEB] bg-white text-[12px] text-[#0a0a0a] hover:bg-[#f3f4f6]"
@@ -524,8 +769,8 @@ function ProductsDrilldown({ trip, onBack }) {
 
 export default function ScheduleDetailPage() {
   const [activeTab, setActiveTab] = useState('trips')
-  const [viewShowsFullDataset, setViewShowsFullDataset] = useState(false)
-  const [selectedView, setSelectedView] = useState('Exception: Europe monthly rebal')
+  const [viewShowsFullDataset, setViewShowsFullDataset] = useState(true)
+  const [selectedView, setSelectedView] = useState('Show all recommendations')
   const [viewDropdownOpen, setViewDropdownOpen] = useState(false)
   const [approvedTrips, setApprovedTrips] = useState({})
   const [selectedTrip, setSelectedTrip] = useState(null)
@@ -965,9 +1210,11 @@ export default function ScheduleDetailPage() {
             </div>
           </div>
           )
+        ) : activeTab === 'products' ? (
+          <ProductsDrilldown trip={TRIPS_OPERA[0]} onBack={() => {}} showBackButton={false} />
         ) : (
           <div className="border border-dashed border-[#e5e7eb] rounded-[8px] p-6 text-[14px] text-[#4b535c]">
-            {activeTab === 'products' ? 'Products view coming soon.' : 'Locations view coming soon.'}
+            Locations view coming soon.
           </div>
         )}
       </div>
