@@ -493,19 +493,19 @@ function StockAnalysisDrilldown({ product, trip, onBack }) {
                     <span className="text-[#0a0a0a]">{loc.tu}</span>
                     <div className="flex flex-wrap gap-1 justify-end">
                       {loc.tuWarehouse != null && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-[#A234DA] text-[12px] font-medium text-white">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-[#A234DA] text-[12px] font-medium text-white cursor-pointer transition-[filter,box-shadow] hover:brightness-90 hover:shadow-[0px_2px_4px_rgba(0,0,0,0.1)]">
                           <IconWarehouse />
                           {loc.tuWarehouse}
                         </span>
                       )}
                       {loc.tuTruck?.map((n, i) => (
-                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-[#0267FF] text-[12px] font-medium text-white">
+                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-[#0267FF] text-[12px] font-medium text-white cursor-pointer transition-[filter,box-shadow] hover:brightness-90 hover:shadow-[0px_2px_4px_rgba(0,0,0,0.1)]">
                           <IconTruck />
                           {n}
                         </span>
                       ))}
                       {loc.tuWarehouse == null && !loc.tuTruck?.length && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] border border-[#4B535C] text-[12px] font-medium text-[#4b535c] opacity-80">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] border border-[#4B535C] text-[12px] font-medium text-[#4b535c] opacity-80 cursor-pointer transition-[filter,box-shadow] hover:brightness-90 hover:shadow-[0px_2px_4px_rgba(0,0,0,0.1)]">
                           <IconTruck />
                           {loc.tu.split(' → ')[1] || '—'}
                         </span>
