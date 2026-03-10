@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { IconSearch, IconChevronDown, IconChevronRight, IconShare, IconDocument, IconClose, IconArrowLeft } from '../components/icons'
+import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts'
+import { IconSearch, IconChevronDown, IconChevronRight, IconShare, IconDocument, IconClose, IconArrowLeft, IconGears } from '../components/icons'
 
 function IconColumnSettings() {
   return (
@@ -334,6 +335,27 @@ const LOCATIONS_BY_PRODUCT = {
 
 const DEFAULT_LOCATIONS = LOCATIONS_BY_PRODUCT[1]
 
+// Mock chart data for Transfer detail view (22 days, values 0–8)
+const CHART_DATA = Array.from({ length: 22 }, (_, i) => {
+  const day = String(i + 1).padStart(2, '0')
+  const base = 4 + Math.sin(i * 0.4) * 1.5
+  const demand = Math.min(8, 2 + Math.sin(i * 0.3) * 1.2)
+  const salesRatio = 0.65 + (i % 5) * 0.05
+  const sales = Math.min(demand, demand * salesRatio)
+  const lostSales = Math.max(0, demand - sales)
+  const invProj = i >= 12 ? base * 0.9 + (i - 12) * 0.1 : 0
+  return {
+    day,
+    actualInventory: Math.min(8, base + 1.5),
+    inventoryProjection: Math.min(8, invProj),
+    actualDemand: Math.round(demand * 10) / 10,
+    actualSales: Math.round(sales * 10) / 10,
+    demandForecast: Math.min(8, 2.5 + Math.sin(i * 0.25) * 1.5),
+    salesForecast: Math.min(8, 2 + Math.sin(i * 0.25) * 1.2),
+    estimatedLostSales: Math.round(lostSales * 10) / 10,
+  }
+})
+
 function IconCheck() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0" aria-hidden>
@@ -363,6 +385,7 @@ function IconTruck() {
 }
 
 function TransferDetailView({ transfer, product, trip, onBack }) {
+  const [chartTimeUnit, setChartTimeUnit] = useState('days')
   const breadcrumbFrom = `${trip.from} [${trip.fromCode}]`
   const breadcrumbTo = trip.to
   const productLabel = product.name
@@ -427,12 +450,88 @@ function TransferDetailView({ transfer, product, trip, onBack }) {
 
       {/* 3. General / Key factors tabs and chart area */}
       <div className="rounded-[4px] border border-[#E9EAEB] bg-white p-4">
-        <div className="flex gap-4 border-b border-[#E9EAEB] mb-4">
-          <button type="button" className="pb-2 border-b-2 border-[#0267ff] text-[14px] font-medium text-[#0a0a0a]">General</button>
-          <button type="button" className="pb-2 text-[14px] text-[#4b535c] hover:text-[#0a0a0a]">Key factors</button>
+        <div className="flex items-center justify-between gap-4 border-b border-[#E9EAEB] mb-4">
+          <div className="flex gap-4">
+            <button type="button" className="pb-2 border-b-2 border-[#0267ff] text-[14px] font-medium text-[#0a0a0a]">General</button>
+            <button type="button" className="pb-2 text-[14px] text-[#4b535c] hover:text-[#0a0a0a]">Key factors</button>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex rounded-[4px] border border-[#E9EAEB] overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setChartTimeUnit('days')}
+                className={`px-3 py-1.5 text-[12px] font-medium ${chartTimeUnit === 'days' ? 'bg-[#0267ff] text-white' : 'bg-white text-[#4b535c] hover:bg-[#f8f8f8]'}`}
+              >
+                Days
+              </button>
+              <button
+                type="button"
+                onClick={() => setChartTimeUnit('weeks')}
+                className={`px-3 py-1.5 text-[12px] font-medium ${chartTimeUnit === 'weeks' ? 'bg-[#0267ff] text-white' : 'bg-white text-[#4b535c] hover:bg-[#f8f8f8]'}`}
+              >
+                Weeks
+              </button>
+            </div>
+            <button type="button" className="p-2 rounded-[4px] border border-[#E9EAEB] bg-white text-[#4b535c] hover:bg-[#f8f8f8]" aria-label="Chart settings">
+              <IconGears className="size-4" />
+            </button>
+          </div>
         </div>
-        <div className="h-[240px] min-h-[240px] rounded-[4px] bg-[#f8f8f8] border border-[#E9EAEB] flex items-center justify-center text-[14px] text-[#4b535c]">
-          Chart placeholder
+        <div className="rounded-[4px] border border-[#E9EAEB] bg-white p-4">
+          <div className="flex flex-wrap items-center gap-4 gap-y-2 mb-3 text-[12px]">
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-sm bg-[#d1d5db]" />
+              <span className="text-[#4b535c]">Actual inventory</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-sm shrink-0" style={{ background: 'repeating-linear-gradient(45deg, #9ca3af, #9ca3af 1px, #c4c8cc 1px, #c4c8cc 2px)' }} />
+              <span className="text-[#4b535c]">Inventory projection</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-sm bg-[#60a5fa]" />
+              <span className="text-[#4b535c]">Actual demand</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-sm bg-[#1e40af]" />
+              <span className="text-[#4b535c]">Actual sales</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-4 h-0.5 rounded-full bg-[#22c55e] shrink-0" />
+              <span className="text-[#4b535c]">Demand forecast</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-4 h-0.5 rounded-full bg-[#15803d] shrink-0" />
+              <span className="text-[#4b535c]">Sales forecast</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-4 h-0.5 rounded-full bg-[#f59e0b] shrink-0" />
+              <span className="text-[#4b535c]">Estimated lost sales</span>
+            </div>
+          </div>
+          <div className="h-[240px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={CHART_DATA} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
+                <defs>
+                  <pattern id="stripedGrey" patternUnits="userSpaceOnUse" width="4" height="4">
+                    <path d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" stroke="#9ca3af" strokeWidth="1" />
+                  </pattern>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E9EAEB" vertical={false} />
+                <XAxis dataKey="day" tick={{ fontSize: 11, fill: '#4b535c' }} axisLine={{ stroke: '#E9EAEB' }} tickLine={{ stroke: '#E9EAEB' }} />
+                <YAxis domain={[0, 8]} tick={{ fontSize: 11, fill: '#4b535c' }} axisLine={{ stroke: '#E9EAEB' }} tickLine={{ stroke: '#E9EAEB' }} width={24} />
+                <Tooltip />
+                <ReferenceLine x="13" stroke="#9ca3af" strokeDasharray="4 4" strokeWidth={1} label={{ value: 'Submit replenishment', position: 'top', fontSize: 10, fill: '#4b535c' }} />
+                <ReferenceLine x="14" stroke="#9ca3af" strokeDasharray="4 4" strokeWidth={1} label={{ value: 'Stock arrives', position: 'top', fontSize: 10, fill: '#4b535c' }} />
+                <Bar dataKey="actualInventory" fill="#d1d5db" barSize={12} radius={[2, 2, 0, 0]} name="Actual inventory" />
+                <Bar dataKey="inventoryProjection" fill="url(#stripedGrey)" barSize={12} radius={[2, 2, 0, 0]} name="Inventory projection" />
+                <Bar dataKey="actualDemand" fill="#60a5fa" barSize={12} radius={[2, 2, 0, 0]} name="Actual demand" />
+                <Bar dataKey="actualSales" fill="#1e40af" barSize={12} radius={[2, 2, 0, 0]} name="Actual sales" />
+                <Line type="monotone" dataKey="demandForecast" stroke="#22c55e" strokeWidth={2} dot={false} name="Demand forecast" />
+                <Line type="monotone" dataKey="salesForecast" stroke="#15803d" strokeWidth={2} dot={false} name="Sales forecast" />
+                <Line type="monotone" dataKey="estimatedLostSales" stroke="#f59e0b" strokeWidth={2} dot={false} name="Estimated lost sales" />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
 
