@@ -79,6 +79,8 @@ const TRIPS_OPERA = [
     products: 16,
     movementType: 'Replenishment',
     badges: ['VIS', 'REV'],
+    approvalStatus: 'edited_by_user',
+    editedByUser: 'Csabi Toth',
   },
   {
     id: 4,
@@ -92,6 +94,7 @@ const TRIPS_OPERA = [
     products: 2,
     movementType: 'Rebalancing',
     badges: ['REV'],
+    approvalStatus: 'approved_by_system',
   },
   {
     id: 5,
@@ -105,6 +108,7 @@ const TRIPS_OPERA = [
     products: 12,
     movementType: 'Reorder',
     badges: ['VIS', 'REV'],
+    approvalStatus: 'approved_by_system',
   },
   {
     id: 6,
@@ -118,6 +122,53 @@ const TRIPS_OPERA = [
     products: 4,
     movementType: 'Replenishment',
     badges: ['REV'],
+    approvalStatus: 'approved_by_user',
+    approvedByUser: 'Jess Briggs',
+  },
+  {
+    id: 101,
+    from: 'Lyon Herriot',
+    fromCode: 'A4C',
+    to: 'Opéra',
+    toCode: 'A1A',
+    transfers: '18',
+    revenue: '€3.2K',
+    recommended: '18',
+    products: 10,
+    movementType: 'Rebalancing',
+    badges: ['VIS', 'REV'],
+    approvalStatus: 'approved_by_user',
+    approvedByUser: 'Jess Briggs',
+  },
+  {
+    id: 102,
+    from: 'Cap 3000',
+    fromCode: 'A3E',
+    to: 'Opéra',
+    toCode: 'A1A',
+    transfers: '8',
+    revenue: '€1.5K',
+    recommended: '8',
+    products: 5,
+    movementType: 'Replenishment',
+    badges: ['REV'],
+    approvalStatus: 'edited_by_user',
+    editedByUser: 'Csabi Toth',
+  },
+  {
+    id: 103,
+    from: 'Nice',
+    fromCode: 'NCE06',
+    to: 'Opéra',
+    toCode: 'A1A',
+    transfers: '12',
+    revenue: '€2.1K',
+    recommended: '12',
+    products: 7,
+    movementType: 'Rebalancing',
+    badges: ['VIS', 'REV'],
+    approvalStatus: 'edited_by_user',
+    editedByUser: 'Csabi Toth',
   },
 ]
 
@@ -1409,7 +1460,6 @@ export default function ScheduleDetailPage() {
                   {tripsRows.map((row) => {
                     const isExceptionRow = row.to === 'Opéra'
                     const isApproved = !!approvedTrips[row.id]
-                    const isEdited = isExceptionRow && EDITED_EXCEPTION_IDS.includes(row.id) && !isApproved
                     const movementType = row.movementType || 'Rebalancing'
                     const movementBadgeClass =
                       movementType === 'Rebalancing'
@@ -1494,26 +1544,38 @@ export default function ScheduleDetailPage() {
                         <td className="py-3 px-3 align-top">
                           {isExceptionRow ? (
                             isApproved ? (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#ecfdf3] text-[11px] text-[#166534]">
-                                Approved
+                              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E4F4EF] text-[12px] font-medium text-[#08A16A]">
+                                <IconCheck className="size-4 shrink-0" />
+                                Approved by user: Jess Briggs
                               </span>
-                            ) : isEdited ? (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#fef3c7] text-[11px] text-[#92400e]">
-                                Edited
+                            ) : row.approvalStatus === 'approved_by_system' ? (
+                              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E4F4EF] text-[12px] font-medium text-[#08A16A]">
+                                <IconCheck className="size-4 shrink-0" />
+                                Approved by system
+                              </span>
+                            ) : row.approvalStatus === 'approved_by_user' ? (
+                              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E4F4EF] text-[12px] font-medium text-[#08A16A]">
+                                <IconCheck className="size-4 shrink-0" />
+                                Approved by user: {row.approvedByUser || 'Jess Briggs'}
+                              </span>
+                            ) : row.approvalStatus === 'edited_by_user' ? (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#FFF8E1] text-[12px] font-medium text-[#B8860B]">
+                                Edited by user: {row.editedByUser || 'Csabi Toth'}
                               </span>
                             ) : (
                               <span className="inline-block h-5" aria-hidden />
                             )
                           ) : viewShowsFullDataset ? (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#ecfdf3] text-[11px] text-[#166534]">
-                              Approved
+                            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E4F4EF] text-[12px] font-medium text-[#08A16A]">
+                              <IconCheck className="size-4 shrink-0" />
+                              Approved by system
                             </span>
                           ) : (
                             <span className="inline-block h-5" aria-hidden />
                           )}
                         </td>
                         <td className="py-3 px-3 align-top text-right" onClick={(e) => e.stopPropagation()}>
-                          {isExceptionRow && !isApproved ? (
+                          {isExceptionRow && (row.approvalStatus === 'edited_by_user' || (!row.approvalStatus && !isApproved)) ? (
                             <button
                               type="button"
                               onClick={(e) => {
