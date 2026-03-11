@@ -201,7 +201,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     { id: 'adv-1', mainColumn: '', condition: '', value: '' },
   ])
   const [advancedRowNextId, setAdvancedRowNextId] = useState(2)
-  const [matchRulesMode, setMatchRulesMode] = useState('or')
+  const [connectorBetweenRows, setConnectorBetweenRows] = useState([])
   const reviewStatusFilterOptions = [
     { id: 'in review', label: 'In review' },
     { id: 'upcoming', label: 'Upcoming' },
@@ -472,10 +472,27 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     const id = `adv-${advancedRowNextId}`
     setAdvancedRowNextId((n) => n + 1)
     setAdvancedApprovalRows((prev) => [...prev, { id, mainColumn: '', condition: '', value: '' }])
+    setConnectorBetweenRows((prev) => [...prev, 'or'])
   }
 
   const removeAdvancedApprovalRow = (id) => {
-    setAdvancedApprovalRows((prev) => prev.filter((r) => r.id !== id))
+    const idx = advancedApprovalRows.findIndex((r) => r.id === id)
+    if (idx !== -1) {
+      setAdvancedApprovalRows((prev) => prev.filter((r) => r.id !== id))
+      setConnectorBetweenRows((prev) => {
+        if (prev.length === 0) return prev
+        const removeIdx = idx > 0 ? idx - 1 : 0
+        return prev.filter((_, i) => i !== removeIdx)
+      })
+    }
+  }
+
+  const setConnectorAtIndex = (index, value) => {
+    setConnectorBetweenRows((prev) => {
+      const next = [...prev]
+      if (index >= 0 && index < next.length) next[index] = value
+      return next
+    })
   }
 
   const updateAdvancedApprovalRow = (id, field, value) => {
@@ -1074,6 +1091,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                           onClick={() => {
                             setAdvancedApprovalRows([{ id: 'adv-1', mainColumn: '', condition: '', value: '' }])
                             setAdvancedRowNextId(2)
+                            setConnectorBetweenRows([])
                           }}
                           className="text-[12px] font-medium text-[#4b535c] hover:text-[#0a0a0a]"
                         >
@@ -1081,35 +1099,29 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                         </button>
                       </div>
                       <div className="mt-1 flex flex-col gap-3 border-t border-[#e5e7eb] pt-3">
-                        <div className="flex flex-col gap-2">
-                          <label className="text-[14px] font-normal text-[#4b535c]">Match rules using:</label>
-                          <div className="flex gap-1">
-                            <button
-                              type="button"
-                              onClick={() => setMatchRulesMode('or')}
-                              className={`px-3 py-1.5 rounded-[2px] text-[13px] font-medium ${matchRulesMode === 'or' ? 'bg-[#0267FF] text-white' : 'bg-[#F8F8F8] text-[#4B535C] hover:bg-[#eee]'}`}
-                            >
-                              Any (OR)
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setMatchRulesMode('and')}
-                              className={`px-3 py-1.5 rounded-[2px] text-[13px] font-medium ${matchRulesMode === 'and' ? 'bg-[#0267FF] text-white' : 'bg-[#F8F8F8] text-[#4B535C] hover:bg-[#eee]'}`}
-                            >
-                              All (AND)
-                            </button>
-                          </div>
-                          <p className="text-[12px] font-normal text-[#4b535c]">
-                            OR returns recommendations matching any rule. AND returns only recommendations matching all rules.
-                          </p>
-                        </div>
+                        <p className="text-[12px] font-normal text-[#4b535c]">
+                          Choose how each rule connects to the one above it.
+                        </p>
                         <div className="flex flex-col gap-3">
                         {advancedApprovalRows.map((row, idx) => (
                           <div key={row.id} className="flex flex-col gap-3">
                             {idx > 0 && advancedApprovalRows.length >= 2 && (
-                              <span className="text-[13px] font-medium text-[#4b535c]">
-                                {matchRulesMode === 'or' ? 'or' : 'and'}
-                              </span>
+                              <div className="flex items-center gap-1">
+                                <button
+                                  type="button"
+                                  onClick={() => setConnectorAtIndex(idx - 1, 'and')}
+                                  className={`px-2 py-1 rounded-[2px] text-[12px] font-medium ${connectorBetweenRows[idx - 1] === 'and' ? 'bg-[#0267FF] text-white' : 'bg-[#F8F8F8] text-[#4B535C]'}`}
+                                >
+                                  and
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setConnectorAtIndex(idx - 1, 'or')}
+                                  className={`px-2 py-1 rounded-[2px] text-[12px] font-medium ${connectorBetweenRows[idx - 1] === 'or' ? 'bg-[#0267FF] text-white' : 'bg-[#F8F8F8] text-[#4B535C]'}`}
+                                >
+                                  or
+                                </button>
+                              </div>
                             )}
                             <div
                               className="flex flex-wrap items-end gap-3 p-3 rounded-[8px] border border-[#e5e7eb] bg-[#fafafa]"
