@@ -202,6 +202,11 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
   ])
   const [advancedRowNextId, setAdvancedRowNextId] = useState(2)
   const [connectorBetweenRows, setConnectorBetweenRows] = useState([])
+  const [recurrenceRepeatEvery, setRecurrenceRepeatEvery] = useState(1)
+  const [recurrenceRepeatUnit, setRecurrenceRepeatUnit] = useState('week')
+  const [recurrenceSubmissionDayOfWeek, setRecurrenceSubmissionDayOfWeek] = useState(3)
+  const [recurrenceSubmissionDayOfMonth, setRecurrenceSubmissionDayOfMonth] = useState(1)
+  const [recurrenceSubmissionDateYear, setRecurrenceSubmissionDateYear] = useState('')
   const reviewStatusFilterOptions = [
     { id: 'in review', label: 'In review' },
     { id: 'upcoming', label: 'Upcoming' },
@@ -608,67 +613,33 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
 
                 <section className="flex flex-col gap-4">
                   <p className="text-[14px] font-medium text-[#0a0a0a]">Scheduling Dates</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Repeats</label>
-                      <div className="relative">
-                        <select
-                          value={drawerForm.repeats}
-                          onChange={(ev) =>
-                            setDrawerForm((f) => ({
-                              ...f,
-                              repeats: ev.target.value,
-                            }))
-                          }
-                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
-                        >
-                          <option value="weekly">Weekly</option>
-                          <option value="biweekly">Bi-weekly (Every 2 weeks)</option>
-                          <option value="monthly">Monthly</option>
-                        </select>
-                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
-                          <IconChevronDownSelect />
-                        </span>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Repeat every</label>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center border border-[#EAEAEA] rounded-[4px] bg-white overflow-hidden h-12">
+                        <input
+                          type="number"
+                          min={1}
+                          value={recurrenceRepeatEvery}
+                          onChange={(e) => setRecurrenceRepeatEvery(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                          className="w-[80px] h-12 py-3 px-4 text-center text-[16px] text-[#0a0a0a] border-none focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
+                        <div className="flex flex-col border-l border-[#EAEAEA] shrink-0">
+                          <button type="button" onClick={() => setRecurrenceRepeatEvery((v) => Math.max(1, v + 1))} className="h-6 w-7 flex items-center justify-center text-[#4b535c] hover:bg-[#f8f8f8] border-b border-[#EAEAEA]">+</button>
+                          <button type="button" onClick={() => setRecurrenceRepeatEvery((v) => Math.max(1, v - 1))} className="h-6 w-7 flex items-center justify-center text-[#4b535c] hover:bg-[#f8f8f8]">−</button>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Time</label>
                       <div className="relative">
                         <select
-                          value={drawerForm.time}
-                          onChange={(ev) =>
-                            setDrawerForm((f) => ({
-                              ...f,
-                              time: ev.target.value,
-                            }))
-                          }
-                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
+                          value={recurrenceRepeatUnit}
+                          onChange={(e) => setRecurrenceRepeatUnit(e.target.value)}
+                          className="h-12 w-[120px] py-3 px-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
                         >
-                          <option value="">Select time</option>
-                          <option value="09:00 AM">09:00 AM</option>
-                          <option value="10:00 AM">10:00 AM</option>
-                          <option value="12:00 PM">12:00 PM</option>
-                        </select>
-                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
-                          <IconChevronDownSelect />
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Time zone</label>
-                      <div className="relative">
-                        <select
-                          value={drawerForm.timeZone}
-                          onChange={(ev) =>
-                            setDrawerForm((f) => ({
-                              ...f,
-                              timeZone: ev.target.value,
-                            }))
-                          }
-                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
-                        >
-                          <option value="pst">PST</option>
-                          <option value="gmt+1">(GMT +1) Central Europe</option>
+                          <option value="day">day</option>
+                          <option value="week">week</option>
+                          <option value="month">month</option>
+                          <option value="year">year</option>
                         </select>
                         <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
                           <IconChevronDownSelect />
@@ -677,25 +648,38 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {recurrenceRepeatUnit === 'week' && (
                     <div className="flex flex-col gap-2">
-                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Start date</label>
-                      <div className="relative">
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Submission day</label>
+                      <div className="flex gap-4">
+                        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((letter, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => setRecurrenceSubmissionDayOfWeek(i)}
+                            className={`size-10 rounded-full flex items-center justify-center text-[14px] font-medium shrink-0 transition-colors ${
+                              recurrenceSubmissionDayOfWeek === i
+                                ? 'bg-[#0267FF] text-white'
+                                : 'bg-[#F8F8F8] text-[#4b535c] hover:bg-[#eee]'
+                            }`}
+                          >
+                            {letter}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {recurrenceRepeatUnit === 'month' && (
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Submission day</label>
+                      <div className="relative max-w-[200px]">
                         <select
-                          value={drawerForm.startDateDay || ''}
-                          onChange={(ev) =>
-                            setDrawerForm((f) => ({
-                              ...f,
-                              startDateDay: ev.target.value,
-                            }))
-                          }
+                          value={recurrenceSubmissionDayOfMonth}
+                          onChange={(e) => setRecurrenceSubmissionDayOfMonth(Number(e.target.value))}
                           className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
                         >
-                          <option value="">Select</option>
-                          {DAY_OPTIONS.map((day) => (
-                            <option key={day} value={day}>
-                              {day}
-                            </option>
+                          {Array.from({ length: 28 }, (_, i) => i + 1).map((d) => (
+                            <option key={d} value={d}>{d}</option>
                           ))}
                         </select>
                         <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
@@ -703,57 +687,60 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                         </span>
                       </div>
                     </div>
+                  )}
+                  {recurrenceRepeatUnit === 'year' && (
                     <div className="flex flex-col gap-2">
-                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">End date</label>
-                      <div className="relative">
-                        <select
-                          value={drawerForm.endDateDay || ''}
-                          onChange={(ev) =>
-                            setDrawerForm((f) => ({
-                              ...f,
-                              endDateDay: ev.target.value,
-                            }))
-                          }
-                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
-                        >
-                          <option value="">Select</option>
-                          {DAY_OPTIONS.map((day) => (
-                            <option key={day} value={day}>
-                              {day}
-                            </option>
-                          ))}
-                        </select>
-                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
-                          <IconChevronDownSelect />
-                        </span>
-                      </div>
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Submission day</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Jun 10, 2026"
+                        value={recurrenceSubmissionDateYear}
+                        onChange={(e) => setRecurrenceSubmissionDateYear(e.target.value)}
+                        className="w-full max-w-[200px] h-14 px-4 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] placeholder:text-[#9CA1AE]"
+                      />
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Submission deadline</label>
-                      <div className="relative">
-                        <select
-                          value={drawerForm.submissionDeadlineDay || ''}
-                          onChange={(ev) =>
-                            setDrawerForm((f) => ({
-                              ...f,
-                              submissionDeadlineDay: ev.target.value,
-                            }))
-                          }
-                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
-                        >
-                          <option value="">Select</option>
-                          {DAY_OPTIONS.map((day) => (
-                            <option key={day} value={day}>
-                              {day}
-                            </option>
-                          ))}
-                        </select>
-                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
-                          <IconChevronDownSelect />
-                        </span>
-                      </div>
+                  )}
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Time zone</label>
+                    <div className="relative max-w-[200px]">
+                      <select
+                        value={drawerForm.timeZone}
+                        onChange={(ev) =>
+                          setDrawerForm((f) => ({
+                            ...f,
+                            timeZone: ev.target.value,
+                          }))
+                        }
+                        className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
+                      >
+                        <option value="pst">PST</option>
+                        <option value="gmt+1">(GMT +1) Central Europe</option>
+                      </select>
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                        <IconChevronDownSelect />
+                      </span>
                     </div>
                   </div>
+
+                  <p className="text-[14px] italic text-[#4b535c]">
+                    New scheduled recommendations available every{' '}
+                    {(() => {
+                      const unit = recurrenceRepeatUnit === 'week' ? 'weeks' : recurrenceRepeatUnit === 'month' ? 'months' : recurrenceRepeatUnit === 'year' ? 'years' : 'days'
+                      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                      const dayName = dayNames[recurrenceSubmissionDayOfWeek]
+                      if (recurrenceRepeatUnit === 'week') {
+                        return `${recurrenceRepeatEvery} ${recurrenceRepeatEvery === 1 ? unit.slice(0, -1) : unit} on ${dayName}`
+                      }
+                      if (recurrenceRepeatUnit === 'month') {
+                        return `${recurrenceRepeatEvery} ${recurrenceRepeatEvery === 1 ? 'month' : unit} on day ${recurrenceSubmissionDayOfMonth}`
+                      }
+                      if (recurrenceRepeatUnit === 'year') {
+                        return recurrenceSubmissionDateYear ? `${recurrenceRepeatEvery} ${recurrenceRepeatEvery === 1 ? 'year' : unit} on ${recurrenceSubmissionDateYear}` : `${recurrenceRepeatEvery} ${recurrenceRepeatEvery === 1 ? 'year' : unit}`
+                      }
+                      return `${recurrenceRepeatEvery} ${recurrenceRepeatEvery === 1 ? 'day' : unit}`
+                    })()}
+                  </p>
                 </section>
 
                 <section className="flex flex-col gap-2">
