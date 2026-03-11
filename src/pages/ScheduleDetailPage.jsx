@@ -1560,7 +1560,7 @@ export default function ScheduleDetailPage() {
                               </span>
                             ) : row.approvalStatus === 'edited_by_user' ? (
                               <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#FFF8E1] text-[12px] font-medium text-[#B8860B]">
-                                Edited by user: {row.editedByUser || 'Csabi Toth'}
+                                Last edited by: {row.editedByUser || 'Csabi Toth'}
                               </span>
                             ) : (
                               <span className="inline-block h-5" aria-hidden />
