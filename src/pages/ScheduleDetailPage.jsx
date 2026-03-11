@@ -39,6 +39,16 @@ function IconSortDown() {
     </svg>
   )
 }
+function IconClock() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0" aria-hidden>
+      <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M7 4v3l2 2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+const SCHEDULE_CREATION_DATE = '24/02/2026'
 
 const TRIPS_OPERA = [
   {
@@ -53,6 +63,7 @@ const TRIPS_OPERA = [
     products: 68,
     movementType: 'Rebalancing',
     badges: ['VIS', 'REV'],
+    recommendationsUpdated: '26/02/2026',
   },
   {
     id: 2,
@@ -66,6 +77,7 @@ const TRIPS_OPERA = [
     products: 23,
     movementType: 'Rebalancing',
     badges: ['VIS', 'REV'],
+    recommendationsUpdated: '24/02/2026',
   },
   {
     id: 3,
@@ -81,6 +93,7 @@ const TRIPS_OPERA = [
     badges: ['VIS', 'REV'],
     approvalStatus: 'edited_by_user',
     editedByUser: 'Csabi Toth',
+    recommendationsUpdated: '26/02/2026',
   },
   {
     id: 4,
@@ -95,6 +108,7 @@ const TRIPS_OPERA = [
     movementType: 'Rebalancing',
     badges: ['REV'],
     approvalStatus: 'approved_by_system',
+    recommendationsUpdated: '24/02/2026',
   },
   {
     id: 5,
@@ -109,6 +123,7 @@ const TRIPS_OPERA = [
     movementType: 'Reorder',
     badges: ['VIS', 'REV'],
     approvalStatus: 'approved_by_system',
+    recommendationsUpdated: '26/02/2026',
   },
   {
     id: 6,
@@ -124,6 +139,7 @@ const TRIPS_OPERA = [
     badges: ['REV'],
     approvalStatus: 'approved_by_user',
     approvedByUser: 'Jess Briggs',
+    recommendationsUpdated: '24/02/2026',
   },
   {
     id: 101,
@@ -139,6 +155,7 @@ const TRIPS_OPERA = [
     badges: ['VIS', 'REV'],
     approvalStatus: 'approved_by_user',
     approvedByUser: 'Jess Briggs',
+    recommendationsUpdated: '26/02/2026',
   },
   {
     id: 102,
@@ -154,6 +171,7 @@ const TRIPS_OPERA = [
     badges: ['REV'],
     approvalStatus: 'edited_by_user',
     editedByUser: 'Csabi Toth',
+    recommendationsUpdated: '24/02/2026',
   },
   {
     id: 103,
@@ -169,6 +187,7 @@ const TRIPS_OPERA = [
     badges: ['VIS', 'REV'],
     approvalStatus: 'edited_by_user',
     editedByUser: 'Csabi Toth',
+    recommendationsUpdated: '26/02/2026',
   },
 ]
 
@@ -185,6 +204,7 @@ const TRIPS_OTHER = [
     products: 18,
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '26/02/2026',
   },
   {
     id: 8,
@@ -198,6 +218,7 @@ const TRIPS_OTHER = [
     products: 14,
     movementType: 'Rebalancing',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '24/02/2026',
   },
   {
     id: 9,
@@ -211,6 +232,7 @@ const TRIPS_OTHER = [
     products: 12,
     movementType: 'Reorder',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '26/02/2026',
   },
   {
     id: 10,
@@ -224,6 +246,7 @@ const TRIPS_OTHER = [
     products: 9,
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '24/02/2026',
   },
   {
     id: 11,
@@ -237,6 +260,7 @@ const TRIPS_OTHER = [
     products: 11,
     movementType: 'Rebalancing',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '26/02/2026',
   },
   {
     id: 12,
@@ -250,6 +274,7 @@ const TRIPS_OTHER = [
     products: 10,
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '24/02/2026',
   },
   {
     id: 13,
@@ -263,6 +288,7 @@ const TRIPS_OTHER = [
     products: 8,
     movementType: 'Rebalancing',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '26/02/2026',
   },
   {
     id: 14,
@@ -276,6 +302,7 @@ const TRIPS_OTHER = [
     products: 7,
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '24/02/2026',
   },
   {
     id: 15,
@@ -289,6 +316,7 @@ const TRIPS_OTHER = [
     products: 6,
     movementType: 'Rebalancing',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '26/02/2026',
   },
   {
     id: 16,
@@ -302,6 +330,7 @@ const TRIPS_OTHER = [
     products: 5,
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '24/02/2026',
   },
   {
     id: 17,
@@ -315,6 +344,7 @@ const TRIPS_OTHER = [
     products: 6,
     movementType: 'Rebalancing',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '26/02/2026',
   },
   {
     id: 18,
@@ -328,6 +358,7 @@ const TRIPS_OTHER = [
     products: 4,
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
+    recommendationsUpdated: '24/02/2026',
   },
 ]
 
@@ -345,16 +376,16 @@ const EDITED_EXCEPTION_IDS = [3, 5]
 // Mock products for trip drilldown (keyed by trip id)
 const PRODUCTS_BY_TRIP = {
   1: [
-    { id: 1, name: 'Croi-sac zip l', sku: 'A1398810', colour: 'Noir', transfers: 3, transfersSub: 1, revenue: '€1.48K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '8 -> 5', depth: '5.0 -> 5.0', approvalStatus: 'approved_by_system' },
-    { id: 2, name: 'Pre-sac seau m', sku: 'A101080', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€1.12K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0' },
-    { id: 3, name: 'Ang-sac pte main m', sku: 'A1252810', colour: 'Figue', transfers: 3, transfersSub: 2, revenue: '€1.89K', recommended: 3, recommendedBadges: ['REV', 'VIS'], recommendedSub: 1, salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '1 -> 0', locations: '2 -> 2', overstocks: '5 -> 2', understocks: '6 -> 3', depth: '4.2 -> 4.8', approvalStatus: 'edited_by_user', editedByUser: 'Csabi Toth' },
-    { id: 4, name: 'Croi-sac zip s', sku: 'A1398811', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.98K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.32, stockouts: '0 -> 0', locations: '1 -> 2', overstocks: '2 -> 1', understocks: '4 -> 2', depth: '5.0 -> 5.0', approvalStatus: 'approved_by_user', approvedByUser: 'Jess Briggs' },
-    { id: 5, name: 'Pre-sac seau s', sku: 'A101081', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€0.76K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0' },
-    { id: 6, name: 'Ang-sac pte main s', sku: 'A1252811', colour: 'Figue', transfers: 1, transfersSub: 1, revenue: '€0.65K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 0, salesL30: 1, forecast: 0.21, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '3 -> 1', depth: '4.0 -> 4.5', approvalStatus: 'approved_by_system' },
+    { id: 1, name: 'Croi-sac zip l', sku: 'A1398810', colour: 'Noir', transfers: 3, transfersSub: 1, revenue: '€1.48K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '8 -> 5', depth: '5.0 -> 5.0',     approvalStatus: 'approved_by_system', recommendationsUpdated: '26/02/2026' },
+    { id: 2, name: 'Pre-sac seau m', sku: 'A101080', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€1.12K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', recommendationsUpdated: '24/02/2026' },
+    { id: 3, name: 'Ang-sac pte main m', sku: 'A1252810', colour: 'Figue', transfers: 3, transfersSub: 2, revenue: '€1.89K', recommended: 3, recommendedBadges: ['REV', 'VIS'], recommendedSub: 1, salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '1 -> 0', locations: '2 -> 2', overstocks: '5 -> 2', understocks: '6 -> 3', depth: '4.2 -> 4.8',     approvalStatus: 'edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '26/02/2026' },
+    { id: 4, name: 'Croi-sac zip s', sku: 'A1398811', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.98K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.32, stockouts: '0 -> 0', locations: '1 -> 2', overstocks: '2 -> 1', understocks: '4 -> 2', depth: '5.0 -> 5.0', approvalStatus: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '24/02/2026' },
+    { id: 5, name: 'Pre-sac seau s', sku: 'A101081', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€0.76K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', recommendationsUpdated: '26/02/2026' },
+    { id: 6, name: 'Ang-sac pte main s', sku: 'A1252811', colour: 'Figue', transfers: 1, transfersSub: 1, revenue: '€0.65K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 0, salesL30: 1, forecast: 0.21, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '3 -> 1', depth: '4.0 -> 4.5', approvalStatus: 'approved_by_system', recommendationsUpdated: '24/02/2026' },
   ],
   2: [
-    { id: 7, name: 'Sac zip l', sku: 'B200001', colour: 'Noir', transfers: 2, transfersSub: 1, revenue: '€0.89K', recommended: 2, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '2 -> 1', understocks: '5 -> 3', depth: '4.5 -> 5.0', approvalStatus: 'approved_by_user', approvedByUser: 'Jess Briggs' },
-    { id: 8, name: 'Sac seau m', sku: 'B200002', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.52K', recommended: 1, recommendedBadges: ['VIS'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.28, stockouts: '0 -> 1', locations: '1 -> 2', overstocks: '1 -> 0', understocks: '3 -> 1', depth: '3.6 -> 4.3', approvalStatus: 'edited_by_user', editedByUser: 'Csabi Toth' },
+    { id: 7, name: 'Sac zip l', sku: 'B200001', colour: 'Noir', transfers: 2, transfersSub: 1, revenue: '€0.89K', recommended: 2, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '2 -> 1', understocks: '5 -> 3', depth: '4.5 -> 5.0', approvalStatus: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '26/02/2026' },
+    { id: 8, name: 'Sac seau m', sku: 'B200002', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.52K', recommended: 1, recommendedBadges: ['VIS'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.28, stockouts: '0 -> 1', locations: '1 -> 2', overstocks: '1 -> 0', understocks: '3 -> 1', depth: '3.6 -> 4.3', approvalStatus: 'edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '24/02/2026' },
   ],
 }
 
@@ -999,11 +1030,14 @@ function StockAnalysisDrilldown({ product, trip, onBack }) {
   )
 }
 
-function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
+function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSinceCreation = false }) {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [approvedProducts, setApprovedProducts] = useState({})
   const [selectedProductIds, setSelectedProductIds] = useState(new Set())
-  const products = PRODUCTS_BY_TRIP[trip.id] || DEFAULT_PRODUCTS
+  const baseProducts = PRODUCTS_BY_TRIP[trip.id] || DEFAULT_PRODUCTS
+  const products = showChangedSinceCreation
+    ? baseProducts.filter((p) => (p.recommendationsUpdated || '24/02/2026') > SCHEDULE_CREATION_DATE)
+    : baseProducts
 
   const toggleProductSelection = (id) => {
     setSelectedProductIds((prev) => {
@@ -1238,7 +1272,7 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                     <span className="text-[12px] text-[#4b535c]">{p.recommendedSub}</span>
                   </div>
                 </td>
-                <td className="py-3 px-4 text-right text-[14px] text-[#4B535C]">26/02/2026</td>
+                <td className="py-3 px-4 text-right text-[14px] text-[#4B535C]">{p.recommendationsUpdated || '26/02/2026'}</td>
                 <td className="py-3 px-4 text-right">
                   <div className="flex flex-col items-end">
                     <span className="text-[#0a0a0a]">{p.salesL7}</span>
@@ -1377,8 +1411,12 @@ export default function ScheduleDetailPage() {
   const [approvedTrips, setApprovedTrips] = useState({})
   const [selectedTrip, setSelectedTrip] = useState(null)
   const [selectedTripIds, setSelectedTripIds] = useState(new Set())
+  const [showChangedSinceCreation, setShowChangedSinceCreation] = useState(false)
 
-  const tripsRows = viewShowsFullDataset ? TRIPS_ALL : TRIPS_OPERA
+  const baseTripsRows = viewShowsFullDataset ? TRIPS_ALL : TRIPS_OPERA
+  const tripsRows = showChangedSinceCreation
+    ? baseTripsRows.filter((row) => (row.recommendationsUpdated || '24/02/2026') > SCHEDULE_CREATION_DATE)
+    : baseTripsRows
   const summaryTransfers = viewShowsFullDataset ? '2,000 units' : '203 units'
   const summaryRevenue = viewShowsFullDataset ? '€435.3K' : '€41.3K'
   const summaryRecommended = viewShowsFullDataset ? '2,105 units' : '203 units'
@@ -1538,7 +1576,7 @@ export default function ScheduleDetailPage() {
               )
             })}
           </nav>
-          <div className="relative shrink-0 pb-2">
+          <div className="flex items-center gap-2 shrink-0 pb-2">
             <button
               type="button"
               onClick={() => setViewDropdownOpen((o) => !o)}
@@ -1549,6 +1587,19 @@ export default function ScheduleDetailPage() {
             >
               <span className="truncate">{selectedView}</span>
               <IconChevronDown className="size-4 text-[#4b535c] shrink-0" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowChangedSinceCreation((v) => !v)}
+              className={`inline-flex items-center gap-1.5 h-10 px-3 rounded-[4px] text-[14px] font-medium ${
+                showChangedSinceCreation
+                  ? 'bg-[#0267FF] text-white border border-[#0267FF]'
+                  : 'bg-white text-[#4B535C] border border-[#E9EAEB] hover:bg-[#f9fafb]'
+              }`}
+              aria-pressed={showChangedSinceCreation}
+            >
+              <IconClock className="size-4" />
+              Changed since creation
             </button>
             {viewDropdownOpen && (
               <>
@@ -1588,7 +1639,7 @@ export default function ScheduleDetailPage() {
 
         {activeTab === 'trips' ? (
           selectedTrip ? (
-            <ProductsDrilldown trip={selectedTrip} onBack={() => setSelectedTrip(null)} />
+            <ProductsDrilldown trip={selectedTrip} onBack={() => setSelectedTrip(null)} showChangedSinceCreation={showChangedSinceCreation} />
           ) : (
           <div className="flex flex-col gap-4">
             <div className="flex flex-wrap items-center gap-2">
@@ -1803,7 +1854,7 @@ export default function ScheduleDetailPage() {
                             </div>
                           </div>
                         </td>
-                        <td className="py-3 px-3 align-top text-[14px] text-[#4B535C]">26/02/2026</td>
+                        <td className="py-3 px-3 align-top text-[14px] text-[#4B535C]">{row.recommendationsUpdated || '26/02/2026'}</td>
                         <td className="py-3 px-3 align-top">
                           <span className="text-[#0a0a0a]">{row.products}</span>
                         </td>
@@ -1874,7 +1925,7 @@ export default function ScheduleDetailPage() {
           </div>
           )
         ) : activeTab === 'products' ? (
-          <ProductsDrilldown trip={TRIPS_OPERA[0]} onBack={() => {}} showBackButton={false} />
+          <ProductsDrilldown trip={TRIPS_OPERA[0]} onBack={() => {}} showBackButton={false} showChangedSinceCreation={showChangedSinceCreation} />
         ) : (
           <div className="border border-dashed border-[#e5e7eb] rounded-[8px] p-6 text-[14px] text-[#4b535c]">
             Locations view coming soon.
