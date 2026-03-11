@@ -1153,6 +1153,7 @@ export default function ScheduleDetailPage() {
   const [viewDropdownOpen, setViewDropdownOpen] = useState(false)
   const [approvedTrips, setApprovedTrips] = useState({})
   const [selectedTrip, setSelectedTrip] = useState(null)
+  const [selectedTripIds, setSelectedTripIds] = useState(new Set())
 
   const tripsRows = viewShowsFullDataset ? TRIPS_ALL : TRIPS_OPERA
   const summaryTransfers = viewShowsFullDataset ? '2,000 units' : '203 units'
@@ -1184,6 +1185,48 @@ export default function ScheduleDetailPage() {
       })
       return next
     })
+  }
+
+  const toggleTripSelection = (id) => {
+    setSelectedTripIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const toggleAllTripsSelection = () => {
+    const allIds = tripsRows.map((r) => r.id)
+    const allSelected = allIds.every((id) => selectedTripIds.has(id))
+    setSelectedTripIds(allSelected ? new Set() : new Set(allIds))
+  }
+
+  const clearSelection = () => setSelectedTripIds(new Set())
+
+  const handleApproveSelected = () => {
+    if (!selectedTripIds.size) return
+    setApprovedTrips((prev) => {
+      const next = { ...prev }
+      selectedTripIds.forEach((id) => {
+        next[id] = true
+      })
+      return next
+    })
+    setSelectedTripIds(new Set())
+  }
+
+  const handleExcludeSelected = () => {
+    // Placeholder: exclude selected trips from schedule
+    setSelectedTripIds(new Set())
+  }
+
+  const showEditButton = (row) => {
+    const isExceptionRow = row.to === 'Opéra'
+    const isApproved = !!approvedTrips[row.id]
+    if (isExceptionRow && (isApproved || row.approvalStatus === 'approved_by_system' || row.approvalStatus === 'approved_by_user')) return true
+    if (!isExceptionRow && viewShowsFullDataset) return true
+    return false
   }
 
   return (
@@ -1401,13 +1444,6 @@ export default function ScheduleDetailPage() {
                     Clear filters
                   </button>
                 )}
-                <button
-                  type="button"
-                  onClick={handleApproveAllVisible}
-                  className="h-8 px-3 rounded-[4px] border border-[#e5e7eb] bg-white text-[12px] text-[#0a0a0a] hover:bg-[#f3f4f6]"
-                >
-                  Approve all
-                </button>
               </div>
             </div>
 
@@ -1420,6 +1456,8 @@ export default function ScheduleDetailPage() {
                         type="checkbox"
                         className="size-4 rounded border-[#d1d5db] text-[#0267ff] focus:ring-[#0267ff]"
                         aria-label="Select all trips"
+                        checked={tripsRows.length > 0 && tripsRows.every((r) => selectedTripIds.has(r.id))}
+                        onChange={toggleAllTripsSelection}
                       />
                     </th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Sending location</th>
@@ -1487,6 +1525,8 @@ export default function ScheduleDetailPage() {
                             type="checkbox"
                             className="size-4 rounded border-[#d1d5db] text-[#0267ff] focus:ring-[#0267ff]"
                             aria-label={`Select trip ${row.from} to ${row.to}`}
+                            checked={selectedTripIds.has(row.id)}
+                            onChange={() => toggleTripSelection(row.id)}
                           />
                         </td>
                         <td className="py-3 px-3 align-top">
@@ -1575,7 +1615,18 @@ export default function ScheduleDetailPage() {
                           )}
                         </td>
                         <td className="py-3 px-3 align-top text-right" onClick={(e) => e.stopPropagation()}>
-                          {isExceptionRow && (row.approvalStatus === 'edited_by_user' || (!row.approvalStatus && !isApproved)) ? (
+                          {showEditButton(row) ? (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setSelectedTrip(row)
+                              }}
+                              className="inline-flex items-center justify-center h-8 px-4 rounded-[4px] border border-[#E9EAEB] bg-white text-[13px] font-medium text-[#212B36] hover:bg-[#f9fafb] hover:border-[#9ca3af]"
+                            >
+                              Edit
+                            </button>
+                          ) : isExceptionRow && (row.approvalStatus === 'edited_by_user' || (!row.approvalStatus && !isApproved)) ? (
                             <button
                               type="button"
                               onClick={(e) => {
@@ -1586,10 +1637,6 @@ export default function ScheduleDetailPage() {
                             >
                               Approve
                             </button>
-                          ) : !isExceptionRow && viewShowsFullDataset ? (
-                            <span className="inline-flex items-center justify-center text-[#16a34a]">
-                              <IconCheck />
-                            </span>
                           ) : null}
                         </td>
                       </tr>
@@ -1607,6 +1654,39 @@ export default function ScheduleDetailPage() {
             Locations view coming soon.
           </div>
         )}
+
+      {selectedTripIds.size > 0 && activeTab === 'trips' && (
+        <div
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 rounded-[8px] px-6 py-3"
+          style={{ background: '#1A1A2E', boxShadow: '0 4px 12px rgba(0,0,0,0.25)' }}
+        >
+          <button
+            type="button"
+            onClick={clearSelection}
+            className="flex items-center justify-center size-8 rounded-[4px] text-white hover:bg-white/10"
+            aria-label="Close"
+          >
+            <IconClose className="size-4" />
+          </button>
+          <span className="text-[14px] font-medium text-white">
+            {selectedTripIds.size} selected
+          </span>
+          <button
+            type="button"
+            onClick={handleApproveSelected}
+            className="px-4 py-2 rounded-[4px] text-[14px] font-medium text-white hover:bg-white/10"
+          >
+            Approve all
+          </button>
+          <button
+            type="button"
+            onClick={handleExcludeSelected}
+            className="px-4 py-2 rounded-[4px] text-[14px] font-medium text-white hover:bg-white/10"
+          >
+            Exclude
+          </button>
+        </div>
+      )}
       </div>
     </div>
   )
