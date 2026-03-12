@@ -1683,29 +1683,37 @@ export default function ScheduleDetailPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2 text-[12px] mt-1">
-              {!viewShowsFullDataset && (
-                <div className="flex flex-wrap items-center gap-2">
-                  {[
-                    'Receiving location: Opéra',
-                    'Products: A1252810 +2',
-                    'Advanced: Transfer units lower than 10',
-                  ].map((label) => (
-                    <span
-                      key={label}
-                      className="inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 rounded-[4px] bg-[#f3f4f6] text-[#4b535c] border border-[#e5e7eb]"
-                    >
-                      <span>{label}</span>
-                      <button
-                        type="button"
-                        className="p-0.5 rounded-[4px] text-[#6b7280] hover:bg-[#e5e7eb] hover:text-[#374151]"
-                        aria-label={`Remove filter: ${label}`}
+              {(() => {
+                const filterChips =
+                  selectedView === 'Exception 1 — Transfer units lower than 10 · Location: Opéra'
+                    ? ['Advanced: Transfer units lower than 10', 'Receiving location: Opéra']
+                    : selectedView === 'Exception 2 — Product: A1252810, A12528YY, A13314YY'
+                      ? ['Products: A1252810 +2']
+                      : []
+                return filterChips.length > 0 ? (
+                  <div className="flex flex-wrap items-center gap-2">
+                    {filterChips.map((label) => (
+                      <span
+                        key={label}
+                        className="inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 rounded-[4px] bg-[#f3f4f6] text-[#4b535c] border border-[#e5e7eb]"
                       >
-                        <IconClose className="size-3.5" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
+                        <span>{label}</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setViewShowsFullDataset(true)
+                            setSelectedView('Show all recommendations')
+                          }}
+                          className="p-0.5 rounded-[4px] text-[#6b7280] hover:bg-[#e5e7eb] hover:text-[#374151]"
+                          aria-label={`Remove filter: ${label}`}
+                        >
+                          <IconClose className="size-3.5" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                ) : null
+              })()}
               <div className="ml-auto flex items-center gap-3">
                 {!viewShowsFullDataset && (
                   <button
