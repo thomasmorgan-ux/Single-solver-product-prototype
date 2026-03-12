@@ -233,30 +233,16 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
       status: 'Ready to review',
       exceptions: '12',
       approved: '96',
-      exceptionsTotal: 12,
       metrics: [
         { label: 'Unique trips', value: '113' },
         { label: 'Recommended transfers', value: '2,308' },
         { label: 'Revenue increase', value: '€501.1K' },
         { label: 'Stockouts', value: '1,013 → 559' },
       ],
+      exceptionsTotal: 2,
       exceptionsList: [
-        {
-          count: '6 exceptions',
-          description: 'Receiving location: Opera',
-        },
-        {
-          count: '4 exceptions',
-          description: 'Receiving location: Opera, includes Product: A1252810, A12528YY',
-        },
-        {
-          count: '1 exception',
-          description: 'includes Product: A13314YY',
-        },
-        {
-          count: '1 exception',
-          description: 'Transfer units lower than 10',
-        },
+        { description: 'Exception 1 — Transfer units lower than 10 · Location: Opéra' },
+        { description: 'Exception 2 — Product: A1252810, A12528YY, A13314YY' },
       ],
     },
     {
@@ -1852,7 +1838,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                 </span>
                 <div className="flex flex-wrap items-center gap-4 text-sm text-[#4b535c]">
                   <span>
-                    <span className="font-medium text-[#0a0a0a]">Total exceptions:</span> {schedule.exceptions}
+                    <span className="font-medium text-[#0a0a0a]">Total transfer exceptions:</span> {schedule.exceptions}
                   </span>
                   <span>
                     <span className="font-medium text-[#0a0a0a]">Total approved:</span> {schedule.approved}
@@ -1912,10 +1898,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                           key={`${schedule.id}-ex-${idx}`}
                           className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border border-[#e5e7eb] rounded-[8px] px-3 py-2 bg-[#f9fafb] text-xs text-[#0a0a0a]"
                         >
-                          <span>
-                            <span className="font-medium text-[#0a0a0a]">{ex.count}:</span>{' '}
-                            <span className="text-[#4b535c]">{ex.description}</span>
-                          </span>
+                          <span className="text-[#4b535c]">{ex.description}</span>
                         </div>
                       ))}
                     </div>
