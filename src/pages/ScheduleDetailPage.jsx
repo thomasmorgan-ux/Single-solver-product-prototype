@@ -366,9 +366,8 @@ const TRIPS_ALL = [...TRIPS_OPERA, ...TRIPS_OTHER]
 
 const VIEW_OPTIONS = [
   'Show all recommendations',
-  'Saved view: Dresses - UK & Spain',
-  'Saved view: Hoodies drop',
-  'Exception: Europe monthly rebal',
+  'Exception 1 — Transfer units lower than 10 · Location: Opéra',
+  'Exception 2 — Product: A1252810, A12528YY, A13314YY',
 ]
 
 const EDITED_EXCEPTION_IDS = [3, 5]
@@ -1426,10 +1425,9 @@ export default function ScheduleDetailPage() {
     setViewDropdownOpen(false)
     if (option === 'Show all recommendations') {
       setViewShowsFullDataset(true)
-    } else if (option === 'Exception: Europe monthly rebal') {
+    } else if (option.startsWith('Exception ')) {
       setViewShowsFullDataset(false)
     }
-    // Saved views: Dresses - UK & Spain, Hoodies drop — leave view unchanged
   }
 
   const handleApproveRow = (id) => {
@@ -1577,17 +1575,53 @@ export default function ScheduleDetailPage() {
             })}
           </nav>
           <div className="flex items-center gap-2 shrink-0 pb-2">
-            <button
-              type="button"
-              onClick={() => setViewDropdownOpen((o) => !o)}
-              className="flex items-center gap-2 h-10 px-4 rounded-[4px] border border-[#EAEAEA] bg-white text-[14px] font-medium text-[#212B36] hover:bg-[#f8f8f8] min-w-[200px] justify-between"
-              aria-haspopup="listbox"
-              aria-expanded={viewDropdownOpen}
-              aria-label="Select view"
-            >
-              <span className="truncate">{selectedView}</span>
-              <IconChevronDown className="size-4 text-[#4b535c] shrink-0" />
-            </button>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setViewDropdownOpen((o) => !o)}
+                className="flex items-center gap-2 h-10 px-4 rounded-[4px] border border-[#EAEAEA] bg-white text-[14px] font-medium text-[#212B36] hover:bg-[#f8f8f8] min-w-[200px] justify-between"
+                aria-haspopup="listbox"
+                aria-expanded={viewDropdownOpen}
+                aria-label="Select view"
+              >
+                <span className="truncate max-w-[280px]" title={selectedView}>{selectedView}</span>
+                <IconChevronDown className="size-4 text-[#4b535c] shrink-0" />
+              </button>
+              {viewDropdownOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-10"
+                    aria-hidden
+                    onClick={() => setViewDropdownOpen(false)}
+                  />
+                  <ul
+                    role="listbox"
+                    className="absolute top-full right-0 z-10 mt-1 min-w-[200px] max-w-[350px] rounded-[4px] border border-[#EAEAEA] bg-white py-1 shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
+                  >
+                    {VIEW_OPTIONS.map((option) => {
+                      const isSelected = selectedView === option
+                      return (
+                        <li key={option} role="option" aria-selected={isSelected}>
+                          <button
+                            type="button"
+                            onClick={() => handleSelectView(option)}
+                            title={option}
+                            className="w-full flex items-center justify-between gap-2 px-3 py-2 text-left text-[14px] text-[#0a0a0a] hover:bg-[#f3f4f6] whitespace-nowrap overflow-hidden text-ellipsis"
+                          >
+                            <span className="min-w-0 flex-1 truncate" title={option}>{option}</span>
+                            {isSelected && (
+                              <span className="text-[#0267ff] shrink-0">
+                                <IconCheck />
+                              </span>
+                            )}
+                          </button>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </>
+              )}
+            </div>
             <button
               type="button"
               onClick={() => setShowChangedSinceCreation((v) => !v)}
@@ -1601,39 +1635,6 @@ export default function ScheduleDetailPage() {
               <IconClock className="size-4" />
               Changed since creation
             </button>
-            {viewDropdownOpen && (
-              <>
-                <div
-                  className="fixed inset-0 z-10"
-                  aria-hidden
-                  onClick={() => setViewDropdownOpen(false)}
-                />
-                <ul
-                  role="listbox"
-                  className="absolute right-0 top-full z-20 mt-1 min-w-[240px] rounded-[4px] border border-[#EAEAEA] bg-white py-1 shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
-                >
-                  {VIEW_OPTIONS.map((option) => {
-                    const isSelected = selectedView === option
-                    return (
-                      <li key={option} role="option" aria-selected={isSelected}>
-                        <button
-                          type="button"
-                          onClick={() => handleSelectView(option)}
-                          className="w-full flex items-center justify-between gap-2 px-3 py-2 text-left text-[14px] text-[#0a0a0a] hover:bg-[#f3f4f6]"
-                        >
-                          <span>{option}</span>
-                          {isSelected && (
-                            <span className="text-[#0267ff]">
-                              <IconCheck />
-                            </span>
-                          )}
-                        </button>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </>
-            )}
           </div>
         </div>
 
