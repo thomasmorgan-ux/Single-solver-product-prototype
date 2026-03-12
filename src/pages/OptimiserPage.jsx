@@ -163,8 +163,6 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     exceptions: false,
   })
   const [scopeOption, setScopeOption] = useState('include-all')
-  const [savedApprovalRule, setSavedApprovalRule] = useState('create-new')
-  const [exceptionName, setExceptionName] = useState('')
   const [productFilterOpen, setProductFilterOpen] = useState({
     departments: false,
     subDepartments: false,
@@ -201,7 +199,6 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     { id: 'adv-1', mainColumn: '', condition: '', value: '' },
   ])
   const [advancedRowNextId, setAdvancedRowNextId] = useState(2)
-  const [connectorBetweenRows, setConnectorBetweenRows] = useState([])
   const [recurrenceRepeatEvery, setRecurrenceRepeatEvery] = useState(1)
   const [recurrenceRepeatUnit, setRecurrenceRepeatUnit] = useState('week')
   const [recurrenceSubmissionDayOfWeek, setRecurrenceSubmissionDayOfWeek] = useState(3)
@@ -477,27 +474,10 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     const id = `adv-${advancedRowNextId}`
     setAdvancedRowNextId((n) => n + 1)
     setAdvancedApprovalRows((prev) => [...prev, { id, mainColumn: '', condition: '', value: '' }])
-    setConnectorBetweenRows((prev) => [...prev, 'or'])
   }
 
   const removeAdvancedApprovalRow = (id) => {
-    const idx = advancedApprovalRows.findIndex((r) => r.id === id)
-    if (idx !== -1) {
-      setAdvancedApprovalRows((prev) => prev.filter((r) => r.id !== id))
-      setConnectorBetweenRows((prev) => {
-        if (prev.length === 0) return prev
-        const removeIdx = idx > 0 ? idx - 1 : 0
-        return prev.filter((_, i) => i !== removeIdx)
-      })
-    }
-  }
-
-  const setConnectorAtIndex = (index, value) => {
-    setConnectorBetweenRows((prev) => {
-      const next = [...prev]
-      if (index >= 0 && index < next.length) next[index] = value
-      return next
-    })
+    setAdvancedApprovalRows((prev) => prev.filter((r) => r.id !== id))
   }
 
   const updateAdvancedApprovalRow = (id, field, value) => {
@@ -1024,51 +1004,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
             </button>
             {accordionOpen.exceptions && (
               <div className="px-5 pb-6 pt-2 flex flex-col gap-6 border-t border-[#EAEAEA]">
-                <p className="text-[12px] font-normal italic text-[#4b535c]">
-                  These exception rules will apply at the unique trip level. If you create a new exception, it will save automatically
-                </p>
-                <div className="flex flex-col gap-2">
-                  <label className="text-[14px] font-normal text-[#4b535c]">Saved exception rules</label>
-                  <div className="relative max-w-sm">
-                    <select
-                      value={savedApprovalRule}
-                      onChange={(ev) => setSavedApprovalRule(ev.target.value)}
-                      className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
-                    >
-                      <option value="create-new">Create new exceptions</option>
-                      <option value="liberty">Liberty exceptions</option>
-                      <option value="paris">Paris stores</option>
-                    </select>
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
-                      <IconChevronDownSelect />
-                    </span>
-                  </div>
-                </div>
-                {savedApprovalRule === 'liberty' && (
-                  <p className="text-[13px] font-normal text-[#4b535c]">
-                    Using saved rule: Liberty exceptions
-                  </p>
-                )}
-                {savedApprovalRule === 'paris' && (
-                  <p className="text-[13px] font-normal text-[#4b535c]">
-                    Using saved rule: Paris stores
-                  </p>
-                )}
-                {savedApprovalRule === 'create-new' && (
-                  <div className="flex flex-col gap-6 mt-1">
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[14px] font-normal text-[#4b535c]">Name your exception</label>
-                      <input
-                        type="text"
-                        value={exceptionName}
-                        onChange={(e) => setExceptionName(e.target.value)}
-                        placeholder="e.g. High value items review"
-                        className="w-full max-w-sm h-14 px-4 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] placeholder:text-[#9ca3af]"
-                      />
-                      <p className="text-[12px] font-normal text-[#4b535c]">Required when creating new exceptions</p>
-                    </div>
-
-                    <section className="flex flex-col gap-2">
+                <section className="flex flex-col gap-2">
                       <div className="flex items-center justify-between">
                         <h3 className="text-[13px] font-semibold text-[#0a0a0a] uppercase tracking-[0.04em]">
                           Advanced
@@ -1078,39 +1014,17 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                           onClick={() => {
                             setAdvancedApprovalRows([{ id: 'adv-1', mainColumn: '', condition: '', value: '' }])
                             setAdvancedRowNextId(2)
-                            setConnectorBetweenRows([])
                           }}
                           className="text-[12px] font-medium text-[#4b535c] hover:text-[#0a0a0a]"
                         >
                           Clear all
                         </button>
                       </div>
-                      <div className="mt-1 flex flex-col gap-3 border-t border-[#e5e7eb] pt-3">
-                        <p className="text-[12px] font-normal text-[#4b535c]">
-                          Choose how each rule connects to the one above it.
-                        </p>
-                        <div className="flex flex-col gap-3">
-                        {advancedApprovalRows.map((row, idx) => (
-                          <div key={row.id} className="flex flex-col gap-3">
-                            {idx > 0 && advancedApprovalRows.length >= 2 && (
-                              <div className="flex items-center gap-1">
-                                <button
-                                  type="button"
-                                  onClick={() => setConnectorAtIndex(idx - 1, 'and')}
-                                  className={`px-2 py-1 rounded-[2px] text-[12px] font-medium ${connectorBetweenRows[idx - 1] === 'and' ? 'bg-[#0267FF] text-white' : 'bg-[#F8F8F8] text-[#4B535C]'}`}
-                                >
-                                  and
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => setConnectorAtIndex(idx - 1, 'or')}
-                                  className={`px-2 py-1 rounded-[2px] text-[12px] font-medium ${connectorBetweenRows[idx - 1] === 'or' ? 'bg-[#0267FF] text-white' : 'bg-[#F8F8F8] text-[#4B535C]'}`}
-                                >
-                                  or
-                                </button>
-                              </div>
-                            )}
-                            <div
+                      <div className="mt-1 flex flex-col gap-4 border-t border-[#e5e7eb] pt-3">
+                        <div className="flex flex-col gap-4">
+                        {advancedApprovalRows.map((row) => (
+                          <div
+                            key={row.id}
                               className="flex flex-wrap items-end gap-3 p-3 rounded-[8px] border border-[#e5e7eb] bg-[#fafafa]"
                             >
                             <span className="text-[13px] font-medium text-[#0a0a0a] w-full sm:w-auto sm:min-w-[48px]">
@@ -1170,7 +1084,6 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                             >
                               <IconClose className="size-4" />
                             </button>
-                          </div>
                           </div>
                         ))}
                         </div>
@@ -1364,8 +1277,6 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                         })}
                       </div>
                     </section>
-                  </div>
-                )}
               </div>
             )}
           </div>
