@@ -1963,7 +1963,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
             return (
             <div
               key={schedule.id}
-              className="bg-white border border-[#EAEAEA] border-l-4 border-l-[#0267FF] rounded-[3.42px] p-5 flex flex-col gap-4 w-full hover:border-[#0267FF]/30 hover:shadow-sm transition-shadow"
+              className="bg-white border border-[#EAEAEA] rounded-[3.42px] p-5 flex flex-col gap-4 w-full"
             >
               <div
                 className="group flex flex-wrap items-center justify-between gap-2 cursor-pointer"
