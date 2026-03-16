@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts'
 import { IconSearch, IconChevronDown, IconChevronRight, IconShare, IconDocument, IconClose, IconArrowLeft, IconGears } from '../components/icons'
 
@@ -64,6 +64,7 @@ const TRIPS_OPERA = [
     movementType: 'Rebalancing',
     badges: ['VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
+    status: 'approved_by_system',
   },
   {
     id: 2,
@@ -78,6 +79,7 @@ const TRIPS_OPERA = [
     movementType: 'Rebalancing',
     badges: ['VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
+    status: 'needs_review_from_user',
   },
   {
     id: 3,
@@ -91,7 +93,7 @@ const TRIPS_OPERA = [
     products: 16,
     movementType: 'Replenishment',
     badges: ['VIS', 'REV'],
-    approvalStatus: 'edited_by_user',
+    status: 'last_edited_by_user',
     editedByUser: 'Csabi Toth',
     recommendationsUpdated: '26/02/2026',
   },
@@ -107,7 +109,7 @@ const TRIPS_OPERA = [
     products: 2,
     movementType: 'Rebalancing',
     badges: ['REV'],
-    approvalStatus: 'approved_by_system',
+    status: 'approved_by_system',
     recommendationsUpdated: '24/02/2026',
   },
   {
@@ -122,7 +124,7 @@ const TRIPS_OPERA = [
     products: 12,
     movementType: 'Reorder',
     badges: ['VIS', 'REV'],
-    approvalStatus: 'approved_by_system',
+    status: 'partially_approved',
     recommendationsUpdated: '26/02/2026',
   },
   {
@@ -137,7 +139,7 @@ const TRIPS_OPERA = [
     products: 4,
     movementType: 'Replenishment',
     badges: ['REV'],
-    approvalStatus: 'approved_by_user',
+    status: 'approved_by_user',
     approvedByUser: 'Jess Briggs',
     recommendationsUpdated: '24/02/2026',
   },
@@ -153,7 +155,7 @@ const TRIPS_OPERA = [
     products: 10,
     movementType: 'Rebalancing',
     badges: ['VIS', 'REV'],
-    approvalStatus: 'approved_by_user',
+    status: 'approved_by_user',
     approvedByUser: 'Jess Briggs',
     recommendationsUpdated: '26/02/2026',
   },
@@ -169,7 +171,7 @@ const TRIPS_OPERA = [
     products: 5,
     movementType: 'Replenishment',
     badges: ['REV'],
-    approvalStatus: 'edited_by_user',
+    status: 'last_edited_by_user',
     editedByUser: 'Csabi Toth',
     recommendationsUpdated: '24/02/2026',
   },
@@ -185,11 +187,20 @@ const TRIPS_OPERA = [
     products: 7,
     movementType: 'Rebalancing',
     badges: ['VIS', 'REV'],
-    approvalStatus: 'edited_by_user',
+    status: 'unapproved',
     editedByUser: 'Csabi Toth',
     recommendationsUpdated: '26/02/2026',
   },
 ]
+
+// Helper to get status from row (supports both status and legacy approvalStatus)
+function getRowStatus(row) {
+  if (row.status) return row.status
+  if (row.approvalStatus === 'approved_by_system') return 'approved_by_system'
+  if (row.approvalStatus === 'approved_by_user') return 'approved_by_user'
+  if (row.approvalStatus === 'edited_by_user') return 'last_edited_by_user'
+  return 'unapproved'
+}
 
 const TRIPS_OTHER = [
   {
@@ -205,6 +216,7 @@ const TRIPS_OTHER = [
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
+    status: 'approved_by_system',
   },
   {
     id: 8,
@@ -219,6 +231,7 @@ const TRIPS_OTHER = [
     movementType: 'Rebalancing',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
+    status: 'locked',
   },
   {
     id: 9,
@@ -375,16 +388,16 @@ const EDITED_EXCEPTION_IDS = [3, 5]
 // Mock products for trip drilldown (keyed by trip id)
 const PRODUCTS_BY_TRIP = {
   1: [
-    { id: 1, name: 'Croi-sac zip l', sku: 'A1398810', colour: 'Noir', transfers: 3, transfersSub: 1, revenue: '€1.48K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '8 -> 5', depth: '5.0 -> 5.0',     approvalStatus: 'approved_by_system', recommendationsUpdated: '26/02/2026' },
+    { id: 1, name: 'Croi-sac zip l', sku: 'A1398810', colour: 'Noir', transfers: 3, transfersSub: 1, revenue: '€1.48K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '8 -> 5', depth: '5.0 -> 5.0',     status: 'approved_by_system', recommendationsUpdated: '26/02/2026' },
     { id: 2, name: 'Pre-sac seau m', sku: 'A101080', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€1.12K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', recommendationsUpdated: '24/02/2026' },
-    { id: 3, name: 'Ang-sac pte main m', sku: 'A1252810', colour: 'Figue', transfers: 3, transfersSub: 2, revenue: '€1.89K', recommended: 3, recommendedBadges: ['REV', 'VIS'], recommendedSub: 1, salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '1 -> 0', locations: '2 -> 2', overstocks: '5 -> 2', understocks: '6 -> 3', depth: '4.2 -> 4.8',     approvalStatus: 'edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '26/02/2026' },
-    { id: 4, name: 'Croi-sac zip s', sku: 'A1398811', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.98K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.32, stockouts: '0 -> 0', locations: '1 -> 2', overstocks: '2 -> 1', understocks: '4 -> 2', depth: '5.0 -> 5.0', approvalStatus: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '24/02/2026' },
-    { id: 5, name: 'Pre-sac seau s', sku: 'A101081', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€0.76K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', recommendationsUpdated: '26/02/2026' },
-    { id: 6, name: 'Ang-sac pte main s', sku: 'A1252811', colour: 'Figue', transfers: 1, transfersSub: 1, revenue: '€0.65K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 0, salesL30: 1, forecast: 0.21, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '3 -> 1', depth: '4.0 -> 4.5', approvalStatus: 'approved_by_system', recommendationsUpdated: '24/02/2026' },
+    { id: 3, name: 'Ang-sac pte main m', sku: 'A1252810', colour: 'Figue', transfers: 3, transfersSub: 2, revenue: '€1.89K', recommended: 3, recommendedBadges: ['REV', 'VIS'], recommendedSub: 1, salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '1 -> 0', locations: '2 -> 2', overstocks: '5 -> 2', understocks: '6 -> 3', depth: '4.2 -> 4.8',     status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '26/02/2026' },
+    { id: 4, name: 'Croi-sac zip s', sku: 'A1398811', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.98K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.32, stockouts: '0 -> 0', locations: '1 -> 2', overstocks: '2 -> 1', understocks: '4 -> 2', depth: '5.0 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '24/02/2026' },
+    { id: 5, name: 'Pre-sac seau s', sku: 'A101081', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€0.76K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', status: 'needs_review_from_user', recommendationsUpdated: '26/02/2026' },
+    { id: 6, name: 'Ang-sac pte main s', sku: 'A1252811', colour: 'Figue', transfers: 1, transfersSub: 1, revenue: '€0.65K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 0, salesL30: 1, forecast: 0.21, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '3 -> 1', depth: '4.0 -> 4.5', status: 'approved_by_system', recommendationsUpdated: '24/02/2026' },
   ],
   2: [
-    { id: 7, name: 'Sac zip l', sku: 'B200001', colour: 'Noir', transfers: 2, transfersSub: 1, revenue: '€0.89K', recommended: 2, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '2 -> 1', understocks: '5 -> 3', depth: '4.5 -> 5.0', approvalStatus: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '26/02/2026' },
-    { id: 8, name: 'Sac seau m', sku: 'B200002', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.52K', recommended: 1, recommendedBadges: ['VIS'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.28, stockouts: '0 -> 1', locations: '1 -> 2', overstocks: '1 -> 0', understocks: '3 -> 1', depth: '3.6 -> 4.3', approvalStatus: 'edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '24/02/2026' },
+    { id: 7, name: 'Sac zip l', sku: 'B200001', colour: 'Noir', transfers: 2, transfersSub: 1, revenue: '€0.89K', recommended: 2, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '2 -> 1', understocks: '5 -> 3', depth: '4.5 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '26/02/2026' },
+    { id: 8, name: 'Sac seau m', sku: 'B200002', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.52K', recommended: 1, recommendedBadges: ['VIS'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.28, stockouts: '0 -> 1', locations: '1 -> 2', overstocks: '1 -> 0', understocks: '3 -> 1', depth: '3.6 -> 4.3', status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '24/02/2026' },
   ],
 }
 
@@ -442,6 +455,98 @@ function IconCheck() {
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0" aria-hidden>
       <path d="M13 4L6 11 3 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+  )
+}
+
+const STATUS_OPTIONS = [
+  { id: 'approved_by_system', label: 'Approved by system', color: 'green', dotClass: 'bg-[#22c55e]' },
+  { id: 'approved_by_user', label: 'Approved by user', color: 'green', dotClass: 'bg-[#22c55e]' },
+  { id: 'last_edited_by_user', label: 'Last edited by user', color: 'blue', dotClass: 'bg-[#3b82f6]' },
+  { id: 'unapproved', label: 'Unapproved', color: 'grey', dotClass: 'bg-[#9ca3af]' },
+  { id: 'needs_review_from_user', label: 'Needs review from user', color: 'amber', dotClass: 'bg-[#f59e0b]' },
+  { id: 'locked', label: 'Locked', color: 'red', dotClass: 'bg-[#ef4444]' },
+  { id: 'partially_approved', label: 'Partially approved', color: 'yellow', dotClass: 'bg-[#eab308]' },
+]
+
+const STATUS_BADGE_CLASSES = {
+  approved_by_system: 'bg-[#dcfce7] text-[#166534]',
+  approved_by_user: 'bg-[#dcfce7] text-[#166534]',
+  last_edited_by_user: 'bg-[#dbeafe] text-[#1d4ed8]',
+  unapproved: 'bg-[#f3f4f6] text-[#4b5563]',
+  needs_review_from_user: 'bg-[#fffbeb] text-[#b45309]',
+  locked: 'bg-[#fee2e2] text-[#b91c1c]',
+  partially_approved: 'bg-[#fef9c3] text-[#a16207]',
+}
+
+function StatusDropdown({ value, userName, onChange, rowId }) {
+  const [open, setOpen] = useState(false)
+  const [dropdownId] = useState(() => `status-dd-${rowId}-${Math.random().toString(36).slice(2)}`)
+  const opt = STATUS_OPTIONS.find((o) => o.id === value) || STATUS_OPTIONS[0]
+  const badgeClass = STATUS_BADGE_CLASSES[value] || STATUS_BADGE_CLASSES.unapproved
+  const displayLabel =
+    value === 'approved_by_user' && userName
+      ? `Approved by user: ${userName}`
+      : value === 'last_edited_by_user' && userName
+        ? `Last edited by user: ${userName}`
+        : opt.label
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest(`[data-status-dropdown="${dropdownId}"]`)) {
+        setOpen(false)
+      }
+    }
+    if (open) {
+      document.addEventListener('click', handleClickOutside)
+    }
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [open, dropdownId])
+
+  return (
+    <div className="relative" data-status-dropdown={dropdownId}>
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation()
+          setOpen((o) => !o)
+        }}
+        className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-[12px] font-medium hover:opacity-90 min-w-0 max-w-full ${badgeClass}`}
+      >
+        <span className={`size-2 rounded-full shrink-0 ${opt.dotClass}`} aria-hidden />
+        <span className="truncate">{displayLabel}</span>
+        <IconChevronDown className={`size-3.5 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <>
+          <div
+            role="presentation"
+            className="fixed inset-0 z-[60]"
+            onClick={() => setOpen(false)}
+            aria-hidden
+          />
+          <div
+            className="absolute left-0 top-full mt-1 z-[70] min-w-[200px] rounded-[6px] border border-[#e5e7eb] bg-white py-1 shadow-lg"
+            style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+          >
+            {STATUS_OPTIONS.map((o) => (
+              <button
+                key={o.id}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onChange(o.id)
+                  setOpen(false)
+                }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-left text-[13px] font-medium text-[#0a0a0a] hover:bg-[#f3f4f6]"
+              >
+                <span className={`size-2 rounded-full shrink-0 ${o.dotClass}`} aria-hidden />
+                <span>{o.label}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
   )
 }
 
@@ -1033,7 +1138,7 @@ function StockAnalysisDrilldown({ product, trip, onBack }) {
 
 function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSinceCreation = false }) {
   const [selectedProduct, setSelectedProduct] = useState(null)
-  const [approvedProducts, setApprovedProducts] = useState({})
+  const [productStatusOverrides, setProductStatusOverrides] = useState({})
   const [selectedProductIds, setSelectedProductIds] = useState(new Set())
   const baseProducts = PRODUCTS_BY_TRIP[trip.id] || DEFAULT_PRODUCTS
   const products = showChangedSinceCreation
@@ -1057,16 +1162,12 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSin
 
   const clearProductSelection = () => setSelectedProductIds(new Set())
 
-  const handleApproveProduct = (id) => {
-    setApprovedProducts((prev) => ({ ...prev, [id]: true }))
-  }
-
   const handleApproveSelectedProducts = () => {
     if (!selectedProductIds.size) return
-    setApprovedProducts((prev) => {
+    setProductStatusOverrides((prev) => {
       const next = { ...prev }
       selectedProductIds.forEach((id) => {
-        next[id] = true
+        next[id] = 'approved_by_user'
       })
       return next
     })
@@ -1075,11 +1176,6 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSin
 
   const handleExcludeSelectedProducts = () => {
     setSelectedProductIds(new Set())
-  }
-
-  const showProductEditButton = (p) => {
-    const isApproved = !!approvedProducts[p.id]
-    return isApproved || p.approvalStatus === 'approved_by_system' || p.approvalStatus === 'approved_by_user'
   }
 
   if (selectedProduct) {
@@ -1200,8 +1296,7 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSin
               <th className="text-right py-3 px-4 font-medium text-[#00050A]">
                 <span className="inline-flex items-center gap-1">Depth <IconInfo /></span>
               </th>
-              <th className="text-left py-3 px-4 font-medium text-[#00050A]">Approval status</th>
-              <th className="w-[100px] py-3 px-4 bg-[#F8F8F8] sticky right-0 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.05)]" />
+              <th className="text-left py-3 px-4 font-medium text-[#00050A]">Status</th>
             </tr>
             <tr className="border-b border-[#E9EAEB] bg-[#F8F8F8]">
               <th className="py-2 px-4" />
@@ -1218,7 +1313,6 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSin
               <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
               <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
               <th className="py-2 px-4" />
-              <th className="py-2 px-4 bg-[#F8F8F8] sticky right-0 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.05)]" />
             </tr>
           </thead>
           <tbody>
@@ -1288,56 +1382,13 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSin
                 <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.overstocks}</td>
                 <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.understocks}</td>
                 <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.depth}</td>
-                <td className="py-3 px-4">
-                  {(() => {
-                    const isApproved = !!approvedProducts[p.id]
-                    if (isApproved) {
-                      return (
-                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E4F4EF] text-[12px] font-medium text-[#08A16A]">
-                          <IconCheck className="size-4 shrink-0" />
-                          Approved by user: Jess Briggs
-                        </span>
-                      )
-                    }
-                    if (p.approvalStatus === 'approved_by_system') {
-                      return (
-                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E4F4EF] text-[12px] font-medium text-[#08A16A]">
-                          <IconCheck className="size-4 shrink-0" />
-                          Approved by system
-                        </span>
-                      )
-                    }
-                    if (p.approvalStatus === 'approved_by_user') {
-                      return (
-                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E4F4EF] text-[12px] font-medium text-[#08A16A]">
-                          <IconCheck className="size-4 shrink-0" />
-                          Approved by user: {p.approvedByUser || 'Jess Briggs'}
-                        </span>
-                      )
-                    }
-                    if (p.approvalStatus === 'edited_by_user') {
-                      return (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#FFF8E1] text-[12px] font-medium text-[#B8860B]">
-                          Last edited by: {p.editedByUser || 'Csabi Toth'}
-                        </span>
-                      )
-                    }
-                    return <span className="inline-block h-5" aria-hidden />
-                  })()}
-                </td>
-                <td className="py-3 px-4 text-right bg-white sticky right-0 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.05)]" onClick={(e) => e.stopPropagation()}>
-                  {!showProductEditButton(p) && (
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleApproveProduct(p.id)
-                      }}
-                      className="inline-flex items-center justify-center h-8 px-4 rounded-[4px] border border-[#d1d5db] bg-white text-[13px] font-medium text-[#212B36] hover:bg-[#f9fafb] hover:border-[#9ca3af]"
-                    >
-                      Approve
-                    </button>
-                  )}
+                <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
+                  <StatusDropdown
+                    rowId={`product-${p.id}`}
+                    value={productStatusOverrides[p.id] ?? getRowStatus(p)}
+                    userName={p.approvedByUser || p.editedByUser}
+                    onChange={(statusId) => setProductStatusOverrides((prev) => ({ ...prev, [p.id]: statusId }))}
+                  />
                 </td>
               </tr>
             ))}
@@ -1400,7 +1451,7 @@ export default function ScheduleDetailPage() {
   const [viewShowsFullDataset, setViewShowsFullDataset] = useState(true)
   const [selectedView, setSelectedView] = useState('Show all recommendations')
   const [viewDropdownOpen, setViewDropdownOpen] = useState(false)
-  const [approvedTrips, setApprovedTrips] = useState({})
+  const [tripStatusOverrides, setTripStatusOverrides] = useState({})
   const [selectedTrip, setSelectedTrip] = useState(null)
   const [selectedTripIds, setSelectedTripIds] = useState(new Set())
   const [showChangedSinceCreation, setShowChangedSinceCreation] = useState(false)
@@ -1423,22 +1474,6 @@ export default function ScheduleDetailPage() {
     }
   }
 
-  const handleApproveRow = (id) => {
-    setApprovedTrips((prev) => ({ ...prev, [id]: true }))
-  }
-
-  const handleApproveAllVisible = () => {
-    const idsToApprove = tripsRows.filter((row) => row.to === 'Opéra').map((row) => row.id)
-    if (!idsToApprove.length) return
-    setApprovedTrips((prev) => {
-      const next = { ...prev }
-      idsToApprove.forEach((id) => {
-        next[id] = true
-      })
-      return next
-    })
-  }
-
   const toggleTripSelection = (id) => {
     setSelectedTripIds((prev) => {
       const next = new Set(prev)
@@ -1458,10 +1493,10 @@ export default function ScheduleDetailPage() {
 
   const handleApproveSelected = () => {
     if (!selectedTripIds.size) return
-    setApprovedTrips((prev) => {
+    setTripStatusOverrides((prev) => {
       const next = { ...prev }
       selectedTripIds.forEach((id) => {
-        next[id] = true
+        next[id] = 'approved_by_user'
       })
       return next
     })
@@ -1471,14 +1506,6 @@ export default function ScheduleDetailPage() {
   const handleExcludeSelected = () => {
     // Placeholder: exclude selected trips from schedule
     setSelectedTripIds(new Set())
-  }
-
-  const showEditButton = (row) => {
-    const isExceptionRow = row.to === 'Opéra'
-    const isApproved = !!approvedTrips[row.id]
-    if (isExceptionRow && (isApproved || row.approvalStatus === 'approved_by_system' || row.approvalStatus === 'approved_by_user')) return true
-    if (!isExceptionRow && viewShowsFullDataset) return true
-    return false
   }
 
   return (
@@ -1749,8 +1776,7 @@ export default function ScheduleDetailPage() {
                     </th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Recommendations updated</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Products</th>
-                    <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Approval status</th>
-                    <th className="py-3 px-3" />
+                    <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Status</th>
                   </tr>
                   <tr className="border-b border-[#e5e7eb]">
                     <th className="py-2 px-3" />
@@ -1762,13 +1788,12 @@ export default function ScheduleDetailPage() {
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]">—</th>
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]">N/A</th>
                     <th className="py-2 px-3" />
-                    <th className="py-2 px-3" />
                   </tr>
                 </thead>
                 <tbody>
                   {tripsRows.map((row) => {
-                    const isExceptionRow = row.to === 'Opéra'
-                    const isApproved = !!approvedTrips[row.id]
+                    const rowStatus = tripStatusOverrides[row.id] ?? getRowStatus(row)
+                    const userName = row.approvedByUser || row.editedByUser
 
                     return (
                       <tr
@@ -1839,52 +1864,13 @@ export default function ScheduleDetailPage() {
                         <td className="py-3 px-3 align-top">
                           <span className="text-[#0a0a0a]">{row.products}</span>
                         </td>
-                        <td className="py-3 px-3 align-top">
-                          {isExceptionRow ? (
-                            isApproved ? (
-                              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E4F4EF] text-[12px] font-medium text-[#08A16A]">
-                                <IconCheck className="size-4 shrink-0" />
-                                Approved by user: Jess Briggs
-                              </span>
-                            ) : row.approvalStatus === 'approved_by_system' ? (
-                              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E4F4EF] text-[12px] font-medium text-[#08A16A]">
-                                <IconCheck className="size-4 shrink-0" />
-                                Approved by system
-                              </span>
-                            ) : row.approvalStatus === 'approved_by_user' ? (
-                              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E4F4EF] text-[12px] font-medium text-[#08A16A]">
-                                <IconCheck className="size-4 shrink-0" />
-                                Approved by user: {row.approvedByUser || 'Jess Briggs'}
-                              </span>
-                            ) : row.approvalStatus === 'edited_by_user' ? (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#FFF8E1] text-[12px] font-medium text-[#B8860B]">
-                                Last edited by: {row.editedByUser || 'Csabi Toth'}
-                              </span>
-                            ) : (
-                              <span className="inline-block h-5" aria-hidden />
-                            )
-                          ) : viewShowsFullDataset ? (
-                            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E4F4EF] text-[12px] font-medium text-[#08A16A]">
-                              <IconCheck className="size-4 shrink-0" />
-                              Approved by system
-                            </span>
-                          ) : (
-                            <span className="inline-block h-5" aria-hidden />
-                          )}
-                        </td>
-                        <td className="py-3 px-3 align-top text-right" onClick={(e) => e.stopPropagation()}>
-                          {isExceptionRow && (row.approvalStatus === 'edited_by_user' || (!row.approvalStatus && !isApproved)) ? (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                handleApproveRow(row.id)
-                              }}
-                              className="inline-flex items-center justify-center h-8 px-4 rounded-[4px] border border-[#d1d5db] bg-white text-[13px] font-medium text-[#212B36] hover:bg-[#f9fafb] hover:border-[#9ca3af]"
-                            >
-                              Approve
-                            </button>
-                          ) : null}
+                        <td className="py-3 px-3 align-top" onClick={(e) => e.stopPropagation()}>
+                          <StatusDropdown
+                            rowId={`trip-${row.id}`}
+                            value={rowStatus}
+                            userName={userName}
+                            onChange={(statusId) => setTripStatusOverrides((prev) => ({ ...prev, [row.id]: statusId }))}
+                          />
                         </td>
                       </tr>
                     )
