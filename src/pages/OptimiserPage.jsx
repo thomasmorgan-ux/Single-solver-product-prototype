@@ -720,6 +720,26 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     return `${first.mainColumn} ${first.condition.toLowerCase()} ${first.value}`
   }
 
+  const getExceptionDisplayName = (exc) => {
+    const parts = []
+    for (const filterId of (exc.activeFilterTypes || [])) {
+      const opt = EXCEPTION_FILTER_OPTIONS.find((o) => o.id === filterId)
+      const label = opt?.label || filterId
+      const isProduct = ['departments', 'subDepartments', 'seasons', 'events'].includes(filterId)
+      if (filterId === 'advanced') {
+        const summary = getAdvancedFilterSummary(exc)
+        if (summary) parts.push(summary)
+      } else {
+        const sel = isProduct ? (exc.productFilterSelected || {}) : (exc.geoFilterSelected || {})
+        const selected = sel[filterId] || []
+        if (selected.length > 0) {
+          parts.push(`${label}: ${selected.join(', ')}`)
+        }
+      }
+    }
+    return parts.length > 0 ? parts.join(', ') : null
+  }
+
   const MAIN_COLUMN_OPTIONS = [
     'L30D sales',
     'Understocks',
@@ -1239,7 +1259,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                         className="flex-1 flex items-center justify-between px-4 py-3 text-left hover:bg-[#f8f8f8] transition-colors"
                       >
                         <span className="text-[14px] font-medium text-[#0a0a0a]">
-                          Exception {excIdx + 1}
+                          {getExceptionDisplayName(exc) ?? `Exception ${excIdx + 1}`}
                         </span>
                         <IconChevronDown
                           className={`size-5 text-[#4b535c] transition-transform shrink-0 ${
