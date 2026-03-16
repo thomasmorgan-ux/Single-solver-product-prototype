@@ -64,6 +64,7 @@ const TRIPS_OPERA = [
     movementType: 'Rebalancing',
     badges: ['VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
+    recommendationsUpdatedTime: '14:32',
     status: 'approved_by_system',
   },
   {
@@ -79,6 +80,7 @@ const TRIPS_OPERA = [
     movementType: 'Rebalancing',
     badges: ['VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
+    recommendationsUpdatedTime: '09:15',
     status: 'needs_review_from_user',
   },
   {
@@ -96,6 +98,7 @@ const TRIPS_OPERA = [
     status: 'last_edited_by_user',
     editedByUser: 'Csabi Toth',
     recommendationsUpdated: '26/02/2026',
+    recommendationsUpdatedTime: '16:48',
   },
   {
     id: 4,
@@ -111,6 +114,7 @@ const TRIPS_OPERA = [
     badges: ['REV'],
     status: 'approved_by_system',
     recommendationsUpdated: '24/02/2026',
+    recommendationsUpdatedTime: '11:03',
   },
   {
     id: 5,
@@ -126,6 +130,7 @@ const TRIPS_OPERA = [
     badges: ['VIS', 'REV'],
     status: 'partially_approved',
     recommendationsUpdated: '26/02/2026',
+    recommendationsUpdatedTime: '08:22',
   },
   {
     id: 6,
@@ -142,6 +147,7 @@ const TRIPS_OPERA = [
     status: 'approved_by_user',
     approvedByUser: 'Jess Briggs',
     recommendationsUpdated: '24/02/2026',
+    recommendationsUpdatedTime: '15:07',
   },
   {
     id: 101,
@@ -158,6 +164,7 @@ const TRIPS_OPERA = [
     status: 'approved_by_user',
     approvedByUser: 'Jess Briggs',
     recommendationsUpdated: '26/02/2026',
+    recommendationsUpdatedTime: '10:41',
   },
   {
     id: 102,
@@ -174,6 +181,7 @@ const TRIPS_OPERA = [
     status: 'last_edited_by_user',
     editedByUser: 'Csabi Toth',
     recommendationsUpdated: '24/02/2026',
+    recommendationsUpdatedTime: '13:55',
   },
   {
     id: 103,
@@ -190,6 +198,7 @@ const TRIPS_OPERA = [
     status: 'unapproved',
     editedByUser: 'Csabi Toth',
     recommendationsUpdated: '26/02/2026',
+    recommendationsUpdatedTime: '17:19',
   },
 ]
 
@@ -216,6 +225,7 @@ const TRIPS_OTHER = [
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
+    recommendationsUpdatedTime: '12:08',
     status: 'approved_by_system',
   },
   {
@@ -231,6 +241,7 @@ const TRIPS_OTHER = [
     movementType: 'Rebalancing',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
+    recommendationsUpdatedTime: '09:33',
     status: 'locked',
   },
   {
@@ -246,6 +257,7 @@ const TRIPS_OTHER = [
     movementType: 'Reorder',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
+    recommendationsUpdatedTime: '14:18',
   },
   {
     id: 10,
@@ -260,6 +272,7 @@ const TRIPS_OTHER = [
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
+    recommendationsUpdatedTime: '11:27',
   },
   {
     id: 11,
@@ -274,6 +287,7 @@ const TRIPS_OTHER = [
     movementType: 'Rebalancing',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
+    recommendationsUpdatedTime: '16:52',
   },
   {
     id: 12,
@@ -288,6 +302,7 @@ const TRIPS_OTHER = [
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
+    recommendationsUpdatedTime: '10:05',
   },
   {
     id: 13,
@@ -302,6 +317,7 @@ const TRIPS_OTHER = [
     movementType: 'Rebalancing',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
+    recommendationsUpdatedTime: '13:41',
   },
   {
     id: 14,
@@ -316,6 +332,7 @@ const TRIPS_OTHER = [
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
+    recommendationsUpdatedTime: '08:59',
   },
   {
     id: 15,
@@ -330,6 +347,7 @@ const TRIPS_OTHER = [
     movementType: 'Rebalancing',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
+    recommendationsUpdatedTime: '15:23',
   },
   {
     id: 16,
@@ -344,6 +362,7 @@ const TRIPS_OTHER = [
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
+    recommendationsUpdatedTime: '11:46',
   },
   {
     id: 17,
@@ -358,6 +377,7 @@ const TRIPS_OTHER = [
     movementType: 'Rebalancing',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
+    recommendationsUpdatedTime: '17:02',
   },
   {
     id: 18,
@@ -372,6 +392,7 @@ const TRIPS_OTHER = [
     movementType: 'Replenishment',
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
+    recommendationsUpdatedTime: '09:18',
   },
 ]
 
@@ -388,16 +409,16 @@ const EDITED_EXCEPTION_IDS = [3, 5]
 // Mock products for trip drilldown (keyed by trip id)
 const PRODUCTS_BY_TRIP = {
   1: [
-    { id: 1, name: 'Croi-sac zip l', sku: 'A1398810', colour: 'Noir', transfers: 3, transfersSub: 1, revenue: '€1.48K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '8 -> 5', depth: '5.0 -> 5.0',     status: 'approved_by_system', recommendationsUpdated: '26/02/2026' },
-    { id: 2, name: 'Pre-sac seau m', sku: 'A101080', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€1.12K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', recommendationsUpdated: '24/02/2026' },
-    { id: 3, name: 'Ang-sac pte main m', sku: 'A1252810', colour: 'Figue', transfers: 3, transfersSub: 2, revenue: '€1.89K', recommended: 3, recommendedBadges: ['REV', 'VIS'], recommendedSub: 1, salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '1 -> 0', locations: '2 -> 2', overstocks: '5 -> 2', understocks: '6 -> 3', depth: '4.2 -> 4.8',     status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '26/02/2026' },
-    { id: 4, name: 'Croi-sac zip s', sku: 'A1398811', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.98K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.32, stockouts: '0 -> 0', locations: '1 -> 2', overstocks: '2 -> 1', understocks: '4 -> 2', depth: '5.0 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '24/02/2026' },
-    { id: 5, name: 'Pre-sac seau s', sku: 'A101081', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€0.76K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', status: 'needs_review_from_user', recommendationsUpdated: '26/02/2026' },
-    { id: 6, name: 'Ang-sac pte main s', sku: 'A1252811', colour: 'Figue', transfers: 1, transfersSub: 1, revenue: '€0.65K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 0, salesL30: 1, forecast: 0.21, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '3 -> 1', depth: '4.0 -> 4.5', status: 'approved_by_system', recommendationsUpdated: '24/02/2026' },
+    { id: 1, name: 'Croi-sac zip l', sku: 'A1398810', colour: 'Noir', transfers: 3, transfersSub: 1, revenue: '€1.48K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '8 -> 5', depth: '5.0 -> 5.0',     status: 'approved_by_system', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '14:32' },
+    { id: 2, name: 'Pre-sac seau m', sku: 'A101080', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€1.12K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '09:15' },
+    { id: 3, name: 'Ang-sac pte main m', sku: 'A1252810', colour: 'Figue', transfers: 3, transfersSub: 2, revenue: '€1.89K', recommended: 3, recommendedBadges: ['REV', 'VIS'], recommendedSub: 1, salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '1 -> 0', locations: '2 -> 2', overstocks: '5 -> 2', understocks: '6 -> 3', depth: '4.2 -> 4.8',     status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '16:48' },
+    { id: 4, name: 'Croi-sac zip s', sku: 'A1398811', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.98K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.32, stockouts: '0 -> 0', locations: '1 -> 2', overstocks: '2 -> 1', understocks: '4 -> 2', depth: '5.0 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '11:03' },
+    { id: 5, name: 'Pre-sac seau s', sku: 'A101081', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€0.76K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', status: 'needs_review_from_user', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '08:22' },
+    { id: 6, name: 'Ang-sac pte main s', sku: 'A1252811', colour: 'Figue', transfers: 1, transfersSub: 1, revenue: '€0.65K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 0, salesL30: 1, forecast: 0.21, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '3 -> 1', depth: '4.0 -> 4.5', status: 'approved_by_system', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '15:07' },
   ],
   2: [
-    { id: 7, name: 'Sac zip l', sku: 'B200001', colour: 'Noir', transfers: 2, transfersSub: 1, revenue: '€0.89K', recommended: 2, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '2 -> 1', understocks: '5 -> 3', depth: '4.5 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '26/02/2026' },
-    { id: 8, name: 'Sac seau m', sku: 'B200002', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.52K', recommended: 1, recommendedBadges: ['VIS'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.28, stockouts: '0 -> 1', locations: '1 -> 2', overstocks: '1 -> 0', understocks: '3 -> 1', depth: '3.6 -> 4.3', status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '24/02/2026' },
+    { id: 7, name: 'Sac zip l', sku: 'B200001', colour: 'Noir', transfers: 2, transfersSub: 1, revenue: '€0.89K', recommended: 2, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '2 -> 1', understocks: '5 -> 3', depth: '4.5 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '13:55' },
+    { id: 8, name: 'Sac seau m', sku: 'B200002', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.52K', recommended: 1, recommendedBadges: ['VIS'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.28, stockouts: '0 -> 1', locations: '1 -> 2', overstocks: '1 -> 0', understocks: '3 -> 1', depth: '3.6 -> 4.3', status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '17:19' },
   ],
 }
 
@@ -1454,7 +1475,14 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                     <span className="text-[12px] text-[#4b535c]">{p.recommendedSub}</span>
                   </div>
                 </td>
-                <td className="py-3 px-4 text-right text-[14px] text-[#4B535C]">{p.recommendationsUpdated || '26/02/2026'}</td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end">
+                    <span className="text-[14px] text-[#4B535C]">{p.recommendationsUpdated || '26/02/2026'}</span>
+                    {p.recommendationsUpdatedTime && (
+                      <span className="text-[12px] text-[#4b535c]">{p.recommendationsUpdatedTime}</span>
+                    )}
+                  </div>
+                </td>
                 <td className="py-3 px-4 text-right">
                   <div className="flex flex-col items-end">
                     <span className="text-[#0a0a0a]">{p.salesL7}</span>
@@ -2005,7 +2033,14 @@ export default function ScheduleDetailPage() {
                             </div>
                           </div>
                         </td>
-                        <td className="py-3 px-3 align-top text-[14px] text-[#4B535C]">{row.recommendationsUpdated || '26/02/2026'}</td>
+                        <td className="py-3 px-3 align-top">
+                          <div className="flex flex-col">
+                            <span className="text-[14px] text-[#4B535C]">{row.recommendationsUpdated || '26/02/2026'}</span>
+                            {row.recommendationsUpdatedTime && (
+                              <span className="text-[12px] text-[#4b535c]">{row.recommendationsUpdatedTime}</span>
+                            )}
+                          </div>
+                        </td>
                         <td className="py-3 px-3 align-top">
                           <span className="text-[#0a0a0a]">{row.products}</span>
                         </td>
