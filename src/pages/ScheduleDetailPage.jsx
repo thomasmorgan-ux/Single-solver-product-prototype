@@ -1144,14 +1144,31 @@ function StockAnalysisDrilldown({ product, trip, onBack }) {
   )
 }
 
-function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSinceCreation = false }) {
+function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [productStatusOverrides, setProductStatusOverrides] = useState({})
   const [selectedProductIds, setSelectedProductIds] = useState(new Set())
+  const [statusFilters, setStatusFilters] = useState([])
+  const [filtersDropdownOpen, setFiltersDropdownOpen] = useState(false)
+  const [bulkChangeStatusOpen, setBulkChangeStatusOpen] = useState(false)
   const baseProducts = PRODUCTS_BY_TRIP[trip.id] || DEFAULT_PRODUCTS
-  const products = showChangedSinceCreation
-    ? baseProducts.filter((p) => (p.recommendationsUpdated || '24/02/2026') > SCHEDULE_CREATION_DATE)
-    : baseProducts
+  const products = (() => {
+    let list = baseProducts
+    if (statusFilters.length > 0) {
+      list = list.filter((p) => {
+        const rowStatus = productStatusOverrides[p.id] ?? getRowStatus(p)
+        return statusFilters.some((f) => {
+          if (f === 'approved') return rowStatus === 'approved_by_system' || rowStatus === 'approved_by_user'
+          if (f === 'unapproved') return rowStatus === 'unapproved'
+          if (f === 'needs_review') return rowStatus === 'needs_review_from_user'
+          if (f === 'locked') return rowStatus === 'locked'
+          if (f === 'edited') return rowStatus === 'last_edited_by_user'
+          return false
+        })
+      })
+    }
+    return list
+  })()
 
   const toggleProductSelection = (id) => {
     setSelectedProductIds((prev) => {
@@ -1170,19 +1187,16 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSin
 
   const clearProductSelection = () => setSelectedProductIds(new Set())
 
-  const handleApproveSelectedProducts = () => {
+  const handleBulkStatusChangeProducts = (statusId) => {
     if (!selectedProductIds.size) return
     setProductStatusOverrides((prev) => {
       const next = { ...prev }
       selectedProductIds.forEach((id) => {
-        next[id] = 'approved_by_user'
+        next[id] = statusId
       })
       return next
     })
-    setSelectedProductIds(new Set())
-  }
-
-  const handleExcludeSelectedProducts = () => {
+    setBulkChangeStatusOpen(false)
     setSelectedProductIds(new Set())
   }
 
@@ -1251,12 +1265,74 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSin
             <IconChevronDown className="size-4" />
           </span>
         </div>
-        <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Filter">
-          <IconFilterFunnel />
-        </button>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setFiltersDropdownOpen((o) => !o)}
+            className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0"
+            aria-label="Filter"
+          >
+            <IconFilterFunnel />
+          </button>
+          {filtersDropdownOpen && (
+            <>
+              <div className="fixed inset-0 z-[60]" aria-hidden onClick={() => setFiltersDropdownOpen(false)} />
+              <div className="absolute left-0 top-full mt-1 z-[70] min-w-[200px] rounded-[6px] border border-[#e5e7eb] bg-white py-2 shadow-lg">
+                <div className="px-3 py-1.5 text-[12px] font-medium text-[#4b535c] uppercase tracking-wide">Status</div>
+                {[
+                  { id: 'approved', label: 'Approved' },
+                  { id: 'unapproved', label: 'Unapproved' },
+                  { id: 'needs_review', label: 'Needs review' },
+                  { id: 'locked', label: 'Locked' },
+                  { id: 'edited', label: 'Edited' },
+                ].map((opt) => (
+                  <label key={opt.id} className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#f3f4f6] cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={statusFilters.includes(opt.id)}
+                      onChange={(e) => {
+                        setStatusFilters((prev) =>
+                          e.target.checked ? [...prev, opt.id] : prev.filter((x) => x !== opt.id)
+                        )
+                      }}
+                      className="size-4 rounded border-[#d1d5db] text-[#0267ff]"
+                    />
+                    <span className="text-[13px] text-[#0a0a0a]">{opt.label}</span>
+                  </label>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
         <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Column settings">
           <IconColumnSettings />
         </button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2 mt-1">
+        {statusFilters.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            {statusFilters.map((f) => {
+              const labels = { approved: 'Approved', unapproved: 'Unapproved', needs_review: 'Needs review', locked: 'Locked', edited: 'Edited' }
+              return (
+                <span
+                  key={f}
+                  className="inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 rounded-[4px] bg-[#f3f4f6] text-[#4b535c] border border-[#e5e7eb]"
+                >
+                  <span>Status: {labels[f]}</span>
+                  <button
+                    type="button"
+                    onClick={() => setStatusFilters((prev) => prev.filter((x) => x !== f))}
+                    className="p-0.5 rounded-[4px] text-[#6b7280] hover:bg-[#e5e7eb] hover:text-[#374151]"
+                    aria-label={`Remove filter: Status ${labels[f]}`}
+                  >
+                    <IconClose className="size-3.5" />
+                  </button>
+                </span>
+              )
+            })}
+          </div>
+        )}
       </div>
 
       <div className="border border-[#e5e7eb] rounded-[4px] overflow-x-auto bg-white">
@@ -1434,20 +1510,36 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSin
           <span className="text-[14px] font-medium text-white">
             {selectedProductIds.size} selected
           </span>
-          <button
-            type="button"
-            onClick={handleApproveSelectedProducts}
-            className="px-4 py-2 rounded-[4px] text-[14px] font-medium text-white hover:bg-white/10"
-          >
-            Approve all
-          </button>
-          <button
-            type="button"
-            onClick={handleExcludeSelectedProducts}
-            className="px-4 py-2 rounded-[4px] text-[14px] font-medium text-white hover:bg-white/10"
-          >
-            Exclude
-          </button>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setBulkChangeStatusOpen((o) => !o)}
+              className="px-4 py-2 rounded-[4px] text-[14px] font-medium text-white hover:bg-white/10"
+            >
+              Change status
+            </button>
+            {bulkChangeStatusOpen && (
+              <>
+                <div className="fixed inset-0 z-[60]" aria-hidden onClick={() => setBulkChangeStatusOpen(false)} />
+                <div
+                  className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 z-[70] min-w-[180px] rounded-[6px] border border-[#e5e7eb] bg-white py-1 shadow-lg"
+                  style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+                >
+                  {STATUS_DROPDOWN_OPTIONS.map((o) => (
+                    <button
+                      key={o.id}
+                      type="button"
+                      onClick={() => handleBulkStatusChangeProducts(o.id)}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-left text-[13px] font-medium text-[#0a0a0a] hover:bg-[#f3f4f6]"
+                    >
+                      <span className={`size-2 rounded-full shrink-0 ${o.dotClass}`} aria-hidden />
+                      <span>{o.dropdownLabel}</span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
     </div>
@@ -1462,12 +1554,27 @@ export default function ScheduleDetailPage() {
   const [tripStatusOverrides, setTripStatusOverrides] = useState({})
   const [selectedTrip, setSelectedTrip] = useState(null)
   const [selectedTripIds, setSelectedTripIds] = useState(new Set())
-  const [showChangedSinceCreation, setShowChangedSinceCreation] = useState(false)
+  const [statusFilters, setStatusFilters] = useState([])
+  const [filtersDropdownOpen, setFiltersDropdownOpen] = useState(false)
 
   const baseTripsRows = viewShowsFullDataset ? TRIPS_ALL : TRIPS_OPERA
-  const tripsRows = showChangedSinceCreation
-    ? baseTripsRows.filter((row) => (row.recommendationsUpdated || '24/02/2026') > SCHEDULE_CREATION_DATE)
-    : baseTripsRows
+  const tripsRows = (() => {
+    let rows = baseTripsRows
+    if (statusFilters.length > 0) {
+      rows = rows.filter((row) => {
+        const rowStatus = tripStatusOverrides[row.id] ?? getRowStatus(row)
+        return statusFilters.some((f) => {
+          if (f === 'approved') return rowStatus === 'approved_by_system' || rowStatus === 'approved_by_user'
+          if (f === 'unapproved') return rowStatus === 'unapproved'
+          if (f === 'needs_review') return rowStatus === 'needs_review_from_user'
+          if (f === 'locked') return rowStatus === 'locked'
+          if (f === 'edited') return rowStatus === 'last_edited_by_user'
+          return false
+        })
+      })
+    }
+    return rows
+  })()
   const summaryTransfers = viewShowsFullDataset ? '2,000 units' : '203 units'
   const summaryRevenue = viewShowsFullDataset ? '€435.3K' : '€41.3K'
   const summaryRecommended = viewShowsFullDataset ? '2,105 units' : '203 units'
@@ -1499,20 +1606,18 @@ export default function ScheduleDetailPage() {
 
   const clearSelection = () => setSelectedTripIds(new Set())
 
-  const handleApproveSelected = () => {
+  const [bulkChangeStatusOpen, setBulkChangeStatusOpen] = useState(false)
+
+  const handleBulkStatusChange = (statusId) => {
     if (!selectedTripIds.size) return
     setTripStatusOverrides((prev) => {
       const next = { ...prev }
       selectedTripIds.forEach((id) => {
-        next[id] = 'approved_by_user'
+        next[id] = statusId
       })
       return next
     })
-    setSelectedTripIds(new Set())
-  }
-
-  const handleExcludeSelected = () => {
-    // Placeholder: exclude selected trips from schedule
+    setBulkChangeStatusOpen(false)
     setSelectedTripIds(new Set())
   }
 
@@ -1650,25 +1755,12 @@ export default function ScheduleDetailPage() {
                 </>
               )}
             </div>
-            <button
-              type="button"
-              onClick={() => setShowChangedSinceCreation((v) => !v)}
-              className={`inline-flex items-center gap-1.5 h-10 px-3 rounded-[4px] text-[14px] font-medium ${
-                showChangedSinceCreation
-                  ? 'bg-[#0267FF] text-white border border-[#0267FF]'
-                  : 'bg-white text-[#4B535C] border border-[#E9EAEB] hover:bg-[#f9fafb]'
-              }`}
-              aria-pressed={showChangedSinceCreation}
-            >
-              <IconClock className="size-4" />
-              Changed since creation
-            </button>
           </div>
         </div>
 
         {activeTab === 'trips' ? (
           selectedTrip ? (
-            <ProductsDrilldown trip={selectedTrip} onBack={() => setSelectedTrip(null)} showChangedSinceCreation={showChangedSinceCreation} />
+            <ProductsDrilldown trip={selectedTrip} onBack={() => setSelectedTrip(null)} />
           ) : (
           <div className="flex flex-col gap-4">
             <div className="flex flex-wrap items-center gap-2">
@@ -1696,52 +1788,96 @@ export default function ScheduleDetailPage() {
               >
                 <IconSortOrder />
               </button>
-              <button
-                type="button"
-                className="h-10 px-4 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#22272f] hover:bg-[#f3f4f6] shrink-0 flex items-center gap-2"
-              >
-                <IconFilterFunnel />
-                Filters
-              </button>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setFiltersDropdownOpen((o) => !o)}
+                  className="h-10 px-4 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#22272f] hover:bg-[#f3f4f6] shrink-0 flex items-center gap-2"
+                >
+                  <IconFilterFunnel />
+                  Filters
+                </button>
+                {filtersDropdownOpen && (
+                  <>
+                    <div className="fixed inset-0 z-[60]" aria-hidden onClick={() => setFiltersDropdownOpen(false)} />
+                    <div className="absolute left-0 top-full mt-1 z-[70] min-w-[200px] rounded-[6px] border border-[#e5e7eb] bg-white py-2 shadow-lg">
+                      <div className="px-3 py-1.5 text-[12px] font-medium text-[#4b535c] uppercase tracking-wide">Status</div>
+                      {[
+                        { id: 'approved', label: 'Approved' },
+                        { id: 'unapproved', label: 'Unapproved' },
+                        { id: 'needs_review', label: 'Needs review' },
+                        { id: 'locked', label: 'Locked' },
+                        { id: 'edited', label: 'Edited' },
+                      ].map((opt) => (
+                        <label key={opt.id} className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#f3f4f6] cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={statusFilters.includes(opt.id)}
+                            onChange={(e) => {
+                              setStatusFilters((prev) =>
+                                e.target.checked ? [...prev, opt.id] : prev.filter((x) => x !== opt.id)
+                              )
+                            }}
+                            className="size-4 rounded border-[#d1d5db] text-[#0267ff]"
+                          />
+                          <span className="text-[13px] text-[#0a0a0a]">{opt.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 text-[12px] mt-1">
               {(() => {
-                const filterChips =
+                const viewChips =
                   selectedView === 'Exception 1 — Transfer units lower than 10 · Location: Opéra'
                     ? ['Advanced: Transfer units lower than 10', 'Receiving location: Opéra']
                     : selectedView === 'Exception 2 — Product: A1252810, A12528YY, A13314YY'
                       ? ['Products: A1252810 +2']
                       : []
+                const statusFilterLabels = { approved: 'Approved', unapproved: 'Unapproved', needs_review: 'Needs review', locked: 'Locked', edited: 'Edited' }
+                const statusChips = statusFilters.map((f) => `Status: ${statusFilterLabels[f]}`)
+                const filterChips = [...viewChips, ...statusChips]
                 return filterChips.length > 0 ? (
                   <div className="flex flex-wrap items-center gap-2">
-                    {filterChips.map((label) => (
-                      <span
-                        key={label}
-                        className="inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 rounded-[4px] bg-[#f3f4f6] text-[#4b535c] border border-[#e5e7eb]"
-                      >
-                        <span>{label}</span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setViewShowsFullDataset(true)
-                            setSelectedView('Show all recommendations')
-                          }}
-                          className="p-0.5 rounded-[4px] text-[#6b7280] hover:bg-[#e5e7eb] hover:text-[#374151]"
-                          aria-label={`Remove filter: ${label}`}
+                    {filterChips.map((label) => {
+                      const isStatusChip = label.startsWith('Status: ')
+                      return (
+                        <span
+                          key={label}
+                          className="inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 rounded-[4px] bg-[#f3f4f6] text-[#4b535c] border border-[#e5e7eb]"
                         >
-                          <IconClose className="size-3.5" />
-                        </button>
-                      </span>
-                    ))}
+                          <span>{label}</span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (isStatusChip) {
+                                const statusId = Object.entries(statusFilterLabels).find(([, l]) => label === `Status: ${l}`)?.[0]
+                                if (statusId) setStatusFilters((prev) => prev.filter((x) => x !== statusId))
+                              } else {
+                                setViewShowsFullDataset(true)
+                                setSelectedView('Show all recommendations')
+                              }
+                            }}
+                            className="p-0.5 rounded-[4px] text-[#6b7280] hover:bg-[#e5e7eb] hover:text-[#374151]"
+                            aria-label={`Remove filter: ${label}`}
+                          >
+                            <IconClose className="size-3.5" />
+                          </button>
+                        </span>
+                      )
+                    })}
                   </div>
                 ) : null
               })()}
               <div className="ml-auto flex items-center gap-3">
-                {!viewShowsFullDataset && (
+                {(statusFilters.length > 0 || !viewShowsFullDataset) && (
                   <button
                     type="button"
                     onClick={() => {
+                      setStatusFilters([])
                       setViewShowsFullDataset(true)
                       setSelectedView('Show all recommendations')
                     }}
@@ -1889,7 +2025,7 @@ export default function ScheduleDetailPage() {
           </div>
           )
         ) : activeTab === 'products' ? (
-          <ProductsDrilldown trip={TRIPS_OPERA[0]} onBack={() => {}} showBackButton={false} showChangedSinceCreation={showChangedSinceCreation} />
+          <ProductsDrilldown trip={TRIPS_OPERA[0]} onBack={() => {}} showBackButton={false} />
         ) : (
           <div className="border border-dashed border-[#e5e7eb] rounded-[8px] p-6 text-[14px] text-[#4b535c]">
             Locations view coming soon.
@@ -1912,20 +2048,36 @@ export default function ScheduleDetailPage() {
           <span className="text-[14px] font-medium text-white">
             {selectedTripIds.size} selected
           </span>
-          <button
-            type="button"
-            onClick={handleApproveSelected}
-            className="px-4 py-2 rounded-[4px] text-[14px] font-medium text-white hover:bg-white/10"
-          >
-            Approve all
-          </button>
-          <button
-            type="button"
-            onClick={handleExcludeSelected}
-            className="px-4 py-2 rounded-[4px] text-[14px] font-medium text-white hover:bg-white/10"
-          >
-            Exclude
-          </button>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setBulkChangeStatusOpen((o) => !o)}
+              className="px-4 py-2 rounded-[4px] text-[14px] font-medium text-white hover:bg-white/10"
+            >
+              Change status
+            </button>
+            {bulkChangeStatusOpen && (
+              <>
+                <div className="fixed inset-0 z-[60]" aria-hidden onClick={() => setBulkChangeStatusOpen(false)} />
+                <div
+                  className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 z-[70] min-w-[180px] rounded-[6px] border border-[#e5e7eb] bg-white py-1 shadow-lg"
+                  style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+                >
+                  {STATUS_DROPDOWN_OPTIONS.map((o) => (
+                    <button
+                      key={o.id}
+                      type="button"
+                      onClick={() => handleBulkStatusChange(o.id)}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-left text-[13px] font-medium text-[#0a0a0a] hover:bg-[#f3f4f6]"
+                    >
+                      <span className={`size-2 rounded-full shrink-0 ${o.dotClass}`} aria-hidden />
+                      <span>{o.dropdownLabel}</span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
       </div>
