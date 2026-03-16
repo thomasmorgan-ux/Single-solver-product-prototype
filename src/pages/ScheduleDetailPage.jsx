@@ -1326,18 +1326,7 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true, showChangedSin
                   })()}
                 </td>
                 <td className="py-3 px-4 text-right bg-white sticky right-0 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.05)]" onClick={(e) => e.stopPropagation()}>
-                  {showProductEditButton(p) ? (
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setSelectedProduct(p)
-                      }}
-                      className="inline-flex items-center justify-center h-8 px-4 rounded-[4px] border border-[#E9EAEB] bg-white text-[13px] font-medium text-[#212B36] hover:bg-[#f9fafb] hover:border-[#9ca3af]"
-                    >
-                      Edit
-                    </button>
-                  ) : (
+                  {!showProductEditButton(p) && (
                     <button
                       type="button"
                       onClick={(e) => {
@@ -1744,7 +1733,6 @@ export default function ScheduleDetailPage() {
                     </th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Sending location</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Receiving location</th>
-                    <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Movement type</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">Transfers</th>
                     <th className="text-left py-3 px-3 font-medium text-[#0a0a0a]">
                       <span className="inline-flex items-center gap-1">
@@ -1768,7 +1756,6 @@ export default function ScheduleDetailPage() {
                     <th className="py-2 px-3" />
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]" />
                     <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]" />
-                    <th className="py-2 px-3 text-[12px] font-normal text-[#4b535c]" />
                     <th className="py-2 px-3 text-[12px] font-medium text-[#0a0a0a]">{summaryTransfers}</th>
                     <th className="py-2 px-3 text-[12px] font-medium text-[#0a0a0a]">{summaryRevenue}</th>
                     <th className="py-2 px-3 text-[12px] font-medium text-[#0a0a0a]">{summaryRecommended}</th>
@@ -1782,13 +1769,6 @@ export default function ScheduleDetailPage() {
                   {tripsRows.map((row) => {
                     const isExceptionRow = row.to === 'Opéra'
                     const isApproved = !!approvedTrips[row.id]
-                    const movementType = row.movementType || 'Rebalancing'
-                    const movementBadgeClass =
-                      movementType === 'Rebalancing'
-                        ? 'bg-[#e0edff] text-[#1d4ed8]'
-                        : movementType === 'Replenishment'
-                          ? 'bg-[#ecfdf3] text-[#166534]'
-                          : 'bg-[#f3e8ff] text-[#6b21a8]'
 
                     return (
                       <tr
@@ -1824,13 +1804,6 @@ export default function ScheduleDetailPage() {
                             <span className="text-[#0a0a0a] font-medium">{row.to}</span>
                             <span className="text-[12px] text-[#4b535c]">{row.toCode}</span>
                           </div>
-                        </td>
-                        <td className="py-3 px-3 align-top">
-                          <span
-                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${movementBadgeClass}`}
-                          >
-                            {movementType}
-                          </span>
                         </td>
                         <td className="py-3 px-3 align-top">
                           <span className="text-[#0a0a0a]">{row.transfers}</span>
@@ -1900,18 +1873,7 @@ export default function ScheduleDetailPage() {
                           )}
                         </td>
                         <td className="py-3 px-3 align-top text-right" onClick={(e) => e.stopPropagation()}>
-                          {showEditButton(row) ? (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                setSelectedTrip(row)
-                              }}
-                              className="inline-flex items-center justify-center h-8 px-4 rounded-[4px] border border-[#E9EAEB] bg-white text-[13px] font-medium text-[#212B36] hover:bg-[#f9fafb] hover:border-[#9ca3af]"
-                            >
-                              Edit
-                            </button>
-                          ) : isExceptionRow && (row.approvalStatus === 'edited_by_user' || (!row.approvalStatus && !isApproved)) ? (
+                          {isExceptionRow && (row.approvalStatus === 'edited_by_user' || (!row.approvalStatus && !isApproved)) ? (
                             <button
                               type="button"
                               onClick={(e) => {
