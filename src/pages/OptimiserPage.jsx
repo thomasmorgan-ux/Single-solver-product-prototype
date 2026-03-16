@@ -660,9 +660,9 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
       prev.map((e) => {
         if (e.id !== exceptionId) return e
         const isProduct = ['departments', 'subDepartments', 'seasons', 'events'].includes(filterId)
-        const sel = isProduct ? e.productFilterSelected : e.geoFilterSelected
+        const sel = isProduct ? (e.productFilterSelected || {}) : (e.geoFilterSelected || {})
         const key = filterId
-        const arr = sel[key] || []
+        const arr = Array.isArray(sel[key]) ? sel[key] : []
         const has = arr.includes(optionValue)
         const newArr = has ? arr.filter((v) => v !== optionValue) : [...arr, optionValue]
         return {
@@ -680,7 +680,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
       prev.map((e) => {
         if (e.id !== exceptionId) return e
         const isProduct = ['departments', 'subDepartments', 'seasons', 'events'].includes(filterId)
-        const sel = isProduct ? e.productFilterSelected : e.geoFilterSelected
+        const sel = isProduct ? (e.productFilterSelected || {}) : (e.geoFilterSelected || {})
         return {
           ...e,
           [isProduct ? 'productFilterSelected' : 'geoFilterSelected']: {
@@ -722,7 +722,8 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
 
   const getExceptionDisplayName = (exc) => {
     const parts = []
-    for (const filterId of (exc.activeFilterTypes || [])) {
+    const activeTypes = exc.activeFilterTypes || []
+    for (const filterId of activeTypes) {
       const opt = EXCEPTION_FILTER_OPTIONS.find((o) => o.id === filterId)
       const label = opt?.label || filterId
       const isProduct = ['departments', 'subDepartments', 'seasons', 'events'].includes(filterId)
@@ -731,7 +732,8 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
         if (summary) parts.push(summary)
       } else {
         const sel = isProduct ? (exc.productFilterSelected || {}) : (exc.geoFilterSelected || {})
-        const selected = sel[filterId] || []
+        const raw = sel[filterId]
+        const selected = Array.isArray(raw) ? raw : (raw != null ? [String(raw)] : [])
         if (selected.length > 0) {
           parts.push(`${label}: ${selected.join(', ')}`)
         }
