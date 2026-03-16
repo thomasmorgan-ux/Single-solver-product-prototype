@@ -409,16 +409,16 @@ const EDITED_EXCEPTION_IDS = [3, 5]
 // Mock products for trip drilldown (keyed by trip id)
 const PRODUCTS_BY_TRIP = {
   1: [
-    { id: 1, name: 'Croi-sac zip l', sku: 'A1398810', colour: 'Noir', transfers: 3, transfersSub: 1, revenue: '€1.48K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '8 -> 5', depth: '5.0 -> 5.0',     status: 'approved_by_system', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '14:32' },
-    { id: 2, name: 'Pre-sac seau m', sku: 'A101080', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€1.12K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '09:15' },
-    { id: 3, name: 'Ang-sac pte main m', sku: 'A1252810', colour: 'Figue', transfers: 3, transfersSub: 2, revenue: '€1.89K', recommended: 3, recommendedBadges: ['REV', 'VIS'], recommendedSub: 1, salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '1 -> 0', locations: '2 -> 2', overstocks: '5 -> 2', understocks: '6 -> 3', depth: '4.2 -> 4.8',     status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '16:48' },
-    { id: 4, name: 'Croi-sac zip s', sku: 'A1398811', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.98K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.32, stockouts: '0 -> 0', locations: '1 -> 2', overstocks: '2 -> 1', understocks: '4 -> 2', depth: '5.0 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '11:03' },
-    { id: 5, name: 'Pre-sac seau s', sku: 'A101081', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€0.76K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', status: 'needs_review_from_user', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '08:22' },
-    { id: 6, name: 'Ang-sac pte main s', sku: 'A1252811', colour: 'Figue', transfers: 1, transfersSub: 1, revenue: '€0.65K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 0, salesL30: 1, forecast: 0.21, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '3 -> 1', depth: '4.0 -> 4.5', status: 'approved_by_system', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '15:07' },
+    { id: 1, name: 'Croi-sac zip l', sku: 'A1398810', colour: 'Noir', transfers: 3, transfersSub: 1, revenue: '€1.48K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '8 -> 5', depth: '5.0 -> 5.0',     status: 'approved_by_system', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '14:32', currentUnits: 12, currentUnitsInTransit: 3, leftInWarehouseAllocate: 45, leftInWarehouseSell: 32 },
+    { id: 2, name: 'Pre-sac seau m', sku: 'A101080', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€1.12K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '09:15', currentUnits: 8, currentUnitsInTransit: 0, leftInWarehouseAllocate: 120, leftInWarehouseSell: 95 },
+    { id: 3, name: 'Ang-sac pte main m', sku: 'A1252810', colour: 'Figue', transfers: 3, transfersSub: 2, revenue: '€1.89K', recommended: 3, recommendedBadges: ['REV', 'VIS'], recommendedSub: 1, salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '1 -> 0', locations: '2 -> 2', overstocks: '5 -> 2', understocks: '6 -> 3', depth: '4.2 -> 4.8',     status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '16:48', currentUnits: 25, currentUnitsInTransit: 5, leftInWarehouseAllocate: 18, leftInWarehouseSell: 12 },
+    { id: 4, name: 'Croi-sac zip s', sku: 'A1398811', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.98K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.32, stockouts: '0 -> 0', locations: '1 -> 2', overstocks: '2 -> 1', understocks: '4 -> 2', depth: '5.0 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '11:03', currentUnits: 3, currentUnitsInTransit: 1, leftInWarehouseAllocate: 65, leftInWarehouseSell: 50 },
+    { id: 5, name: 'Pre-sac seau s', sku: 'A101081', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€0.76K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', status: 'needs_review_from_user', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '08:22', currentUnits: 15, currentUnitsInTransit: 2, leftInWarehouseAllocate: 30, leftInWarehouseSell: 22 },
+    { id: 6, name: 'Ang-sac pte main s', sku: 'A1252811', colour: 'Figue', transfers: 1, transfersSub: 1, revenue: '€0.65K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 0, salesL30: 1, forecast: 0.21, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '3 -> 1', depth: '4.0 -> 4.5', status: 'approved_by_system', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '15:07', currentUnits: 7, currentUnitsInTransit: 0, leftInWarehouseAllocate: 42, leftInWarehouseSell: 28 },
   ],
   2: [
-    { id: 7, name: 'Sac zip l', sku: 'B200001', colour: 'Noir', transfers: 2, transfersSub: 1, revenue: '€0.89K', recommended: 2, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '2 -> 1', understocks: '5 -> 3', depth: '4.5 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '13:55' },
-    { id: 8, name: 'Sac seau m', sku: 'B200002', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.52K', recommended: 1, recommendedBadges: ['VIS'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.28, stockouts: '0 -> 1', locations: '1 -> 2', overstocks: '1 -> 0', understocks: '3 -> 1', depth: '3.6 -> 4.3', status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '17:19' },
+    { id: 7, name: 'Sac zip l', sku: 'B200001', colour: 'Noir', transfers: 2, transfersSub: 1, revenue: '€0.89K', recommended: 2, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '2 -> 1', understocks: '5 -> 3', depth: '4.5 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '13:55', currentUnits: 18, currentUnitsInTransit: 4, leftInWarehouseAllocate: 88, leftInWarehouseSell: 70 },
+    { id: 8, name: 'Sac seau m', sku: 'B200002', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.52K', recommended: 1, recommendedBadges: ['VIS'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.28, stockouts: '0 -> 1', locations: '1 -> 2', overstocks: '1 -> 0', understocks: '3 -> 1', depth: '3.6 -> 4.3', status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '17:19', currentUnits: 11, currentUnitsInTransit: 2, leftInWarehouseAllocate: 55, leftInWarehouseSell: 40 },
   ],
 }
 
@@ -1242,11 +1242,15 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
     return s + parseFloat(m || 0)
   }, 0)
   const summaryRecommended = products.reduce((s, p) => s + p.recommended + (p.recommendedSub || 0), 0)
+  const summaryCurrentUnits = products.reduce((s, p) => s + (p.currentUnits || 0), 0)
+  const summaryCurrentUnitsInTransit = products.reduce((s, p) => s + (p.currentUnitsInTransit || 0), 0)
+  const summaryLeftInWarehouseAllocate = products.reduce((s, p) => s + (p.leftInWarehouseAllocate || 0), 0)
+  const summaryLeftInWarehouseSell = products.reduce((s, p) => s + (p.leftInWarehouseSell || 0), 0)
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center gap-3">
-        {showBackButton && (
+      {showBackButton && (
+        <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
             onClick={onBack}
@@ -1255,21 +1259,17 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
           >
             <IconArrowLeft className="size-5" />
           </button>
-        )}
-        <nav className="flex items-center gap-2 text-[14px] text-[#4b535c]">
-          {showBackButton ? (
-            <>
-              <button type="button" onClick={onBack} className="hover:text-[#0a0a0a] hover:underline">
-                {breadcrumbFrom}
-              </button>
-              <span>→</span>
-            </>
-          ) : null}
-          <span className="text-[#0a0a0a]">{showBackButton ? breadcrumbTo : `${breadcrumbFrom} → ${breadcrumbTo}`}</span>
-          <span>→</span>
-          <span className="font-medium text-[#0a0a0a]">Products</span>
-        </nav>
-      </div>
+          <nav className="flex items-center gap-2 text-[14px] text-[#4b535c]">
+            <button type="button" onClick={onBack} className="hover:text-[#0a0a0a] hover:underline">
+              {breadcrumbFrom}
+            </button>
+            <span>→</span>
+            <span className="text-[#0a0a0a]">{breadcrumbTo}</span>
+            <span>→</span>
+            <span className="font-medium text-[#0a0a0a]">Products</span>
+          </nav>
+        </div>
+      )}
 
       <div className="flex flex-row flex-nowrap items-center gap-[8px]">
         <div className="flex items-center h-12 rounded-[4px] border border-[#E9EAEB] bg-white w-[200px] shrink-0">
@@ -1360,11 +1360,11 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
         )}
       </div>
 
-      <div className="border border-[#e5e7eb] rounded-[4px] overflow-x-auto bg-white">
-        <table className="w-full text-[14px]">
+      <div className="products-table-scroll border border-[#e5e7eb] rounded-[4px] bg-white overflow-x-auto overflow-y-visible">
+        <table className="w-max min-w-full text-[14px]">
           <thead className="bg-[#F8F8F8]">
             <tr className="border-b border-[#E9EAEB]">
-              <th className="w-12 py-3 px-4 text-left">
+              <th className="sticky left-0 z-20 w-12 py-3 px-4 text-left bg-[#F8F8F8] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)]">
                 <input
                   type="checkbox"
                   className="size-4 rounded border-[#E9EAEB] text-[#0267ff]"
@@ -1373,47 +1373,73 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                   onChange={toggleAllProductsSelection}
                 />
               </th>
-              <th className="text-left py-3 px-4 font-medium text-[#00050A]">Product details</th>
-              <th className="text-right py-3 px-4 font-medium text-[#00050A]">Transfers</th>
-              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+              <th className="sticky left-12 z-20 text-left py-3 px-4 font-medium text-[#00050A] bg-[#F8F8F8] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)] min-w-[200px]">Product details</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[70px]">Transfers</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[90px]">
                 <span className="inline-flex items-center gap-1">Revenue increase <IconInfo /></span>
               </th>
-              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[100px]">
                 <span className="inline-flex items-center gap-1">Recommended transfers <IconInfo /></span>
               </th>
-              <th className="text-right py-3 px-4 font-medium text-[#00050A]">Recommendations updated</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[90px]">Recommendations updated</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[100px]">
+                <span className="inline-flex items-center gap-1 cursor-help" title="This includes stock in transit, stock on hand and stock pending from production. This will be for both parent & child locations (if applicable).">
+                  Stock in circulation <IconInfo />
+                </span>
+              </th>
               <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+                <span className="inline-flex items-center gap-1 cursor-help" title="Units reserved to sell at this location and units available to allocate to stores">
+                  Warehouse units <IconInfo />
+                </span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[70px]">
                 <span className="flex flex-col items-end">
                   Sales
                   <span className="text-[11px] font-normal text-[#4b535c]">L7D / L30D</span>
                 </span>
               </th>
-              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[80px]">
                 <span className="flex flex-col items-end">
                   <span className="inline-flex items-center gap-1">Forecast <IconInfo /></span>
                   <span className="text-[11px] font-normal text-[#4b535c]">per wk</span>
                 </span>
               </th>
-              <th className="text-right py-3 px-4 font-medium text-[#00050A]">Stockouts</th>
-              <th className="text-right py-3 px-4 font-medium text-[#00050A]">Locations</th>
-              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[80px]">Stockouts</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[80px]">Locations</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[80px]">
                 <span className="inline-flex items-center gap-1">Overstocks <IconInfo /></span>
               </th>
-              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[80px]">
                 <span className="inline-flex items-center gap-1">Understocks <IconInfo /></span>
               </th>
-              <th className="text-right py-3 px-4 font-medium text-[#00050A]">
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[70px]">
                 <span className="inline-flex items-center gap-1">Depth <IconInfo /></span>
               </th>
-              <th className="text-left py-3 px-4 font-medium text-[#00050A]">Status</th>
+              <th className="sticky right-0 z-10 py-3 px-4 font-medium text-[#00050A] text-left bg-[#F8F8F8] border-l border-[#e5e7eb] shadow-[-4px_0_8px_rgba(0,0,0,0.04)]">Status</th>
             </tr>
             <tr className="border-b border-[#E9EAEB] bg-[#F8F8F8]">
-              <th className="py-2 px-4" />
-              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c]" />
+              <th className="sticky left-0 z-20 py-2 px-4 bg-[#F8F8F8] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)]" />
+              <th className="sticky left-12 z-20 py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#F8F8F8] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)]" />
               <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">{summaryTransfers} units</th>
               <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">€{summaryRevenue.toFixed(1)}K</th>
               <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">{summaryRecommended} units</th>
               <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">
+                <div className="flex flex-col items-end">
+                  <span>{summaryCurrentUnits} units</span>
+                  {summaryCurrentUnitsInTransit > 0 && (
+                    <span className="text-[12px] text-[#4b535c]">
+                      {summaryCurrentUnitsInTransit} in transit
+                    </span>
+                  )}
+                </div>
+              </th>
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">
+                <div className="flex flex-col items-end">
+                  <span>{summaryLeftInWarehouseAllocate.toLocaleString()} to allocate</span>
+                  <span className="text-[12px] text-[#4b535c]">{summaryLeftInWarehouseSell.toLocaleString()} to sell</span>
+                </div>
+              </th>
               <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
               <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
               <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
@@ -1421,14 +1447,14 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
               <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
               <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
               <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
-              <th className="py-2 px-4" />
+              <th className="sticky right-0 z-10 py-2 px-4 bg-[#F8F8F8] border-l border-[#e5e7eb] shadow-[-4px_0_8px_rgba(0,0,0,0.04)]" />
             </tr>
           </thead>
           <tbody>
             {products.map((p) => (
               <tr
                 key={p.id}
-                className="border-b border-[#E9EAEB] hover:bg-[#f9fafb] cursor-pointer"
+                className="group border-b border-[#E9EAEB] hover:bg-[#f9fafb] cursor-pointer"
                 onClick={() => setSelectedProduct(p)}
                 role="button"
                 tabIndex={0}
@@ -1439,7 +1465,7 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                   }
                 }}
               >
-                <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
+                <td className="sticky left-0 z-10 py-3 px-4 bg-white group-hover:bg-[#f9fafb] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)]" onClick={(e) => e.stopPropagation()}>
                   <input
                     type="checkbox"
                     className="size-4 rounded border-[#E9EAEB] text-[#0267ff]"
@@ -1448,10 +1474,10 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                     onChange={() => toggleProductSelection(p.id)}
                   />
                 </td>
-                <td className="py-3 px-4">
-                  <div className="flex items-center gap-4">
+                <td className="sticky left-12 z-10 py-3 px-4 max-w-[200px] min-w-[200px] bg-white group-hover:bg-[#f9fafb] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)]">
+                  <div className="flex items-center gap-4 min-w-0">
                     <div className="w-12 h-12 rounded-[4px] bg-[#f3f4f6] shrink-0" />
-                    <div className="flex flex-col gap-0.5">
+                    <div className="flex flex-col gap-0.5 min-w-0 line-clamp-2">
                       <span className="font-medium text-[#0a0a0a]">{p.name}</span>
                       <span className="text-[12px] text-[#4b535c]">{p.sku}</span>
                       <span className="text-[12px] text-[#4b535c]">{p.colour}</span>
@@ -1495,15 +1521,15 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                         setEditingTransfersProductId(p.id)
                         setEditingTransfersValue(String(productTransfersOverrides[p.id] ?? p.transfers))
                       }}
-                      className="text-[14px] text-[#0a0a0a] hover:underline focus:outline-none focus:ring-2 focus:ring-[#0267ff] focus:ring-offset-1 rounded-[2px] py-1 px-2 -mx-2 min-w-[2ch]"
+                      className="text-[14px] text-[#0a0a0a] hover:underline focus:outline-none focus:ring-2 focus:ring-[#0267ff] focus:ring-offset-1 rounded-[2px] py-1 px-2 -mx-2 min-w-[2ch] line-clamp-2"
                     >
                       {productTransfersOverrides[p.id] ?? p.transfers}
                     </button>
                   )}
                 </td>
-                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.revenue}</td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{p.revenue}</div></td>
                 <td className="py-3 px-4 text-right">
-                  <div className="flex flex-col items-end gap-1">
+                  <div className="flex flex-col items-end gap-1 line-clamp-2 min-w-0">
                     <span className="text-[#0a0a0a]">
                       {p.recommended}
                       {p.recommendedBadges?.map((b) => (
@@ -1516,7 +1542,7 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                   </div>
                 </td>
                 <td className="py-3 px-4 text-right">
-                  <div className="flex flex-col items-end">
+                  <div className="flex flex-col items-end line-clamp-2 min-w-0">
                     <span className="text-[14px] text-[#4B535C]">{p.recommendationsUpdated || '26/02/2026'}</span>
                     {p.recommendationsUpdatedTime && (
                       <span className="text-[12px] text-[#4b535c]">{p.recommendationsUpdatedTime}</span>
@@ -1524,24 +1550,38 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                   </div>
                 </td>
                 <td className="py-3 px-4 text-right">
-                  <div className="flex flex-col items-end">
+                  <div className="flex flex-col items-end line-clamp-2 min-w-0">
+                    <span className="text-[#0a0a0a]">{p.currentUnits ?? '—'}</span>
+                    <span className="text-[12px] text-[#4b535c]">{p.currentUnitsInTransit ?? 0}</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end line-clamp-2 min-w-0">
+                    <span className="text-[#0a0a0a]">{p.leftInWarehouseAllocate ?? '—'}</span>
+                    <span className="text-[12px] text-[#4b535c]">{p.leftInWarehouseSell ?? '—'}</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end line-clamp-2 min-w-0">
                     <span className="text-[#0a0a0a]">{p.salesL7}</span>
                     <span className="text-[12px] text-[#4b535c]">{p.salesL30}</span>
                   </div>
                 </td>
-                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.forecast}</td>
-                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.stockouts}</td>
-                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.locations}</td>
-                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.overstocks}</td>
-                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.understocks}</td>
-                <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.depth}</td>
-                <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{p.forecast}</div></td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{p.stockouts}</div></td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{p.locations}</div></td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{p.overstocks}</div></td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{p.understocks}</div></td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{p.depth}</div></td>
+                <td className="sticky right-0 z-10 py-3 px-4 bg-white group-hover:bg-[#f9fafb] border-l border-[#e5e7eb] shadow-[-4px_0_8px_rgba(0,0,0,0.04)] min-w-0" onClick={(e) => e.stopPropagation()}>
+                  <div className="line-clamp-2 min-w-0">
                   <StatusDropdown
                     rowId={`product-${p.id}`}
                     value={productStatusOverrides[p.id] ?? getRowStatus(p)}
                     userName={p.approvedByUser || p.editedByUser}
                     onChange={(statusId) => setProductStatusOverrides((prev) => ({ ...prev, [p.id]: statusId }))}
                   />
+                  </div>
                 </td>
               </tr>
             ))}
