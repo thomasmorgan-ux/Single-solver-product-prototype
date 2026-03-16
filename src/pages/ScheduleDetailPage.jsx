@@ -474,6 +474,7 @@ const STATUS_DROPDOWN_OPTIONS = [
   { id: 'unapproved', dropdownLabel: 'Unapprove', dotClass: 'bg-[#9ca3af]' },
   { id: 'needs_review_from_user', dropdownLabel: 'Needs review', dotClass: 'bg-[#f59e0b]' },
   { id: 'locked', dropdownLabel: 'Locked', dotClass: 'bg-[#ef4444]' },
+  { id: 'approved_by_system', dropdownLabel: 'Reset to system recommendation', dotClass: 'bg-[#22c55e]' },
 ]
 
 const STATUS_BADGE_CLASSES = {
