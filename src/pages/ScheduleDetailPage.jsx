@@ -459,13 +459,21 @@ function IconCheck() {
 }
 
 const STATUS_OPTIONS = [
-  { id: 'approved_by_system', label: 'Approved by system', color: 'green', dotClass: 'bg-[#22c55e]' },
-  { id: 'approved_by_user', label: 'Approved by user', color: 'green', dotClass: 'bg-[#22c55e]' },
-  { id: 'last_edited_by_user', label: 'Last edited by user', color: 'blue', dotClass: 'bg-[#3b82f6]' },
-  { id: 'unapproved', label: 'Unapproved', color: 'grey', dotClass: 'bg-[#9ca3af]' },
-  { id: 'needs_review_from_user', label: 'Needs review from user', color: 'amber', dotClass: 'bg-[#f59e0b]' },
-  { id: 'locked', label: 'Locked', color: 'red', dotClass: 'bg-[#ef4444]' },
-  { id: 'partially_approved', label: 'Partially approved', color: 'yellow', dotClass: 'bg-[#eab308]' },
+  { id: 'approved_by_system', displayLabel: 'Approved by system', dotClass: 'bg-[#22c55e]' },
+  { id: 'approved_by_user', displayLabel: 'Approved by user', dotClass: 'bg-[#22c55e]' },
+  { id: 'last_edited_by_user', displayLabel: 'Last edited by user', dotClass: 'bg-[#3b82f6]' },
+  { id: 'unapproved', displayLabel: 'Unapproved', dotClass: 'bg-[#9ca3af]' },
+  { id: 'needs_review_from_user', displayLabel: 'Needs review from user', dotClass: 'bg-[#f59e0b]' },
+  { id: 'locked', displayLabel: 'Locked', dotClass: 'bg-[#ef4444]' },
+  { id: 'partially_approved', displayLabel: 'Partially approved', dotClass: 'bg-[#eab308]' },
+]
+
+// Selectable options only (short action labels in dropdown; badge shows full displayLabel)
+const STATUS_DROPDOWN_OPTIONS = [
+  { id: 'approved_by_user', dropdownLabel: 'Approve', dotClass: 'bg-[#22c55e]' },
+  { id: 'unapproved', dropdownLabel: 'Unapprove', dotClass: 'bg-[#9ca3af]' },
+  { id: 'needs_review_from_user', dropdownLabel: 'Needs review', dotClass: 'bg-[#f59e0b]' },
+  { id: 'locked', dropdownLabel: 'Locked', dotClass: 'bg-[#ef4444]' },
 ]
 
 const STATUS_BADGE_CLASSES = {
@@ -481,14 +489,14 @@ const STATUS_BADGE_CLASSES = {
 function StatusDropdown({ value, userName, onChange, rowId }) {
   const [open, setOpen] = useState(false)
   const [dropdownId] = useState(() => `status-dd-${rowId}-${Math.random().toString(36).slice(2)}`)
-  const opt = STATUS_OPTIONS.find((o) => o.id === value) || STATUS_OPTIONS[0]
+  const opt = STATUS_OPTIONS.find((o) => o.id === value) || STATUS_OPTIONS.find((o) => o.id === 'unapproved')
   const badgeClass = STATUS_BADGE_CLASSES[value] || STATUS_BADGE_CLASSES.unapproved
   const displayLabel =
     value === 'approved_by_user' && userName
       ? `Approved by user: ${userName}`
       : value === 'last_edited_by_user' && userName
         ? `Last edited by user: ${userName}`
-        : opt.label
+        : opt?.displayLabel ?? 'Unapproved'
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -528,7 +536,7 @@ function StatusDropdown({ value, userName, onChange, rowId }) {
             className="absolute left-0 top-full mt-1 z-[70] min-w-[200px] rounded-[6px] border border-[#e5e7eb] bg-white py-1 shadow-lg"
             style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
           >
-            {STATUS_OPTIONS.map((o) => (
+            {STATUS_DROPDOWN_OPTIONS.map((o) => (
               <button
                 key={o.id}
                 type="button"
@@ -540,7 +548,7 @@ function StatusDropdown({ value, userName, onChange, rowId }) {
                 className="w-full flex items-center gap-2 px-3 py-2 text-left text-[13px] font-medium text-[#0a0a0a] hover:bg-[#f3f4f6]"
               >
                 <span className={`size-2 rounded-full shrink-0 ${o.dotClass}`} aria-hidden />
-                <span>{o.label}</span>
+                <span>{o.dropdownLabel}</span>
               </button>
             ))}
           </div>
