@@ -174,27 +174,18 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     locationTypes: false,
     regions: false,
     countries: false,
-    sendingCountries: false,
-    receivingCountries: false,
     locations: false,
-    sendingLocations: false,
-    receivingLocations: false,
   })
   const DEFAULT_PRODUCT_FILTER_OPEN = { departments: false, subDepartments: false, seasons: false, events: false }
   const DEFAULT_GEO_FILTER_OPEN = {
     locationTypes: false,
     regions: false,
     countries: false,
-    sendingCountries: false,
-    receivingCountries: false,
     locations: false,
-    sendingLocations: false,
-    receivingLocations: false,
   }
   const DEFAULT_PRODUCT_FILTER_SELECTED = { departments: [], subDepartments: [], seasons: [], events: [] }
   const DEFAULT_GEO_FILTER_SELECTED = {
-    locationTypes: [], regions: [], countries: [], sendingCountries: [], receivingCountries: [],
-    locations: [], sendingLocations: [], receivingLocations: [],
+    locationTypes: [], regions: [], countries: [], locations: [],
   }
   const EXCEPTION_FILTER_OPTIONS = [
     { id: 'advanced', label: 'Advanced filters', highlight: true },
@@ -205,11 +196,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     { id: 'locationTypes', label: 'Location Types', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
     { id: 'regions', label: 'Regions', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
     { id: 'countries', label: 'Countries', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
-    { id: 'sendingCountries', label: 'Sending countries', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
-    { id: 'receivingCountries', label: 'Receiving countries', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
     { id: 'locations', label: 'Locations', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
-    { id: 'sendingLocations', label: 'Sending locations', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
-    { id: 'receivingLocations', label: 'Receiving locations', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
   ]
   const [exceptions, setExceptions] = useState(() => [
     {
@@ -1143,11 +1130,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                               locationTypes: false,
                               regions: false,
                               countries: false,
-                              sendingCountries: false,
-                              receivingCountries: false,
                               locations: false,
-                              sendingLocations: false,
-                              receivingLocations: false,
                             })
                           }
                           className="text-[12px] font-medium text-[#4b535c] hover:text-[#0a0a0a]"
@@ -1160,11 +1143,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                           { id: 'locationTypes', label: 'Location Types' },
                           { id: 'regions', label: 'Regions' },
                           { id: 'countries', label: 'Countries' },
-                          { id: 'sendingCountries', label: 'Sending countries' },
-                          { id: 'receivingCountries', label: 'Receiving countries' },
                           { id: 'locations', label: 'Locations' },
-                          { id: 'sendingLocations', label: 'Sending locations' },
-                          { id: 'receivingLocations', label: 'Receiving locations' },
                         ].map((row) => {
                           const isOpen = geoFilterOpen[row.id]
                           return (
