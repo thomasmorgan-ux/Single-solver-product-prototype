@@ -1169,6 +1169,9 @@ function StockAnalysisDrilldown({ product, trip, onBack }) {
 function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [productStatusOverrides, setProductStatusOverrides] = useState({})
+  const [productTransfersOverrides, setProductTransfersOverrides] = useState({})
+  const [editingTransfersProductId, setEditingTransfersProductId] = useState(null)
+  const [editingTransfersValue, setEditingTransfersValue] = useState('')
   const [selectedProductIds, setSelectedProductIds] = useState(new Set())
   const [statusFilters, setStatusFilters] = useState([])
   const [filtersDropdownOpen, setFiltersDropdownOpen] = useState(false)
@@ -1233,7 +1236,7 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
   }
   const breadcrumbFrom = `${trip.from} [${trip.fromCode}]`
   const breadcrumbTo = trip.to.length > 12 ? `${trip.to.slice(0, 10)}...` : trip.to
-  const summaryTransfers = products.reduce((s, p) => s + p.transfers + (p.transfersSub || 0), 0)
+  const summaryTransfers = products.reduce((s, p) => s + (productTransfersOverrides[p.id] ?? p.transfers), 0)
   const summaryRevenue = products.reduce((s, p) => {
     const m = p.revenue.replace(/[€K]/g, '')
     return s + parseFloat(m || 0)
@@ -1455,11 +1458,48 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                     </div>
                   </div>
                 </td>
-                <td className="py-3 px-4 text-right">
-                  <div className="flex flex-col items-end">
-                    <span className="text-[#0a0a0a]">{p.transfers}</span>
-                    <span className="text-[12px] text-[#4b535c]">{p.transfersSub}</span>
-                  </div>
+                <td className="py-3 px-4 text-right" onClick={(e) => e.stopPropagation()}>
+                  {editingTransfersProductId === p.id ? (
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={editingTransfersValue}
+                      onChange={(e) => setEditingTransfersValue(e.target.value)}
+                      onBlur={() => {
+                        const num = parseInt(editingTransfersValue, 10)
+                        if (!isNaN(num) && num >= 0) {
+                          setProductTransfersOverrides((prev) => ({ ...prev, [p.id]: num }))
+                        }
+                        setEditingTransfersProductId(null)
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault()
+                          const num = parseInt(editingTransfersValue, 10)
+                          if (!isNaN(num) && num >= 0) {
+                            setProductTransfersOverrides((prev) => ({ ...prev, [p.id]: num }))
+                          }
+                          setEditingTransfersProductId(null)
+                        } else if (e.key === 'Escape') {
+                          setEditingTransfersProductId(null)
+                          setEditingTransfersValue(String(productTransfersOverrides[p.id] ?? p.transfers))
+                        }
+                      }}
+                      autoFocus
+                      className="w-14 text-right text-[14px] text-[#0a0a0a] bg-white border-b-2 border-[#0267ff] rounded-[2px] py-1 px-2 focus:outline-none focus:ring-0"
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingTransfersProductId(p.id)
+                        setEditingTransfersValue(String(productTransfersOverrides[p.id] ?? p.transfers))
+                      }}
+                      className="text-[14px] text-[#0a0a0a] hover:underline focus:outline-none focus:ring-2 focus:ring-[#0267ff] focus:ring-offset-1 rounded-[2px] py-1 px-2 -mx-2 min-w-[2ch]"
+                    >
+                      {productTransfersOverrides[p.id] ?? p.transfers}
+                    </button>
+                  )}
                 </td>
                 <td className="py-3 px-4 text-right text-[#0a0a0a]">{p.revenue}</td>
                 <td className="py-3 px-4 text-right">
