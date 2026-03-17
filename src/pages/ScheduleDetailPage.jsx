@@ -49,6 +49,7 @@ function IconClock() {
 }
 
 const SCHEDULE_CREATION_DATE = '24/02/2026'
+const SCHEDULE_SUBMISSION_DEADLINE = '28/02/2026, 1:00 PM'
 
 const TRIPS_OPERA = [
   {
@@ -2000,19 +2001,25 @@ export default function ScheduleDetailPage() {
             Europe monthly rebal
           </h1>
           <div className="flex flex-wrap items-center gap-3 text-[13px] text-[#4b535c]">
-            <span>Created: 24/02/2026</span>
-            <span className="flex items-center gap-2">
-              <span>Submission deadline:</span>
-              <span className="px-2 py-1 rounded-full text-[12px] font-medium bg-[#fef3c7] text-[#92400e]">
-                28/02/2026
-              </span>
-            </span>
+            <span>Created: {SCHEDULE_CREATION_DATE}</span>
             <button
               type="button"
               className="text-[13px] font-medium text-[#0267ff] hover:underline"
             >
               View scope
             </button>
+          </div>
+          <div className="rounded-[4px] border border-[#f59e0b] bg-[#fffbeb] px-4 py-3 flex items-start gap-3 text-[13px] text-[#92400e]">
+            <IconClock className="size-4 shrink-0 mt-0.5 text-[#b45309]" />
+            <div className="flex flex-col gap-1 min-w-0">
+              <span>
+                <span className="text-[#4b535c]">Submission deadline:</span>{' '}
+                <span className="font-bold text-[#92400e]">{SCHEDULE_SUBMISSION_DEADLINE}</span>
+              </span>
+              <span className="text-[12px] text-[#a16207]">
+                Any approved or locked recommendations will be auto-submitted at this time.
+              </span>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
