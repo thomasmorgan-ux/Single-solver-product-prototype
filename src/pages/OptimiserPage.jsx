@@ -170,7 +170,6 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     seasons: false,
     events: false,
     productGroups: false,
-    productLifecycle: false,
   })
   const [geoFilterOpen, setGeoFilterOpen] = useState({
     locationTypes: false,
@@ -178,14 +177,14 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     countries: false,
     locations: false,
   })
-  const DEFAULT_PRODUCT_FILTER_OPEN = { departments: false, subDepartments: false, seasons: false, events: false, productGroups: false, productLifecycle: false }
+  const DEFAULT_PRODUCT_FILTER_OPEN = { departments: false, subDepartments: false, seasons: false, events: false, productGroups: false }
   const DEFAULT_GEO_FILTER_OPEN = {
     locationTypes: false,
     regions: false,
     countries: false,
     locations: false,
   }
-  const DEFAULT_PRODUCT_FILTER_SELECTED = { departments: [], subDepartments: [], seasons: [], events: [], productGroups: [], productLifecycle: [] }
+  const DEFAULT_PRODUCT_FILTER_SELECTED = { departments: [], subDepartments: [], seasons: [], events: [], productGroups: [] }
   const DEFAULT_GEO_FILTER_SELECTED = {
     locationTypes: [], regions: [], countries: [], locations: [],
   }
@@ -196,7 +195,6 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     { id: 'seasons', label: 'Seasons', options: ['25E', '25S', '25W', '26E', '26S'] },
     { id: 'events', label: 'Events', options: ['Sale', 'New arrivals', 'Promo'] },
     { id: 'productGroups', label: 'Product groups', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
-    { id: 'productLifecycle', label: 'Product lifecycle', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
     { id: 'locationTypes', label: 'Location Types', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
     { id: 'regions', label: 'Regions', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
     { id: 'countries', label: 'Countries', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
@@ -642,7 +640,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
           updates = { ...updates, advancedRows: [{ id: advId, conditions: [{ id: condId, mainColumn: '', condition: '', value: '' }] }] }
         } else if (EXCEPTION_FILTER_OPTIONS.find((o) => o.id === filterId)) {
           const opt = EXCEPTION_FILTER_OPTIONS.find((o) => o.id === filterId)
-          if (opt && ['departments', 'subDepartments', 'seasons', 'events', 'productGroups', 'productLifecycle'].includes(filterId)) {
+          if (opt && ['departments', 'subDepartments', 'seasons', 'events', 'productGroups'].includes(filterId)) {
             updates = { ...updates, productFilterSelected: { ...e.productFilterSelected, [filterId]: [] } }
           } else if (opt) {
             updates = { ...updates, geoFilterSelected: { ...e.geoFilterSelected, [filterId]: [] } }
@@ -663,7 +661,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     setExceptions((prev) =>
       prev.map((e) => {
         if (e.id !== exceptionId) return e
-        const isProduct = ['departments', 'subDepartments', 'seasons', 'events', 'productGroups', 'productLifecycle'].includes(filterId)
+        const isProduct = ['departments', 'subDepartments', 'seasons', 'events', 'productGroups'].includes(filterId)
         const sel = isProduct ? (e.productFilterSelected || {}) : (e.geoFilterSelected || {})
         const key = filterId
         const arr = Array.isArray(sel[key]) ? sel[key] : []
@@ -683,7 +681,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     setExceptions((prev) =>
       prev.map((e) => {
         if (e.id !== exceptionId) return e
-        const isProduct = ['departments', 'subDepartments', 'seasons', 'events', 'productGroups', 'productLifecycle'].includes(filterId)
+        const isProduct = ['departments', 'subDepartments', 'seasons', 'events', 'productGroups'].includes(filterId)
         const sel = isProduct ? (e.productFilterSelected || {}) : (e.geoFilterSelected || {})
         return {
           ...e,
@@ -730,7 +728,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
     for (const filterId of activeTypes) {
       const opt = EXCEPTION_FILTER_OPTIONS.find((o) => o.id === filterId)
       const label = opt?.label || filterId
-      const isProduct = ['departments', 'subDepartments', 'seasons', 'events', 'productGroups', 'productLifecycle'].includes(filterId)
+      const isProduct = ['departments', 'subDepartments', 'seasons', 'events', 'productGroups'].includes(filterId)
       if (filterId === 'advanced') {
         const summary = getAdvancedFilterSummary(exc)
         if (summary) parts.push(summary)
@@ -1071,7 +1069,6 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                               seasons: false,
                               events: false,
                               productGroups: false,
-                              productLifecycle: false,
                             })
                           }
                           className="text-[12px] font-medium text-[#4b535c] hover:text-[#0a0a0a]"
@@ -1086,7 +1083,6 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                           { id: 'seasons', label: 'Seasons' },
                           { id: 'events', label: 'Events' },
                           { id: 'productGroups', label: 'Product groups' },
-                          { id: 'productLifecycle', label: 'Product lifecycle' },
                         ].map((row) => {
                           const isOpen = productFilterOpen[row.id]
                           return (
@@ -1343,7 +1339,7 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                           {(exc.activeFilterTypes || []).map((filterId) => {
                             const opt = EXCEPTION_FILTER_OPTIONS.find((o) => o.id === filterId)
                             const label = opt?.label || filterId
-                            const isProduct = ['departments', 'subDepartments', 'seasons', 'events', 'productGroups', 'productLifecycle'].includes(filterId)
+                            const isProduct = ['departments', 'subDepartments', 'seasons', 'events', 'productGroups'].includes(filterId)
                             const sel = isProduct ? (exc.productFilterSelected || {}) : (exc.geoFilterSelected || {})
                             const selected = sel[filterId] || []
                             const summary = filterId === 'advanced'
