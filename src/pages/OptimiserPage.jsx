@@ -250,10 +250,10 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
       exceptions: '12',
       approved: '96',
       metrics: [
-        { label: 'Unique trips', value: '113' },
-        { label: 'Recommended transfers', value: '2,308' },
         { label: 'Revenue increase', value: '€501.1K' },
         { label: 'Stockouts', value: '1,013 → 559' },
+        { label: 'Recommended transfers', value: '2,308' },
+        { label: 'Unique trips', value: '113' },
       ],
       exceptionsTotal: 2,
       exceptionsList: [
@@ -270,10 +270,10 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
       exceptions: '5',
       approved: '42',
       metrics: [
-        { label: 'Unique trips', value: '48' },
-        { label: 'Recommended transfers', value: '1,120' },
         { label: 'Revenue increase', value: '€210.4K' },
         { label: 'Stockouts', value: '512 → 304' },
+        { label: 'Recommended transfers', value: '1,120' },
+        { label: 'Unique trips', value: '48' },
       ],
     },
   ]
