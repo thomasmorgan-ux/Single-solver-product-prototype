@@ -260,11 +260,16 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
       status: 'Ready to review',
       exceptions: '12',
       approved: '96',
+      reviewedCount: 96,
+      totalTransfers: 121,
+      transferExceptions: 12,
+      totalApproved: 96,
+      pendingCount: 25,
       metrics: [
-        { label: 'Unique trips', value: '113' },
-        { label: 'Recommended transfers', value: '2,308' },
-        { label: 'Revenue increase', value: '€501.1K' },
-        { label: 'Stockouts', value: '1,013 → 559' },
+        { label: 'Unique trips', value: '113', subLabel: 'Across 8 routes' },
+        { label: 'Recommended transfers', value: '2,308', subLabel: '94% auto-approved' },
+        { label: 'Revenue increase', value: '€501.1K', subLabel: '+4.2% vs last run' },
+        { label: 'Stockouts resolved', value: '1,013 → 559', subLabel: '−44.8% reduction' },
       ],
       exceptionsTotal: 2,
       exceptionsList: [
@@ -280,11 +285,16 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
       status: 'Ready to review',
       exceptions: '5',
       approved: '42',
+      reviewedCount: 42,
+      totalTransfers: 58,
+      transferExceptions: 5,
+      totalApproved: 42,
+      pendingCount: 16,
       metrics: [
-        { label: 'Unique trips', value: '48' },
-        { label: 'Recommended transfers', value: '1,120' },
-        { label: 'Revenue increase', value: '€210.4K' },
-        { label: 'Stockouts', value: '512 → 304' },
+        { label: 'Unique trips', value: '48', subLabel: 'Across 5 routes' },
+        { label: 'Recommended transfers', value: '1,120', subLabel: '88% auto-approved' },
+        { label: 'Revenue increase', value: '€210.4K', subLabel: '+2.1% vs last run' },
+        { label: 'Stockouts resolved', value: '512 → 304', subLabel: '−40.6% reduction' },
       ],
     },
   ]
@@ -1969,9 +1979,11 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                 className="group flex flex-wrap items-center justify-between gap-2 cursor-pointer"
                 onClick={() => onOpenScheduleDetail && onOpenScheduleDetail(schedule)}
               >
-                <span className="inline-flex items-center gap-1.5">
+                <span className="inline-flex items-center gap-2">
                   <h2 className="text-xl md:text-2xl font-medium text-[#0a0a0a] group-hover:text-[#0267ff]">{schedule.name}</h2>
-                  <ChevronRight className="size-4 shrink-0 text-current group-hover:text-[#0267ff]" aria-hidden />
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-green-50 text-green-800 text-[13px] font-medium shrink-0">
+                    {schedule.status}
+                  </span>
                 </span>
                 <button
                   type="button"
@@ -1984,86 +1996,102 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
                   Submit
                 </button>
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-[#4b535c]">
+              <div className="flex items-center gap-3 text-sm text-[#4b535c]">
                 <span className="flex items-center gap-2">
                   <span>Submission deadline:</span>
-                  <span className={`px-2 py-[3px] rounded-[2px] text-[14px] font-medium ${deadlineBadgeClass}`}>
+                  <span className={`px-2.5 py-1 rounded-full text-[13px] font-medium ${deadlineBadgeClass}`}>
                     {schedule.deadline}
                   </span>
                 </span>
-                <span>Created: {schedule.created}</span>
-              </div>
-              <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
-                <span className="inline-flex items-center px-2 py-[3px] rounded-[2px] bg-[#00A195] text-white text-[14px] font-medium">
-                  {schedule.status}
-                </span>
-                <div className="flex flex-wrap items-center gap-4 text-sm text-[#4b535c]">
-                  <span>
-                    <span className="font-medium text-[#0a0a0a]">Total transfer exceptions:</span> {schedule.exceptions}
-                  </span>
-                  <span>
-                    <span className="font-medium text-[#0a0a0a]">Total approved:</span> {schedule.approved}
-                  </span>
-                </div>
+                <span className="text-[#d1d5db]">·</span>
+                <span>Created {schedule.created}</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {schedule.metrics.map((metric) => {
-                  const bgClass =
+                  const style =
                     metric.label === 'Unique trips'
-                      ? 'bg-[#dbeafe]'
+                      ? { bg: 'bg-blue-50', value: 'text-blue-800', label: 'text-blue-700' }
                       : metric.label === 'Recommended transfers'
-                        ? 'bg-[#ede9fe]'
+                        ? { bg: 'bg-purple-50', value: 'text-purple-800', label: 'text-purple-700' }
                         : metric.label === 'Revenue increase'
-                          ? 'bg-[#d1fae5]'
-                          : 'bg-[#fef9c3]'
+                          ? { bg: 'bg-green-50', value: 'text-green-800', label: 'text-green-700' }
+                          : { bg: 'bg-amber-50', value: 'text-amber-800', label: 'text-amber-700' }
                   return (
                     <div
                       key={metric.label}
-                      className={`rounded-[4px] border border-[#EAEAEA] px-4 py-3 flex flex-col ${bgClass}`}
+                      className={`rounded-[4px] border border-[#EAEAEA] px-4 py-3 flex flex-col ${style.bg}`}
                     >
-                      <span className="text-xl md:text-2xl font-medium tracking-tight text-[#0a0a0a]">
-                      {metric.value}
-                    </span>
-                      <span className="mt-1 text-[11px] text-[#4b535c]">
-                      {metric.label}
-                    </span>
+                      <span className={`text-xl md:text-2xl font-medium tracking-tight ${style.value}`}>
+                        {metric.value}
+                      </span>
+                      <span className={`mt-1 text-[11px] ${style.label}`}>
+                        {metric.label}
+                      </span>
+                      {metric.subLabel != null && metric.subLabel !== '' && (
+                        <span className={`mt-0.5 text-[10px] ${style.label} opacity-75`}>
+                          {metric.subLabel}
+                        </span>
+                      )}
                     </div>
                   )
                 })}
               </div>
-              {schedule.exceptionsList && (
-                <div className="mt-2 space-y-2">
-                  {(() => {
-                    const totalExceptions = schedule.exceptionsTotal ?? schedule.exceptionsList.length
-                    return (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setExpandedExceptionsScheduleId((prev) =>
-                        prev === schedule.id ? null : schedule.id
-                      )
-                    }}
-                    className="text-xs font-medium text-[#0267ff] hover:underline"
-                  >
-                      {expandedExceptionsScheduleId === schedule.id
-                        ? `Hide exceptions (${totalExceptions})`
-                        : `Show exceptions (${totalExceptions})`}
-                  </button>
-                    )
-                  })()}
-                  {expandedExceptionsScheduleId === schedule.id && (
-                    <div className="space-y-2">
-                      {schedule.exceptionsList.map((ex, idx) => (
-                        <div
-                          key={`${schedule.id}-ex-${idx}`}
-                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border border-[#e5e7eb] rounded-[8px] px-3 py-2 bg-[#f9fafb] text-xs text-[#0a0a0a]"
+              {((reviewedCount, totalTransfers) => totalTransfers > 0)(schedule.reviewedCount ?? 0, schedule.totalTransfers ?? 0) && (
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[14px] font-medium text-[#0a0a0a]">Review progress</span>
+                    <span className="text-[14px] text-[#4b535c]">
+                      {Math.round((schedule.reviewedCount / schedule.totalTransfers) * 100)}% ({schedule.reviewedCount} of {schedule.totalTransfers} transfers reviewed)
+                    </span>
+                  </div>
+                  <div className="h-2 w-full rounded-full bg-[#e5e7eb] overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-[#0267ff] transition-[width]"
+                      style={{ width: `${Math.min(100, (schedule.reviewedCount / schedule.totalTransfers) * 100)}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="flex items-center justify-between gap-4 text-sm">
+                <div>
+                  {schedule.exceptionsList && (
+                    (() => {
+                      const totalExceptions = schedule.exceptionsTotal ?? schedule.exceptionsList.length
+                      return (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setExpandedExceptionsScheduleId((prev) =>
+                              prev === schedule.id ? null : schedule.id
+                            )
+                          }}
+                          className="text-xs font-medium text-[#0267ff] hover:underline"
                         >
-                          <span className="text-[#4b535c]">{ex.description}</span>
-                        </div>
-                      ))}
-                    </div>
+                          {expandedExceptionsScheduleId === schedule.id
+                            ? `Hide exceptions (${totalExceptions})`
+                            : `Show exceptions (${totalExceptions})`}
+                        </button>
+                      )
+                    })()
                   )}
+                </div>
+                <div className="flex flex-wrap items-center gap-4 text-[#4b535c]">
+                  <span>Transfer exceptions: <span className="font-medium text-[#0a0a0a]">{schedule.exceptions ?? '—'}</span></span>
+                  <span>Total approved: <span className="font-medium text-[#0a0a0a]">{schedule.approved ?? '—'}</span></span>
+                  <span>Pending: <span className="font-medium text-[#0a0a0a]">{schedule.pendingCount ?? '—'}</span></span>
+                </div>
+              </div>
+              {schedule.exceptionsList && expandedExceptionsScheduleId === schedule.id && (
+                <div className="space-y-2">
+                  {schedule.exceptionsList.map((ex, idx) => (
+                    <div
+                      key={`${schedule.id}-ex-${idx}`}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border border-[#e5e7eb] rounded-[8px] px-3 py-2 bg-[#f9fafb] text-xs text-[#0a0a0a]"
+                    >
+                      <span className="text-[#4b535c]">{ex.description}</span>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
