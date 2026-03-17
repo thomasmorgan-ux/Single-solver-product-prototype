@@ -66,6 +66,7 @@ const TRIPS_OPERA = [
     badges: ['VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
     recommendationsUpdatedTime: '14:32',
+    recommendationsUpdatedBy: 'System',
     status: 'approved_by_system',
   },
   {
@@ -82,6 +83,7 @@ const TRIPS_OPERA = [
     badges: ['VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
     recommendationsUpdatedTime: '09:15',
+    recommendationsUpdatedBy: 'User',
     status: 'needs_review_from_user',
   },
   {
@@ -100,6 +102,7 @@ const TRIPS_OPERA = [
     editedByUser: 'Csabi Toth',
     recommendationsUpdated: '26/02/2026',
     recommendationsUpdatedTime: '16:48',
+    recommendationsUpdatedBy: 'User',
   },
   {
     id: 4,
@@ -116,6 +119,7 @@ const TRIPS_OPERA = [
     status: 'approved_by_system',
     recommendationsUpdated: '24/02/2026',
     recommendationsUpdatedTime: '11:03',
+    recommendationsUpdatedBy: 'System',
   },
   {
     id: 5,
@@ -132,6 +136,7 @@ const TRIPS_OPERA = [
     status: 'partially_approved',
     recommendationsUpdated: '26/02/2026',
     recommendationsUpdatedTime: '08:22',
+    recommendationsUpdatedBy: 'System',
   },
   {
     id: 6,
@@ -149,6 +154,7 @@ const TRIPS_OPERA = [
     approvedByUser: 'Jess Briggs',
     recommendationsUpdated: '24/02/2026',
     recommendationsUpdatedTime: '15:07',
+    recommendationsUpdatedBy: 'User',
   },
   {
     id: 101,
@@ -166,6 +172,7 @@ const TRIPS_OPERA = [
     approvedByUser: 'Jess Briggs',
     recommendationsUpdated: '26/02/2026',
     recommendationsUpdatedTime: '10:41',
+    recommendationsUpdatedBy: 'User',
   },
   {
     id: 102,
@@ -183,6 +190,7 @@ const TRIPS_OPERA = [
     editedByUser: 'Csabi Toth',
     recommendationsUpdated: '24/02/2026',
     recommendationsUpdatedTime: '13:55',
+    recommendationsUpdatedBy: 'System',
   },
   {
     id: 103,
@@ -200,6 +208,7 @@ const TRIPS_OPERA = [
     editedByUser: 'Csabi Toth',
     recommendationsUpdated: '26/02/2026',
     recommendationsUpdatedTime: '17:19',
+    recommendationsUpdatedBy: 'User',
   },
 ]
 
@@ -227,6 +236,7 @@ const TRIPS_OTHER = [
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
     recommendationsUpdatedTime: '12:08',
+    recommendationsUpdatedBy: 'System',
     status: 'approved_by_system',
   },
   {
@@ -243,7 +253,8 @@ const TRIPS_OTHER = [
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
     recommendationsUpdatedTime: '09:33',
-    status: 'locked',
+    recommendationsUpdatedBy: 'User',
+    status: 'unapproved',
   },
   {
     id: 9,
@@ -259,6 +270,7 @@ const TRIPS_OTHER = [
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
     recommendationsUpdatedTime: '14:18',
+    recommendationsUpdatedBy: 'System',
   },
   {
     id: 10,
@@ -274,6 +286,7 @@ const TRIPS_OTHER = [
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
     recommendationsUpdatedTime: '11:27',
+    recommendationsUpdatedBy: 'User',
   },
   {
     id: 11,
@@ -289,6 +302,7 @@ const TRIPS_OTHER = [
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
     recommendationsUpdatedTime: '16:52',
+    recommendationsUpdatedBy: 'System',
   },
   {
     id: 12,
@@ -304,6 +318,7 @@ const TRIPS_OTHER = [
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
     recommendationsUpdatedTime: '10:05',
+    recommendationsUpdatedBy: 'User',
   },
   {
     id: 13,
@@ -319,6 +334,7 @@ const TRIPS_OTHER = [
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '26/02/2026',
     recommendationsUpdatedTime: '13:41',
+    recommendationsUpdatedBy: 'System',
   },
   {
     id: 14,
@@ -334,6 +350,7 @@ const TRIPS_OTHER = [
     badges: ['MDQ', 'VIS', 'REV'],
     recommendationsUpdated: '24/02/2026',
     recommendationsUpdatedTime: '08:59',
+    recommendationsUpdatedBy: 'User',
   },
   {
     id: 15,
@@ -409,36 +426,36 @@ const EDITED_EXCEPTION_IDS = [3, 5]
 
 // Mock locations for Locations tab table
 const LOCATIONS_TABLE_DATA = [
-  { id: 1, name: 'Suk003 londres maryleb...', code: 'SUK003', transfersIn: 40, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€5.21K', recommendedIn: 40, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 145, stockInTransit: 12, salesL7: 11, salesL30: 40, forecast: 13.46, stockouts: '9 → 0', overstocks: '0 → 0', understocks: '95 → 67' },
-  { id: 2, name: 'Sfr004 fd calvaire', code: 'SFR004', transfersIn: 38, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€4.4K', recommendedIn: 38, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 89, stockInTransit: 0, salesL7: 8, salesL30: 32, forecast: 10.82, stockouts: '2 → 0', overstocks: '7 → 0', understocks: '154 → 139' },
-  { id: 13, name: 'Out001 la vallée village', code: 'OUT001', locationType: 'outlet', transfersIn: 28, transfersInSub: '1 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€2.98K', recommendedIn: 28, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 56, stockInTransit: 8, salesL7: 4, salesL30: 16, forecast: 5.12, stockouts: '6 → 3', overstocks: '8 → 2', understocks: '62 → 44' },
-  { id: 3, name: 'Sfr012 legendre', code: 'SFR012', transfersIn: 35, transfersInSub: '1 (max 2)', transfersOut: 15, transfersOutSub: '1 (max 3)', revenueIncrease: '€4.12K', recommendedIn: 35, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 15, stockInCirculation: 210, stockInTransit: 18, salesL7: 6, salesL30: 28, forecast: 9.14, stockouts: '5 → 2', overstocks: '12 → 4', understocks: '124 → 82' },
-  { id: 4, name: 'Sfr008 saints-peres', code: 'SFR008', transfersIn: 42, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€5.89K', recommendedIn: 42, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 320, stockInTransit: 25, salesL7: 14, salesL30: 55, forecast: 15.22, stockouts: '3 → 0', overstocks: '2 → 0', understocks: '73 → 55' },
-  { id: 5, name: 'Sfr013 sevigne', code: 'SFR013', transfersIn: 33, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€3.67K', recommendedIn: 33, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 78, stockInTransit: 5, salesL7: 5, salesL30: 22, forecast: 8.14, stockouts: '12 → 5', overstocks: '18 → 6', understocks: '88 → 61' },
-  { id: 14, name: 'Wh001 paris entrepôt', code: 'WH001', locationType: 'warehouse', transfersIn: 95, transfersInSub: '4 (max 4)', transfersOut: 92, transfersOutSub: '4 (max 4)', revenueIncrease: '€12.4K', recommendedIn: 95, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 92, stockInCirculation: 580, stockInTransit: 45, salesL7: 0, salesL30: 0, forecast: 0, stockouts: '0 → 0', overstocks: '45 → 12', understocks: '0 → 0' },
-  { id: 6, name: 'Sbe002 anvers', code: 'SBE002', transfersIn: 29, transfersInSub: '1 (max 2)', transfersOut: 29, transfersOutSub: '2 (max 3)', revenueIncrease: '€3.21K', recommendedIn: 29, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 29, stockInCirculation: 112, stockInTransit: 0, salesL7: 3, salesL30: 18, forecast: 6.92, stockouts: '18 → 12', overstocks: '5 → 2', understocks: '112 → 78' },
-  { id: 7, name: 'Sfr003 courcelles', code: 'SFR003', transfersIn: 45, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€6.12K', recommendedIn: 45, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 198, stockInTransit: 22, salesL7: 16, salesL30: 62, forecast: 17.08, stockouts: '1 → 0', overstocks: '0 → 0', understocks: '42 → 28' },
-  { id: 8, name: 'Sfr001 bonaparte', code: 'SFR001', transfersIn: 52, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€7.34K', recommendedIn: 52, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 265, stockInTransit: 15, salesL7: 19, salesL30: 78, forecast: 21.45, stockouts: '0 → 0', overstocks: '0 → 0', understocks: '28 → 15' },
-  { id: 15, name: 'Web001 france online', code: 'WEB001', locationType: 'ecomm', transfersIn: 0, transfersInSub: '0', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€8.56K', recommendedIn: 0, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 0, stockInTransit: 0, salesL7: 22, salesL30: 95, forecast: 28.34, stockouts: '0 → 0', overstocks: '0 → 0', understocks: '0 → 0' },
-  { id: 9, name: 'Sfr005 charonne', code: 'SFR005', transfersIn: 31, transfersInSub: '1 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€3.45K', recommendedIn: 31, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 67, stockInTransit: 0, salesL7: 4, salesL30: 19, forecast: 7.28, stockouts: '22 → 18', overstocks: '9 → 3', understocks: '136 → 94' },
-  { id: 10, name: 'Sfr018 lyon', code: 'SFR018', transfersIn: 48, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€6.78K', recommendedIn: 48, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 175, stockInTransit: 12, salesL7: 17, salesL30: 68, forecast: 18.92, stockouts: '2 → 1', overstocks: '3 → 1', understocks: '56 → 38' },
-  { id: 11, name: 'Ssp001 madrid coello', code: 'SSP001', transfersIn: 36, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€4.02K', recommendedIn: 36, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 134, stockInTransit: 9, salesL7: 7, salesL30: 30, forecast: 9.56, stockouts: '8 → 4', overstocks: '14 → 5', understocks: '98 → 72' },
-  { id: 12, name: 'Sfr014 guichard', code: 'SFR014', transfersIn: 34, transfersInSub: '1 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€3.89K', recommendedIn: 34, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, stockInCirculation: 91, stockInTransit: 7, salesL7: 6, salesL30: 26, forecast: 8.42, stockouts: '11 → 7', overstocks: '6 → 2', understocks: '82 → 58' },
+  { id: 1, name: 'Suk003 londres maryleb...', code: 'SUK003', transfersIn: 40, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€5.21K', recommendedIn: 40, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '14:32', recommendationsUpdatedBy: 'System', stockInCirculation: 145, stockInTransit: 12, salesL7: 11, salesL30: 40, forecast: 13.46, stockouts: '9 → 0', overstocks: '0 → 0', understocks: '95 → 67' },
+  { id: 2, name: 'Sfr004 fd calvaire', code: 'SFR004', transfersIn: 38, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€4.4K', recommendedIn: 38, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '09:15', recommendationsUpdatedBy: 'User', stockInCirculation: 89, stockInTransit: 0, salesL7: 8, salesL30: 32, forecast: 10.82, stockouts: '2 → 0', overstocks: '7 → 0', understocks: '154 → 139' },
+  { id: 13, name: 'Out001 la vallée village', code: 'OUT001', locationType: 'outlet', transfersIn: 28, transfersInSub: '1 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€2.98K', recommendedIn: 28, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '16:48', recommendationsUpdatedBy: 'User', stockInCirculation: 56, stockInTransit: 8, salesL7: 4, salesL30: 16, forecast: 5.12, stockouts: '6 → 3', overstocks: '8 → 2', understocks: '62 → 44' },
+  { id: 3, name: 'Sfr012 legendre', code: 'SFR012', transfersIn: 35, transfersInSub: '1 (max 2)', transfersOut: 15, transfersOutSub: '1 (max 3)', revenueIncrease: '€4.12K', recommendedIn: 35, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 15, recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '11:03', recommendationsUpdatedBy: 'System', stockInCirculation: 210, stockInTransit: 18, salesL7: 6, salesL30: 28, forecast: 9.14, stockouts: '5 → 2', overstocks: '12 → 4', understocks: '124 → 82' },
+  { id: 4, name: 'Sfr008 saints-peres', code: 'SFR008', transfersIn: 42, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€5.89K', recommendedIn: 42, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '08:22', recommendationsUpdatedBy: 'System', stockInCirculation: 320, stockInTransit: 25, salesL7: 14, salesL30: 55, forecast: 15.22, stockouts: '3 → 0', overstocks: '2 → 0', understocks: '73 → 55' },
+  { id: 5, name: 'Sfr013 sevigne', code: 'SFR013', transfersIn: 33, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€3.67K', recommendedIn: 33, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '15:07', recommendationsUpdatedBy: 'User', stockInCirculation: 78, stockInTransit: 5, salesL7: 5, salesL30: 22, forecast: 8.14, stockouts: '12 → 5', overstocks: '18 → 6', understocks: '88 → 61' },
+  { id: 14, name: 'Wh001 paris entrepôt', code: 'WH001', locationType: 'warehouse', transfersIn: 95, transfersInSub: '4 (max 4)', transfersOut: 92, transfersOutSub: '4 (max 4)', revenueIncrease: '€12.4K', recommendedIn: 95, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 92, recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '10:41', recommendationsUpdatedBy: 'User', stockInCirculation: 580, stockInTransit: 45, salesL7: 0, salesL30: 0, forecast: 0, stockouts: '0 → 0', overstocks: '45 → 12', understocks: '0 → 0' },
+  { id: 6, name: 'Sbe002 anvers', code: 'SBE002', transfersIn: 29, transfersInSub: '1 (max 2)', transfersOut: 29, transfersOutSub: '2 (max 3)', revenueIncrease: '€3.21K', recommendedIn: 29, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 29, recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '13:55', recommendationsUpdatedBy: 'System', stockInCirculation: 112, stockInTransit: 0, salesL7: 3, salesL30: 18, forecast: 6.92, stockouts: '18 → 12', overstocks: '5 → 2', understocks: '112 → 78' },
+  { id: 7, name: 'Sfr003 courcelles', code: 'SFR003', transfersIn: 45, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€6.12K', recommendedIn: 45, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '17:19', recommendationsUpdatedBy: 'User', stockInCirculation: 198, stockInTransit: 22, salesL7: 16, salesL30: 62, forecast: 17.08, stockouts: '1 → 0', overstocks: '0 → 0', understocks: '42 → 28' },
+  { id: 8, name: 'Sfr001 bonaparte', code: 'SFR001', transfersIn: 52, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€7.34K', recommendedIn: 52, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '09:33', recommendationsUpdatedBy: 'System', stockInCirculation: 265, stockInTransit: 15, salesL7: 19, salesL30: 78, forecast: 21.45, stockouts: '0 → 0', overstocks: '0 → 0', understocks: '28 → 15' },
+  { id: 15, name: 'Web001 france online', code: 'WEB001', locationType: 'ecomm', transfersIn: 0, transfersInSub: '0', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€8.56K', recommendedIn: 0, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '12:08', recommendationsUpdatedBy: 'User', stockInCirculation: 0, stockInTransit: 0, salesL7: 22, salesL30: 95, forecast: 28.34, stockouts: '0 → 0', overstocks: '0 → 0', understocks: '0 → 0' },
+  { id: 9, name: 'Sfr005 charonne', code: 'SFR005', transfersIn: 31, transfersInSub: '1 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€3.45K', recommendedIn: 31, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '11:27', recommendationsUpdatedBy: 'System', stockInCirculation: 67, stockInTransit: 0, salesL7: 4, salesL30: 19, forecast: 7.28, stockouts: '22 → 18', overstocks: '9 → 3', understocks: '136 → 94' },
+  { id: 10, name: 'Sfr018 lyon', code: 'SFR018', transfersIn: 48, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€6.78K', recommendedIn: 48, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '16:52', recommendationsUpdatedBy: 'User', stockInCirculation: 175, stockInTransit: 12, salesL7: 17, salesL30: 68, forecast: 18.92, stockouts: '2 → 1', overstocks: '3 → 1', understocks: '56 → 38' },
+  { id: 11, name: 'Ssp001 madrid coello', code: 'SSP001', transfersIn: 36, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€4.02K', recommendedIn: 36, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '10:05', recommendationsUpdatedBy: 'System', stockInCirculation: 134, stockInTransit: 9, salesL7: 7, salesL30: 30, forecast: 9.56, stockouts: '8 → 4', overstocks: '14 → 5', understocks: '98 → 72' },
+  { id: 12, name: 'Sfr014 guichard', code: 'SFR014', transfersIn: 34, transfersInSub: '1 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€3.89K', recommendedIn: 34, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '13:41', recommendationsUpdatedBy: 'User', stockInCirculation: 91, stockInTransit: 7, salesL7: 6, salesL30: 26, forecast: 8.42, stockouts: '11 → 7', overstocks: '6 → 2', understocks: '82 → 58' },
 ]
 
 // Mock products for trip drilldown (keyed by trip id)
 const PRODUCTS_BY_TRIP = {
   1: [
-    { id: 1, name: 'Croi-sac zip l', sku: 'A1398810', colour: 'Noir', transfers: 3, transfersSub: 1, revenue: '€1.48K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '8 -> 5', depth: '5.0 -> 5.0',     status: 'approved_by_system', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '14:32', currentUnits: 12, currentUnitsInTransit: 3, leftInWarehouseAllocate: 45, leftInWarehouseSell: 32 },
-    { id: 2, name: 'Pre-sac seau m', sku: 'A101080', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€1.12K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '09:15', currentUnits: 8, currentUnitsInTransit: 0, leftInWarehouseAllocate: 120, leftInWarehouseSell: 95 },
-    { id: 3, name: 'Ang-sac pte main m', sku: 'A1252810', colour: 'Figue', transfers: 3, transfersSub: 2, revenue: '€1.89K', recommended: 3, recommendedBadges: ['REV', 'VIS'], recommendedSub: 1, salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '1 -> 0', locations: '2 -> 2', overstocks: '5 -> 2', understocks: '6 -> 3', depth: '4.2 -> 4.8',     status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '16:48', currentUnits: 25, currentUnitsInTransit: 5, leftInWarehouseAllocate: 18, leftInWarehouseSell: 12 },
-    { id: 4, name: 'Croi-sac zip s', sku: 'A1398811', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.98K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.32, stockouts: '0 -> 0', locations: '1 -> 2', overstocks: '2 -> 1', understocks: '4 -> 2', depth: '5.0 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '11:03', currentUnits: 3, currentUnitsInTransit: 1, leftInWarehouseAllocate: 65, leftInWarehouseSell: 50 },
-    { id: 5, name: 'Pre-sac seau s', sku: 'A101081', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€0.76K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', status: 'needs_review_from_user', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '08:22', currentUnits: 15, currentUnitsInTransit: 2, leftInWarehouseAllocate: 30, leftInWarehouseSell: 22 },
-    { id: 6, name: 'Ang-sac pte main s', sku: 'A1252811', colour: 'Figue', transfers: 1, transfersSub: 1, revenue: '€0.65K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 0, salesL30: 1, forecast: 0.21, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '3 -> 1', depth: '4.0 -> 4.5', status: 'approved_by_system', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '15:07', currentUnits: 7, currentUnitsInTransit: 0, leftInWarehouseAllocate: 42, leftInWarehouseSell: 28 },
+    { id: 1, name: 'Croi-sac zip l', sku: 'A1398810', colour: 'Noir', transfers: 3, transfersSub: 1, revenue: '€1.48K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 1, salesL30: 2, forecast: 1.87, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '8 -> 5', depth: '5.0 -> 5.0',     status: 'approved_by_system', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '14:32', recommendationsUpdatedBy: 'System', currentUnits: 12, currentUnitsInTransit: 3, leftInWarehouseAllocate: 45, leftInWarehouseSell: 32 },
+    { id: 2, name: 'Pre-sac seau m', sku: 'A101080', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€1.12K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 2, salesL30: 3, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '09:15', recommendationsUpdatedBy: 'User', currentUnits: 8, currentUnitsInTransit: 0, leftInWarehouseAllocate: 120, leftInWarehouseSell: 95 },
+    { id: 3, name: 'Ang-sac pte main m', sku: 'A1252810', colour: 'Figue', transfers: 3, transfersSub: 2, revenue: '€1.89K', recommended: 3, recommendedBadges: ['REV', 'VIS'], recommendedSub: 1, salesL7: 1, salesL30: 4, forecast: 2.1, stockouts: '1 -> 0', locations: '2 -> 2', overstocks: '5 -> 2', understocks: '6 -> 3', depth: '4.2 -> 4.8',     status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '16:48', recommendationsUpdatedBy: 'User', currentUnits: 25, currentUnitsInTransit: 5, leftInWarehouseAllocate: 18, leftInWarehouseSell: 12 },
+    { id: 4, name: 'Croi-sac zip s', sku: 'A1398811', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.98K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.32, stockouts: '0 -> 0', locations: '1 -> 2', overstocks: '2 -> 1', understocks: '4 -> 2', depth: '5.0 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '11:03', recommendationsUpdatedBy: 'User', currentUnits: 3, currentUnitsInTransit: 1, leftInWarehouseAllocate: 65, leftInWarehouseSell: 50 },
+    { id: 5, name: 'Pre-sac seau s', sku: 'A101081', colour: 'Bleu petrole', transfers: 2, transfersSub: 1, revenue: '€0.76K', recommended: 2, recommendedBadges: ['VIS'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.54, stockouts: '0 -> 1', locations: '2 -> 1', overstocks: '3 -> 0', understocks: '2 -> 0', depth: '3.0 -> 6.0', status: 'needs_review_from_user', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '08:22', recommendationsUpdatedBy: 'System', currentUnits: 15, currentUnitsInTransit: 2, leftInWarehouseAllocate: 30, leftInWarehouseSell: 22 },
+    { id: 6, name: 'Ang-sac pte main s', sku: 'A1252811', colour: 'Figue', transfers: 1, transfersSub: 1, revenue: '€0.65K', recommended: 1, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 0, salesL30: 1, forecast: 0.21, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '4 -> 1', understocks: '3 -> 1', depth: '4.0 -> 4.5', status: 'approved_by_system', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '15:07', recommendationsUpdatedBy: 'System', currentUnits: 7, currentUnitsInTransit: 0, leftInWarehouseAllocate: 42, leftInWarehouseSell: 28 },
   ],
   2: [
-    { id: 7, name: 'Sac zip l', sku: 'B200001', colour: 'Noir', transfers: 2, transfersSub: 1, revenue: '€0.89K', recommended: 2, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '2 -> 1', understocks: '5 -> 3', depth: '4.5 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '13:55', currentUnits: 18, currentUnitsInTransit: 4, leftInWarehouseAllocate: 88, leftInWarehouseSell: 70 },
-    { id: 8, name: 'Sac seau m', sku: 'B200002', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.52K', recommended: 1, recommendedBadges: ['VIS'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.28, stockouts: '0 -> 1', locations: '1 -> 2', overstocks: '1 -> 0', understocks: '3 -> 1', depth: '3.6 -> 4.3', status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '17:19', currentUnits: 11, currentUnitsInTransit: 2, leftInWarehouseAllocate: 55, leftInWarehouseSell: 40 },
+    { id: 7, name: 'Sac zip l', sku: 'B200001', colour: 'Noir', transfers: 2, transfersSub: 1, revenue: '€0.89K', recommended: 2, recommendedBadges: ['REV'], recommendedSub: 1, salesL7: 1, salesL30: 2, forecast: 0.45, stockouts: '0 -> 0', locations: '2 -> 2', overstocks: '2 -> 1', understocks: '5 -> 3', depth: '4.5 -> 5.0', status: 'approved_by_user', approvedByUser: 'Jess Briggs', recommendationsUpdated: '26/02/2026', recommendationsUpdatedTime: '13:55', recommendationsUpdatedBy: 'User', currentUnits: 18, currentUnitsInTransit: 4, leftInWarehouseAllocate: 88, leftInWarehouseSell: 70 },
+    { id: 8, name: 'Sac seau m', sku: 'B200002', colour: 'Noir', transfers: 1, transfersSub: 2, revenue: '€0.52K', recommended: 1, recommendedBadges: ['VIS'], recommendedSub: 2, salesL7: 0, salesL30: 1, forecast: 0.28, stockouts: '0 -> 1', locations: '1 -> 2', overstocks: '1 -> 0', understocks: '3 -> 1', depth: '3.6 -> 4.3', status: 'last_edited_by_user', editedByUser: 'Csabi Toth', recommendationsUpdated: '24/02/2026', recommendationsUpdatedTime: '17:19', recommendationsUpdatedBy: 'User', currentUnits: 11, currentUnitsInTransit: 2, leftInWarehouseAllocate: 55, leftInWarehouseSell: 40 },
   ],
 }
 
@@ -505,8 +522,8 @@ const STATUS_OPTIONS = [
   { id: 'last_edited_by_user', displayLabel: 'Last edited by user', dotClass: 'bg-[#3b82f6]' },
   { id: 'unapproved', displayLabel: 'Unapproved', dotClass: 'bg-[#9ca3af]' },
   { id: 'needs_review_from_user', displayLabel: 'Needs review from user', dotClass: 'bg-[#f59e0b]' },
-  { id: 'locked', displayLabel: 'Locked', dotClass: 'bg-[#ef4444]' },
   { id: 'partially_approved', displayLabel: 'Partially approved', dotClass: 'bg-[#eab308]' },
+  { id: 'remove_edits', displayLabel: 'Remove edits', dotClass: 'bg-[#A855F7]' },
 ]
 
 // Selectable options only (short action labels in dropdown; badge shows full displayLabel)
@@ -514,8 +531,7 @@ const STATUS_DROPDOWN_OPTIONS = [
   { id: 'approved_by_user', dropdownLabel: 'Approve', dotClass: 'bg-[#22c55e]' },
   { id: 'unapproved', dropdownLabel: 'Unapprove', dotClass: 'bg-[#9ca3af]' },
   { id: 'needs_review_from_user', dropdownLabel: 'Needs review', dotClass: 'bg-[#f59e0b]' },
-  { id: 'locked', dropdownLabel: 'Locked', dotClass: 'bg-[#ef4444]' },
-  { id: 'approved_by_system', dropdownLabel: 'Reset to system recommendation', dotClass: 'bg-[#22c55e]' },
+  { id: 'remove_edits', dropdownLabel: 'Remove edits', dotClass: 'bg-[#A855F7]' },
 ]
 
 const STATUS_BADGE_CLASSES = {
@@ -524,20 +540,20 @@ const STATUS_BADGE_CLASSES = {
   last_edited_by_user: 'bg-[#dbeafe] text-[#1d4ed8]',
   unapproved: 'bg-[#f3f4f6] text-[#4b5563]',
   needs_review_from_user: 'bg-[#fffbeb] text-[#b45309]',
-  locked: 'bg-[#fee2e2] text-[#b91c1c]',
+  remove_edits: 'bg-[#f3e8ff] text-[#7c3aed]',
   partially_approved: 'bg-[#fef9c3] text-[#a16207]',
 }
 
-function StatusDropdown({ value, userName, onChange, rowId }) {
+function StatusDropdown({ value, userName, onChange, rowId, useShortEditedLabel }) {
   const [open, setOpen] = useState(false)
   const [dropdownId] = useState(() => `status-dd-${rowId}-${Math.random().toString(36).slice(2)}`)
   const opt = STATUS_OPTIONS.find((o) => o.id === value) || STATUS_OPTIONS.find((o) => o.id === 'unapproved')
   const badgeClass = STATUS_BADGE_CLASSES[value] || STATUS_BADGE_CLASSES.unapproved
   const displayLabel =
-    value === 'approved_by_user' && userName
+    value === 'approved_by_user' && userName && !useShortEditedLabel
       ? `Approved by user: ${userName}`
-      : value === 'last_edited_by_user' && userName
-        ? `Last edited by user: ${userName}`
+      : value === 'last_edited_by_user'
+        ? (useShortEditedLabel ? 'Edited' : (userName ? `Last edited by user: ${userName}` : 'Edited'))
         : opt?.displayLabel ?? 'Unapproved'
 
   useEffect(() => {
@@ -1186,7 +1202,6 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
           if (f === 'approved') return rowStatus === 'approved_by_system' || rowStatus === 'approved_by_user'
           if (f === 'unapproved') return rowStatus === 'unapproved'
           if (f === 'needs_review') return rowStatus === 'needs_review_from_user'
-          if (f === 'locked') return rowStatus === 'locked'
           if (f === 'edited') return rowStatus === 'last_edited_by_user'
           return false
         })
@@ -1314,7 +1329,6 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                   { id: 'approved', label: 'Approved' },
                   { id: 'unapproved', label: 'Unapproved' },
                   { id: 'needs_review', label: 'Needs review' },
-                  { id: 'locked', label: 'Locked' },
                   { id: 'edited', label: 'Edited' },
                 ].map((opt) => (
                   <label key={opt.id} className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#f3f4f6] cursor-pointer">
@@ -1341,7 +1355,7 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
         {statusFilters.length > 0 && (
           <div className="flex flex-wrap items-center gap-2">
             {statusFilters.map((f) => {
-              const labels = { approved: 'Approved', unapproved: 'Unapproved', needs_review: 'Needs review', locked: 'Locked', edited: 'Edited' }
+              const labels = { approved: 'Approved', unapproved: 'Unapproved', needs_review: 'Needs review',  edited: 'Edited' }
               return (
                 <span
                   key={f}
@@ -1545,10 +1559,13 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                   </div>
                 </td>
                 <td className="py-3 px-4 text-right">
-                  <div className="flex flex-col items-end line-clamp-2 min-w-0">
+                  <div className="flex flex-col items-end gap-0.5 line-clamp-2 min-w-0">
                     <span className="text-[14px] text-[#4B535C]">{p.recommendationsUpdated || '26/02/2026'}</span>
                     {p.recommendationsUpdatedTime && (
                       <span className="text-[12px] text-[#4b535c]">{p.recommendationsUpdatedTime}</span>
+                    )}
+                    {p.recommendationsUpdatedBy && (
+                      <span className="text-[11px] text-[#9ca3af]">{p.recommendationsUpdatedBy}</span>
                     )}
                   </div>
                 </td>
@@ -1724,7 +1741,6 @@ function LocationsTab() {
                   { id: 'approved', label: 'Approved' },
                   { id: 'unapproved', label: 'Unapproved' },
                   { id: 'needs_review', label: 'Needs review' },
-                  { id: 'locked', label: 'Locked' },
                   { id: 'edited', label: 'Edited' },
                 ].map((opt) => (
                   <label key={opt.id} className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#f3f4f6] cursor-pointer">
@@ -1772,6 +1788,7 @@ function LocationsTab() {
               <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[100px]">
                 <span className="inline-flex items-center gap-1">Recommended transfers out <IconInfo /></span>
               </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[90px]">Recommendations updated</th>
               <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[100px]">
                 <span className="inline-flex items-center gap-1 cursor-help" title="This includes stock in transit, stock on hand and stock pending from production. This will be for both parent & child locations (if applicable).">
                   Stock in circulation <IconInfo />
@@ -1807,6 +1824,7 @@ function LocationsTab() {
               <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">€50.4K</th>
               <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">477 units</th>
               <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">477 units</th>
+              <th className="py-2 px-4 text-[12px] font-normal text-[#4b535c] text-right">—</th>
               <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">
                 <div className="flex flex-col items-end">
                   <span>2,450 units</span>
@@ -1887,6 +1905,17 @@ function LocationsTab() {
                 </td>
                 <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{loc.recommendedOut}</div></td>
                 <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end gap-0.5 line-clamp-2 min-w-0">
+                    <span className="text-[14px] text-[#4B535C]">{loc.recommendationsUpdated || '26/02/2026'}</span>
+                    {loc.recommendationsUpdatedTime && (
+                      <span className="text-[12px] text-[#4b535c]">{loc.recommendationsUpdatedTime}</span>
+                    )}
+                    {loc.recommendationsUpdatedBy && (
+                      <span className="text-[11px] text-[#9ca3af]">{loc.recommendationsUpdatedBy}</span>
+                    )}
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right">
                   <div className="flex flex-col items-end line-clamp-2 min-w-0">
                     <span className="text-[#0a0a0a]">{loc.stockInCirculation ?? '—'}</span>
                     <span className="text-[12px] text-[#4b535c]">{loc.stockInTransit ?? 0}</span>
@@ -1946,7 +1975,6 @@ export default function ScheduleDetailPage() {
           if (f === 'approved') return rowStatus === 'approved_by_system' || rowStatus === 'approved_by_user'
           if (f === 'unapproved') return rowStatus === 'unapproved'
           if (f === 'needs_review') return rowStatus === 'needs_review_from_user'
-          if (f === 'locked') return rowStatus === 'locked'
           if (f === 'edited') return rowStatus === 'last_edited_by_user'
           return false
         })
@@ -2191,7 +2219,6 @@ export default function ScheduleDetailPage() {
                         { id: 'approved', label: 'Approved' },
                         { id: 'unapproved', label: 'Unapproved' },
                         { id: 'needs_review', label: 'Needs review' },
-                        { id: 'locked', label: 'Locked' },
                         { id: 'edited', label: 'Edited' },
                       ].map((opt) => (
                         <label key={opt.id} className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#f3f4f6] cursor-pointer">
@@ -2222,7 +2249,7 @@ export default function ScheduleDetailPage() {
                     : selectedView === 'Exception 2 — Product: A1252810, A12528YY, A13314YY'
                       ? ['Products: A1252810 +2']
                       : []
-                const statusFilterLabels = { approved: 'Approved', unapproved: 'Unapproved', needs_review: 'Needs review', locked: 'Locked', edited: 'Edited' }
+                const statusFilterLabels = { approved: 'Approved', unapproved: 'Unapproved', needs_review: 'Needs review',  edited: 'Edited' }
                 const statusChips = statusFilters.map((f) => `Status: ${statusFilterLabels[f]}`)
                 const filterChips = [...viewChips, ...statusChips]
                 return filterChips.length > 0 ? (
@@ -2390,10 +2417,13 @@ export default function ScheduleDetailPage() {
                           </div>
                         </td>
                         <td className="py-3 px-3 align-top">
-                          <div className="flex flex-col">
+                          <div className="flex flex-col gap-0.5">
                             <span className="text-[14px] text-[#4B535C]">{row.recommendationsUpdated || '26/02/2026'}</span>
                             {row.recommendationsUpdatedTime && (
                               <span className="text-[12px] text-[#4b535c]">{row.recommendationsUpdatedTime}</span>
+                            )}
+                            {row.recommendationsUpdatedBy && (
+                              <span className="text-[11px] text-[#9ca3af]">{row.recommendationsUpdatedBy}</span>
                             )}
                           </div>
                         </td>
@@ -2405,6 +2435,7 @@ export default function ScheduleDetailPage() {
                             rowId={`trip-${row.id}`}
                             value={rowStatus}
                             userName={userName}
+                            useShortEditedLabel
                             onChange={(statusId) => setTripStatusOverrides((prev) => ({ ...prev, [row.id]: statusId }))}
                           />
                         </td>
