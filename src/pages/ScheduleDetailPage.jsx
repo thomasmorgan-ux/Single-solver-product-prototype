@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts'
-import { IconSearch, IconChevronDown, IconChevronRight, IconShare, IconDocument, IconClose, IconArrowLeft, IconGears } from '../components/icons'
+import { IconSearch, IconChevronDown, IconChevronRight, IconShare, IconDocument, IconClose, IconArrowLeft, IconGears, IconTruck, IconOutlet, IconWarehouse, IconEcomm } from '../components/icons'
 
 function IconColumnSettings() {
   return (
@@ -406,6 +406,25 @@ const VIEW_OPTIONS = [
 
 const EDITED_EXCEPTION_IDS = [3, 5]
 
+// Mock locations for Locations tab table
+const LOCATIONS_TABLE_DATA = [
+  { id: 1, name: 'Suk003 londres maryleb...', code: 'SUK003', transfersIn: 40, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€5.21K', recommendedIn: 40, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 11, salesL30: 40, forecast: 13.46, stockouts: '9 → 0', overstocks: '0 → 0', understocks: '95 → 67' },
+  { id: 2, name: 'Sfr004 fd calvaire', code: 'SFR004', transfersIn: 38, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€4.4K', recommendedIn: 38, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 8, salesL30: 32, forecast: 10.82, stockouts: '2 → 0', overstocks: '7 → 0', understocks: '154 → 139' },
+  { id: 13, name: 'Out001 la vallée village', code: 'OUT001', locationType: 'outlet', transfersIn: 28, transfersInSub: '1 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€2.98K', recommendedIn: 28, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 4, salesL30: 16, forecast: 5.12, stockouts: '6 → 3', overstocks: '8 → 2', understocks: '62 → 44' },
+  { id: 3, name: 'Sfr012 legendre', code: 'SFR012', transfersIn: 35, transfersInSub: '1 (max 2)', transfersOut: 15, transfersOutSub: '1 (max 3)', revenueIncrease: '€4.12K', recommendedIn: 35, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 15, salesL7: 6, salesL30: 28, forecast: 9.14, stockouts: '5 → 2', overstocks: '12 → 4', understocks: '124 → 82' },
+  { id: 4, name: 'Sfr008 saints-peres', code: 'SFR008', transfersIn: 42, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€5.89K', recommendedIn: 42, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 14, salesL30: 55, forecast: 15.22, stockouts: '3 → 0', overstocks: '2 → 0', understocks: '73 → 55' },
+  { id: 5, name: 'Sfr013 sevigne', code: 'SFR013', transfersIn: 33, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€3.67K', recommendedIn: 33, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 5, salesL30: 22, forecast: 8.14, stockouts: '12 → 5', overstocks: '18 → 6', understocks: '88 → 61' },
+  { id: 14, name: 'Wh001 paris entrepôt', code: 'WH001', locationType: 'warehouse', transfersIn: 95, transfersInSub: '4 (max 4)', transfersOut: 92, transfersOutSub: '4 (max 4)', revenueIncrease: '€12.4K', recommendedIn: 95, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 92, salesL7: 0, salesL30: 0, forecast: 0, stockouts: '0 → 0', overstocks: '45 → 12', understocks: '0 → 0' },
+  { id: 6, name: 'Sbe002 anvers', code: 'SBE002', transfersIn: 29, transfersInSub: '1 (max 2)', transfersOut: 29, transfersOutSub: '2 (max 3)', revenueIncrease: '€3.21K', recommendedIn: 29, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 29, salesL7: 3, salesL30: 18, forecast: 6.92, stockouts: '18 → 12', overstocks: '5 → 2', understocks: '112 → 78' },
+  { id: 7, name: 'Sfr003 courcelles', code: 'SFR003', transfersIn: 45, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€6.12K', recommendedIn: 45, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 16, salesL30: 62, forecast: 17.08, stockouts: '1 → 0', overstocks: '0 → 0', understocks: '42 → 28' },
+  { id: 8, name: 'Sfr001 bonaparte', code: 'SFR001', transfersIn: 52, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€7.34K', recommendedIn: 52, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 19, salesL30: 78, forecast: 21.45, stockouts: '0 → 0', overstocks: '0 → 0', understocks: '28 → 15' },
+  { id: 15, name: 'Web001 france online', code: 'WEB001', locationType: 'ecomm', transfersIn: 0, transfersInSub: '0', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€8.56K', recommendedIn: 0, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 22, salesL30: 95, forecast: 28.34, stockouts: '0 → 0', overstocks: '0 → 0', understocks: '0 → 0' },
+  { id: 9, name: 'Sfr005 charonne', code: 'SFR005', transfersIn: 31, transfersInSub: '1 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€3.45K', recommendedIn: 31, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 4, salesL30: 19, forecast: 7.28, stockouts: '22 → 18', overstocks: '9 → 3', understocks: '136 → 94' },
+  { id: 10, name: 'Sfr018 lyon', code: 'SFR018', transfersIn: 48, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€6.78K', recommendedIn: 48, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 17, salesL30: 68, forecast: 18.92, stockouts: '2 → 1', overstocks: '3 → 1', understocks: '56 → 38' },
+  { id: 11, name: 'Ssp001 madrid coello', code: 'SSP001', transfersIn: 36, transfersInSub: '2 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€4.02K', recommendedIn: 36, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 7, salesL30: 30, forecast: 9.56, stockouts: '8 → 4', overstocks: '14 → 5', understocks: '98 → 72' },
+  { id: 12, name: 'Sfr014 guichard', code: 'SFR014', transfersIn: 34, transfersInSub: '1 (max 2)', transfersOut: 0, transfersOutSub: '0', revenueIncrease: '€3.89K', recommendedIn: 34, recommendedInBadges: ['VIS', 'REV'], recommendedOut: 0, salesL7: 6, salesL30: 26, forecast: 8.42, stockouts: '11 → 7', overstocks: '6 → 2', understocks: '82 → 58' },
+]
+
 // Mock products for trip drilldown (keyed by trip id)
 const PRODUCTS_BY_TRIP = {
   1: [
@@ -577,26 +596,6 @@ function StatusDropdown({ value, userName, onChange, rowId }) {
         </>
       )}
     </div>
-  )
-}
-
-function IconWarehouse() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0" aria-hidden>
-      <rect x="1" y="5" width="12" height="8" stroke="currentColor" strokeWidth="1.5" rx="1" />
-      <path d="M1 5l6-4 6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
-function IconTruck() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0" aria-hidden>
-      <rect x="1" y="4" width="8" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M9 7h2l2 2v2h-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="4" cy="11" r="1.5" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="11" cy="11" r="1.5" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
   )
 }
 
@@ -1655,6 +1654,252 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
   )
 }
 
+function LocationsTab() {
+  const [selectedLocationIds, setSelectedLocationIds] = useState(new Set())
+  const [tripType, setTripType] = useState('rebalancing')
+  const [includeZeroTransfers, setIncludeZeroTransfers] = useState(true)
+  const locations = LOCATIONS_TABLE_DATA
+
+  const toggleLocationSelection = (id) => {
+    setSelectedLocationIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const toggleAllLocationsSelection = () => {
+    const allIds = locations.map((l) => l.id)
+    const allSelected = allIds.every((id) => selectedLocationIds.has(id))
+    setSelectedLocationIds(allSelected ? new Set() : new Set(allIds))
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-row flex-nowrap items-center justify-between gap-4">
+        <div className="flex flex-row flex-nowrap items-center gap-[8px]">
+          <div className="flex items-center h-12 rounded-[4px] border border-[#E9EAEB] bg-white w-[200px] shrink-0">
+            <span className="pl-4 pr-2 shrink-0 text-[#9ca3af]">
+              <IconSearch className="size-4" />
+            </span>
+            <input
+              type="text"
+              placeholder="Search..."
+              className="flex-1 min-w-0 h-full border-0 bg-transparent rounded-[4px] text-[14px] text-[#0a0a0a] placeholder:text-[#9ca3af] focus:outline-none focus:ring-0"
+            />
+          </div>
+          <div className="relative">
+            <select className="h-12 pl-4 pr-10 rounded-[4px] border border-[#E9EAEB] bg-white text-[14px] text-[#0a0a0a] appearance-none min-w-[160px]">
+              <option>Revenue increase</option>
+            </select>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#4b535c]">
+              <IconChevronDown className="size-4" />
+            </span>
+          </div>
+          <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Column settings">
+            <IconColumnSettings />
+          </button>
+          <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Filter">
+            <IconFilterFunnel />
+          </button>
+          <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Settings">
+            <IconGears className="size-5" />
+          </button>
+        </div>
+        <div className="flex items-center gap-4 shrink-0">
+          <span className="text-[14px] text-[#4b535c]">Trip type:</span>
+          <div className="flex rounded-[4px] border border-[#e5e7eb] bg-white overflow-hidden">
+            <button
+              type="button"
+              onClick={() => setTripType('rebalancing')}
+              className={`px-3 py-2 text-[14px] font-medium border-r border-[#e5e7eb] ${tripType === 'rebalancing' ? 'bg-[#0a0a0a] text-white' : 'text-[#4b535c] hover:bg-[#f0f0f0] bg-white'}`}
+            >
+              Rebalancing
+            </button>
+            <button
+              type="button"
+              onClick={() => setTripType('replenishment')}
+              className={`px-3 py-2 text-[14px] font-medium ${tripType === 'replenishment' ? 'bg-[#0a0a0a] text-white' : 'text-[#4b535c] hover:bg-[#f0f0f0] bg-white'}`}
+            >
+              Replenishment
+            </button>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[14px] text-[#4b535c]">Include zero transfers</span>
+            <button
+              type="button"
+              onClick={() => setIncludeZeroTransfers((v) => !v)}
+              className={`relative w-11 h-6 rounded-full transition-colors flex items-center shrink-0 ${includeZeroTransfers ? 'bg-[#0267ff]' : 'bg-[#e5e7eb]'}`}
+              aria-pressed={includeZeroTransfers}
+            >
+              <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${includeZeroTransfers ? 'left-[22px]' : 'left-0.5'}`} />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="products-table-scroll border border-[#e5e7eb] rounded-[4px] bg-white overflow-x-auto overflow-y-visible">
+        <table className="w-max min-w-full text-[14px]">
+          <thead className="bg-[#F8F8F8]">
+            <tr className="border-b border-[#E9EAEB]">
+              <th className="sticky left-0 z-20 w-12 py-3 px-4 text-left bg-[#F8F8F8] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)]">
+                <input
+                  type="checkbox"
+                  className="size-4 rounded border-[#E9EAEB] text-[#0267ff]"
+                  aria-label="Select all"
+                  checked={locations.length > 0 && locations.every((l) => selectedLocationIds.has(l.id))}
+                  onChange={toggleAllLocationsSelection}
+                />
+              </th>
+              <th className="sticky left-12 z-20 text-left py-3 px-4 font-medium text-[#00050A] bg-[#F8F8F8] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)] min-w-[180px]">Location</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[90px]">Transfers in</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[90px]">Transfers out</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[100px]">
+                <span className="inline-flex items-center gap-1">Revenue increase <IconInfo /> <IconSortDown /></span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[100px]">
+                <span className="inline-flex items-center gap-1">Recommended transfers in <IconInfo /></span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[100px]">
+                <span className="inline-flex items-center gap-1">Recommended transfers out <IconInfo /></span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[70px]">Sales</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[90px]">
+                <span className="inline-flex items-center gap-1">Forecast <IconInfo /></span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[80px]">Stockouts</th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[80px]">
+                <span className="inline-flex items-center gap-1">Overstocks <IconInfo /></span>
+              </th>
+              <th className="text-right py-3 px-4 font-medium text-[#00050A] min-w-[80px]">
+                <span className="inline-flex items-center gap-1">Understocks <IconInfo /></span>
+              </th>
+            </tr>
+            <tr className="border-b border-[#E9EAEB] bg-[#F8F8F8]">
+              <th className="sticky left-0 z-20 py-2 px-4 bg-[#F8F8F8] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)]" />
+              <th className="sticky left-12 z-20 py-2 px-4 text-[12px] font-normal text-[#4b535c] bg-[#F8F8F8] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)]" />
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">
+                <div className="flex flex-col items-end">
+                  <span>477 units</span>
+                  <span className="text-[12px] text-[#4b535c]">32 trips</span>
+                </div>
+              </th>
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">
+                <div className="flex flex-col items-end">
+                  <span>477 units</span>
+                  <span className="text-[12px] text-[#4b535c]">35 trips</span>
+                </div>
+              </th>
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">€50.4K</th>
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">477 units</th>
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">477 units</th>
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">
+                <div className="flex flex-col items-end">
+                  <span>70 L7D</span>
+                  <span className="text-[12px] text-[#4b535c]">326 L30D</span>
+                </div>
+              </th>
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">154.61 per wk</th>
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">189 → 383</th>
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">301 → 28</th>
+              <th className="py-2 px-4 text-[12px] font-medium text-[#0a0a0a] text-right">1,270 → …</th>
+            </tr>
+          </thead>
+          <tbody>
+            {locations.map((loc) => (
+              <tr key={loc.id} className="group border-b border-[#E9EAEB] hover:bg-[#f9fafb]">
+                <td className="sticky left-0 z-10 py-3 px-4 bg-white group-hover:bg-[#f9fafb] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)]">
+                  <input
+                    type="checkbox"
+                    className="size-4 rounded border-[#E9EAEB] text-[#0267ff]"
+                    aria-label={`Select ${loc.name}`}
+                    checked={selectedLocationIds.has(loc.id)}
+                    onChange={() => toggleLocationSelection(loc.id)}
+                  />
+                </td>
+                <td className="sticky left-12 z-10 py-3 px-4 min-w-[180px] bg-white group-hover:bg-[#f9fafb] border-r border-[#e5e7eb] shadow-[4px_0_8px_rgba(0,0,0,0.04)]">
+                  <div className="flex items-center justify-between gap-2 min-w-0">
+                    <div className="flex flex-col gap-0.5 min-w-0 line-clamp-2">
+                      <span className="font-medium text-[#0a0a0a]">{loc.name}</span>
+                      <span className="text-[12px] text-[#4b535c]">{loc.code}</span>
+                    </div>
+                    {loc.locationType === 'outlet' && (
+                      <span className="shrink-0 text-[#4b535c]" title="Outlet" aria-label="Outlet">
+                        <IconOutlet />
+                      </span>
+                    )}
+                    {loc.locationType === 'warehouse' && (
+                      <span className="shrink-0 text-[#4b535c]" title="Warehouse" aria-label="Warehouse">
+                        <IconWarehouse />
+                      </span>
+                    )}
+                    {loc.locationType === 'ecomm' && (
+                      <span className="shrink-0 text-[#4b535c]" title="Ecomm" aria-label="Ecomm">
+                        <IconEcomm />
+                      </span>
+                    )}
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end line-clamp-2 min-w-0">
+                    <span className="text-[#0a0a0a]">{loc.transfersIn}</span>
+                    <span className="text-[12px] text-[#4b535c]">{loc.transfersInSub}</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end line-clamp-2 min-w-0">
+                    <span className="text-[#0a0a0a]">{loc.transfersOut}</span>
+                    <span className="text-[12px] text-[#4b535c]">{loc.transfersOutSub}</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{loc.revenueIncrease}</div></td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end gap-1 line-clamp-2 min-w-0">
+                    <span className="text-[#0a0a0a] inline-flex items-center gap-1">
+                      {loc.recommendedIn}
+                      {loc.recommendedInBadges?.map((b) => (
+                        <span key={b} className="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#1d4ed8] text-[11px] font-medium text-white">
+                          {b}
+                        </span>
+                      ))}
+                    </span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{loc.recommendedOut}</div></td>
+                <td className="py-3 px-4 text-right">
+                  <div className="flex flex-col items-end line-clamp-2 min-w-0">
+                    <span className="text-[#0a0a0a]">{loc.salesL7}</span>
+                    <span className="text-[12px] text-[#4b535c]">{loc.salesL30}</span>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{loc.forecast}</div></td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{loc.stockouts}</div></td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{loc.overstocks}</div></td>
+                <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{loc.understocks}</div></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="flex items-center justify-between px-4 py-3 border-t border-[#E9EAEB] bg-white">
+          <span className="text-[14px] text-[#4b535c]">{locations.length} rows</span>
+          <span className="text-[14px] text-[#4b535c]">1 of 1</span>
+          <div className="flex items-center gap-2">
+            <button type="button" className="h-10 w-10 flex items-center justify-center rounded-[4px] opacity-50" aria-label="Previous page" disabled>
+              <IconArrowLeft className="size-5" />
+            </button>
+            <button type="button" className="h-10 w-10 flex items-center justify-center rounded-[4px] hover:bg-[#f3f4f6]" aria-label="Next page">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="rotate-180">
+                <path d="M13 8H3M7 4l-4 4 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function ScheduleDetailPage() {
   const [activeTab, setActiveTab] = useState('trips')
   const [viewShowsFullDataset, setViewShowsFullDataset] = useState(true)
@@ -2142,11 +2387,9 @@ export default function ScheduleDetailPage() {
           )
         ) : activeTab === 'products' ? (
           <ProductsDrilldown trip={TRIPS_OPERA[0]} onBack={() => {}} showBackButton={false} />
-        ) : (
-          <div className="border border-dashed border-[#e5e7eb] rounded-[8px] p-6 text-[14px] text-[#4b535c]">
-            Locations view coming soon.
-          </div>
-        )}
+        ) : activeTab === 'locations' ? (
+          <LocationsTab />
+        ) : null}
 
       {selectedTripIds.size > 0 && activeTab === 'trips' && (
         <div

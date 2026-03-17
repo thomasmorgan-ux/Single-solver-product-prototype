@@ -366,3 +366,28 @@ export const IconCollapse = () => (
     <path d="M12 5l-5 5 5 5M7 5l-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
+
+export const IconOutlet = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0" aria-hidden>
+    <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
+    <circle cx="6" cy="6" r="1.2" stroke="currentColor" strokeWidth="1" />
+    <circle cx="10" cy="10" r="1.2" stroke="currentColor" strokeWidth="1" />
+    <path d="M10.5 5.5l-5 5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+  </svg>
+)
+
+export const IconWarehouse = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0" aria-hidden>
+    <path d="M2 6l6-4 6 4v8H2V6z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M8 2v12M2 8h12M2 10h12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    <rect x="6" y="10" width="4" height="4" rx="0.5" stroke="currentColor" strokeWidth="1.2" />
+  </svg>
+)
+
+export const IconEcomm = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0" aria-hidden>
+    <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" />
+    <ellipse cx="8" cy="8" rx="4" ry="2" stroke="currentColor" strokeWidth="1.2" />
+    <path d="M8 2v12M4 4c2 2 4 2 4 4s-2 2-4 4M12 4c-2 2-4 2-4 4s2 2 4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+  </svg>
+)
