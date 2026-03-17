@@ -1271,8 +1271,8 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
         </div>
       )}
 
-      <div className="flex flex-row flex-nowrap items-center gap-[8px]">
-        <div className="flex items-center h-12 rounded-[4px] border border-[#E9EAEB] bg-white w-[200px] shrink-0">
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center h-10 rounded-[4px] border border-[#e9eaeb] bg-white flex-1 min-w-[200px] max-w-[280px]">
           <input
             type="text"
             placeholder="Revenue increase"
@@ -1282,22 +1282,28 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
             <IconSearch className="size-4" />
           </span>
         </div>
-        <div className="relative">
-          <select className="h-12 pl-4 pr-10 rounded-[4px] border border-[#E9EAEB] bg-white text-[14px] text-[#0a0a0a] appearance-none min-w-[160px]">
-            <option>First sales date</option>
-          </select>
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#4b535c]">
-            <IconChevronDown className="size-4" />
-          </span>
-        </div>
+        <button
+          type="button"
+          className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e9eaeb] bg-white text-[#22272f] hover:bg-[#f3f4f6] shrink-0"
+          aria-label="Column settings"
+        >
+          <IconColumnSettings />
+        </button>
+        <button
+          type="button"
+          className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e9eaeb] bg-white text-[#22272f] hover:bg-[#f3f4f6] shrink-0"
+          aria-label="Sort order"
+        >
+          <IconSortOrder />
+        </button>
         <div className="relative">
           <button
             type="button"
             onClick={() => setFiltersDropdownOpen((o) => !o)}
-            className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0"
-            aria-label="Filter"
+            className="h-10 px-4 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#22272f] hover:bg-[#f3f4f6] shrink-0 flex items-center gap-2"
           >
             <IconFilterFunnel />
+            Filters
           </button>
           {filtersDropdownOpen && (
             <>
@@ -1329,9 +1335,6 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
             </>
           )}
         </div>
-        <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Column settings">
-          <IconColumnSettings />
-        </button>
       </div>
 
       <div className="flex flex-wrap items-center gap-2 mt-1">
@@ -1657,8 +1660,8 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
 
 function LocationsTab() {
   const [selectedLocationIds, setSelectedLocationIds] = useState(new Set())
-  const [tripType, setTripType] = useState('rebalancing')
-  const [includeZeroTransfers, setIncludeZeroTransfers] = useState(true)
+  const [statusFilters, setStatusFilters] = useState([])
+  const [filtersDropdownOpen, setFiltersDropdownOpen] = useState(false)
   const locations = LOCATIONS_TABLE_DATA
 
   const toggleLocationSelection = (id) => {
@@ -1678,65 +1681,69 @@ function LocationsTab() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-row flex-nowrap items-center justify-between gap-4">
-        <div className="flex flex-row flex-nowrap items-center gap-[8px]">
-          <div className="flex items-center h-12 rounded-[4px] border border-[#E9EAEB] bg-white w-[200px] shrink-0">
-            <span className="pl-4 pr-2 shrink-0 text-[#9ca3af]">
-              <IconSearch className="size-4" />
-            </span>
-            <input
-              type="text"
-              placeholder="Search..."
-              className="flex-1 min-w-0 h-full border-0 bg-transparent rounded-[4px] text-[14px] text-[#0a0a0a] placeholder:text-[#9ca3af] focus:outline-none focus:ring-0"
-            />
-          </div>
-          <div className="relative">
-            <select className="h-12 pl-4 pr-10 rounded-[4px] border border-[#E9EAEB] bg-white text-[14px] text-[#0a0a0a] appearance-none min-w-[160px]">
-              <option>Revenue increase</option>
-            </select>
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#4b535c]">
-              <IconChevronDown className="size-4" />
-            </span>
-          </div>
-          <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Column settings">
-            <IconColumnSettings />
-          </button>
-          <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Filter">
-            <IconFilterFunnel />
-          </button>
-          <button type="button" className="h-12 w-12 flex items-center justify-center rounded-[4px] border border-[#E9EAEB] bg-white hover:bg-[#f3f4f6] shrink-0" aria-label="Settings">
-            <IconGears className="size-5" />
-          </button>
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center h-10 rounded-[4px] border border-[#e9eaeb] bg-white flex-1 min-w-[200px] max-w-[280px]">
+          <input
+            type="text"
+            placeholder="Revenue increase"
+            className="flex-1 min-w-0 h-full pl-4 pr-2 border-0 bg-transparent rounded-[4px] text-[14px] text-[#0a0a0a] placeholder:text-[#9ca3af] focus:outline-none focus:ring-0"
+          />
+          <span className="pr-3 shrink-0 text-[#9ca3af]">
+            <IconSearch className="size-4" />
+          </span>
         </div>
-        <div className="flex items-center gap-4 shrink-0">
-          <span className="text-[14px] text-[#4b535c]">Trip type:</span>
-          <div className="flex rounded-[4px] border border-[#e5e7eb] bg-white overflow-hidden">
-            <button
-              type="button"
-              onClick={() => setTripType('rebalancing')}
-              className={`px-3 py-2 text-[14px] font-medium border-r border-[#e5e7eb] ${tripType === 'rebalancing' ? 'bg-[#0a0a0a] text-white' : 'text-[#4b535c] hover:bg-[#f0f0f0] bg-white'}`}
-            >
-              Rebalancing
-            </button>
-            <button
-              type="button"
-              onClick={() => setTripType('replenishment')}
-              className={`px-3 py-2 text-[14px] font-medium ${tripType === 'replenishment' ? 'bg-[#0a0a0a] text-white' : 'text-[#4b535c] hover:bg-[#f0f0f0] bg-white'}`}
-            >
-              Replenishment
-            </button>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[14px] text-[#4b535c]">Include zero transfers</span>
-            <button
-              type="button"
-              onClick={() => setIncludeZeroTransfers((v) => !v)}
-              className={`relative w-11 h-6 rounded-full transition-colors flex items-center shrink-0 ${includeZeroTransfers ? 'bg-[#0267ff]' : 'bg-[#e5e7eb]'}`}
-              aria-pressed={includeZeroTransfers}
-            >
-              <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${includeZeroTransfers ? 'left-[22px]' : 'left-0.5'}`} />
-            </button>
-          </div>
+        <button
+          type="button"
+          className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e9eaeb] bg-white text-[#22272f] hover:bg-[#f3f4f6] shrink-0"
+          aria-label="Column settings"
+        >
+          <IconColumnSettings />
+        </button>
+        <button
+          type="button"
+          className="h-10 w-10 flex items-center justify-center rounded-[4px] border border-[#e9eaeb] bg-white text-[#22272f] hover:bg-[#f3f4f6] shrink-0"
+          aria-label="Sort order"
+        >
+          <IconSortOrder />
+        </button>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setFiltersDropdownOpen((o) => !o)}
+            className="h-10 px-4 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#22272f] hover:bg-[#f3f4f6] shrink-0 flex items-center gap-2"
+          >
+            <IconFilterFunnel />
+            Filters
+          </button>
+          {filtersDropdownOpen && (
+            <>
+              <div className="fixed inset-0 z-[60]" aria-hidden onClick={() => setFiltersDropdownOpen(false)} />
+              <div className="absolute left-0 top-full mt-1 z-[70] min-w-[200px] rounded-[6px] border border-[#e5e7eb] bg-white py-2 shadow-lg">
+                <div className="px-3 py-1.5 text-[12px] font-medium text-[#4b535c] uppercase tracking-wide">Status</div>
+                {[
+                  { id: 'approved', label: 'Approved' },
+                  { id: 'unapproved', label: 'Unapproved' },
+                  { id: 'needs_review', label: 'Needs review' },
+                  { id: 'locked', label: 'Locked' },
+                  { id: 'edited', label: 'Edited' },
+                ].map((opt) => (
+                  <label key={opt.id} className="flex items-center gap-2 px-3 py-1.5 hover:bg-[#f3f4f6] cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={statusFilters.includes(opt.id)}
+                      onChange={(e) => {
+                        setStatusFilters((prev) =>
+                          e.target.checked ? [...prev, opt.id] : prev.filter((x) => x !== opt.id)
+                        )
+                      }}
+                      className="size-4 rounded border-[#d1d5db] text-[#0267ff]"
+                    />
+                    <span className="text-[13px] text-[#0a0a0a]">{opt.label}</span>
+                  </label>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
