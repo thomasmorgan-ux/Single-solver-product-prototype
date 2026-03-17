@@ -20,18 +20,29 @@ import {
 } from './components/icons'
 import OverviewPage from './pages/OverviewPage'
 import InsightsPage from './pages/InsightsPage'
+import BuyingPage from './pages/BuyingPage'
+import DataHealthPage from './pages/DataHealthPage'
+import OptimiserStatusPage from './pages/OptimiserStatusPage'
+import ForecastInspectorPage from './pages/ForecastInspectorPage'
 import OptimiserPage from './pages/OptimiserPage'
 import ScopePage from './pages/ScopePage'
+import ScheduleDetailPage from './pages/ScheduleDetailPage'
 
 export default function App() {
   const [assignee, setAssignee] = useState({})
   const [optimiserOpen, setOptimiserOpen] = useState(false)
   const [insightsOpen, setInsightsOpen] = useState(false)
   const [activeView, setActiveView] = useState('control-panel')
-  const [optimiserSubView, setOptimiserSubView] = useState('schedule')
+  const [optimiserSubView, setOptimiserSubView] = useState(null)
+  const [insightSubView, setInsightSubView] = useState(null)
+  const [openScheduleDrawerSignal, setOpenScheduleDrawerSignal] = useState(0)
+  const [openAddJobSignal, setOpenAddJobSignal] = useState(0)
+  const [resetToUpcomingSignal, setResetToUpcomingSignal] = useState(0)
+  const [openCreateSchedulePageSignal, setOpenCreateSchedulePageSignal] = useState(0)
+  const [resetToRecommendationsLandingSignal, setResetToRecommendationsLandingSignal] = useState(0)
 
   return (
-    <div className="h-screen bg-[#f9fafb] flex text-[#0a0a0a] overflow-hidden">
+    <div className="h-screen bg-[#f5f5f5] flex text-[#0a0a0a] overflow-hidden">
       <aside className={`min-w-[220px] w-max h-full shrink-0 bg-[#12171e] flex flex-col px-[var(--spacing-l,16px)] py-[var(--spacing-2xl,32px)] overflow-y-auto overflow-x-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`} data-name="OptimiserSidebar/Expanded/Default" data-node-id="14404:7242">
         <div className="flex flex-col gap-[var(--spacing-2xl,32px)] min-w-0 flex-1 min-h-0" data-name="Container" data-node-id="14404:7243">
         <div className="flex flex-row items-center justify-between gap-2 w-full px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] shrink-0" data-name="Logo container" data-node-id="14404:7244">
@@ -49,7 +60,7 @@ export default function App() {
           <div className="flex flex-col gap-[var(--spacing-xs,6px)] w-full shrink-0">
             <button
               type="button"
-              onClick={() => { setActiveView('insights'); setInsightsOpen((o) => !o); }}
+              onClick={() => { setActiveView('insights'); setInsightSubView(null); setInsightsOpen((o) => !o); }}
               className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] shrink-0 ${activeView === 'insights' ? 'bg-[#0267ff] text-white font-medium' : 'font-normal text-white hover:bg-white/5'}`}
               aria-expanded={insightsOpen}
               data-name="Sidebar element"
@@ -63,16 +74,16 @@ export default function App() {
             </button>
             {insightsOpen && (
               <div className="flex flex-col gap-[4px] pl-4 pb-2 w-full shrink-0">
-                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                <button type="button" onClick={() => { setActiveView('insights'); setInsightSubView('buying'); }} className={`min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal shrink-0 ${insightSubView === 'buying' ? 'bg-[#0267ff]/50 text-white' : 'text-white hover:bg-white/5'}`} data-name="Sidebar element">
                   Buying
                 </button>
-                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                <button type="button" onClick={() => { setActiveView('insights'); setInsightSubView('data-health'); }} className={`min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal shrink-0 ${insightSubView === 'data-health' ? 'bg-[#0267ff]/50 text-white' : 'text-white hover:bg-white/5'}`} data-name="Sidebar element">
                   Data health
                 </button>
-                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                <button type="button" onClick={() => { setActiveView('insights'); setInsightSubView('optimiser-status'); }} className={`min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal shrink-0 ${insightSubView === 'optimiser-status' ? 'bg-[#0267ff]/50 text-white' : 'text-white hover:bg-white/5'}`} data-name="Sidebar element">
                   Optimiser status
                 </button>
-                <button type="button" onClick={() => setActiveView('insights')} className="min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
+                <button type="button" onClick={() => { setActiveView('insights'); setInsightSubView('forecast-inspector'); }} className={`min-h-[36px] w-full flex items-center gap-[var(--spacing-s,8px)] px-[var(--spacing-s,8px)] py-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal shrink-0 ${insightSubView === 'forecast-inspector' ? 'bg-[#0267ff]/50 text-white' : 'text-white hover:bg-white/5'}`} data-name="Sidebar element">
                   <span className="flex-1 min-w-0 text-left">Forecast inspector</span>
                   <span className="text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded shrink-0">Premium</span>
                 </button>
@@ -82,7 +93,7 @@ export default function App() {
           <div className="flex flex-col gap-[var(--spacing-xs,6px)] w-full shrink-0">
             <button
               type="button"
-              onClick={() => { setActiveView('optimiser'); setOptimiserSubView('schedule'); setOptimiserOpen((o) => !o); }}
+              onClick={() => { setActiveView('optimiser'); setOptimiserSubView(null); setResetToRecommendationsLandingSignal((n) => n + 1); setOptimiserOpen((o) => !o); }}
               className={`h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] shrink-0 ${activeView === 'optimiser' ? 'bg-[#0267ff] text-white font-medium' : 'font-normal text-white hover:bg-white/5'}`}
               aria-expanded={optimiserOpen}
               data-name="Sidebar element"
@@ -91,7 +102,7 @@ export default function App() {
               <span className="relative shrink-0 size-6" data-name="Icon=new reorder" data-node-id="I14404:7825;12203:35386">
                 <IconOptimiser className={`size-full ${activeView === 'optimiser' ? 'text-white' : 'text-[#22272f]'}`} aria-hidden />
               </span>
-              <span className="flex flex-1 min-w-0 flex-col justify-center text-left text-[14px] leading-[100%]" data-node-id="I14404:7825;12203:35387">Optimiser</span>
+              <span className="flex flex-1 min-w-0 flex-col justify-center text-left text-[14px] leading-[100%]" data-node-id="I14404:7825;12203:35387">Recommendations</span>
               <span className={`relative shrink-0 size-5 inline-flex transition-transform duration-200 ${activeView === 'optimiser' ? 'text-white' : 'text-white'} ${optimiserOpen ? 'rotate-180' : ''}`} aria-hidden data-name="icon" data-node-id="I14404:7825;12203:35389">
                 <IconInsightsChevron />
               </span>
@@ -174,22 +185,81 @@ export default function App() {
       <div className="flex flex-col flex-1 min-w-0 min-h-0 w-full overflow-hidden">
         <div className="shrink-0">
           <TopBar
-            title={activeView === 'optimiser' && optimiserSubView === 'scope' ? 'Scope' : activeView === 'optimiser' ? 'Optimiser' : activeView === 'insights' ? 'Insights' : 'Overview'}
-            subtitle={activeView === 'optimiser' && optimiserSubView === 'scope' ? null : activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : activeView === 'insights' ? 'Analytics and insights across your inventory.' : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"}
-            onBack={activeView === 'optimiser' && optimiserSubView === 'scope' ? () => setOptimiserSubView('schedule') : undefined}
+            title={
+              activeView === 'optimiser' && optimiserSubView === 'scope'
+                ? 'Scope'
+                : activeView === 'optimiser' && optimiserSubView === 'schedule-detail'
+                  ? 'Schedule detail'
+                  : activeView === 'optimiser'
+                    ? 'Recommendations'
+                    : activeView === 'insights'
+                      ? 'Insights'
+                      : 'Overview'
+            }
+            subtitle={
+              activeView === 'optimiser' && optimiserSubView === 'scope'
+                ? null
+                : activeView === 'optimiser' && optimiserSubView === 'schedule-detail'
+                  ? null
+                  : activeView === 'optimiser'
+                    ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.'
+                    : activeView === 'insights'
+                      ? 'Analytics and statistics for your sales performance.'
+                      : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"
+            }
+            primaryButtonLabel={undefined}
+            showMenuButton={activeView === 'insights'}
+            onBack={
+              activeView === 'optimiser' && (optimiserSubView === 'scope' || optimiserSubView === 'schedule-detail')
+                ? () => {
+                    setOptimiserSubView(null)
+                    if (optimiserSubView === 'scope') {
+                      setResetToUpcomingSignal((n) => n + 1)
+                    }
+                    setOpenAddJobSignal(0)
+                  }
+                : undefined
+            }
+            headerActions={undefined}
+            onUseLatestRecommendations={
+              activeView === 'optimiser'
+                ? () => setOpenAddJobSignal((n) => n + 1)
+                : undefined
+            }
+            onCreateSchedule={
+              activeView === 'optimiser'
+                ? () => setOpenCreateSchedulePageSignal((n) => n + 1)
+                : undefined
+            }
           />
         </div>
 
         <main className="flex-1 min-h-0 min-w-0 w-full pl-8 pr-8 pb-12 overflow-y-auto overflow-x-hidden">
           {activeView === 'optimiser' && optimiserSubView === 'scope' ? (
             <ScopePage />
+          ) : activeView === 'optimiser' && optimiserSubView === 'schedule-detail' ? (
+            <div className="pt-6">
+              <ScheduleDetailPage />
+            </div>
           ) : activeView === 'optimiser' ? (
             <div className="pt-6">
-              <OptimiserPage onAddJob={() => setOptimiserSubView('scope')} />
+              <OptimiserPage
+                onAddJob={() => setOptimiserSubView('scope')}
+                openScheduleDrawer={openScheduleDrawerSignal}
+                openAddJob={openAddJobSignal}
+                resetToUpcoming={resetToUpcomingSignal}
+                openCreateSchedulePage={openCreateSchedulePageSignal}
+                resetToRecommendationsLanding={resetToRecommendationsLandingSignal}
+                onOpenScheduleDetail={() => setOptimiserSubView('schedule-detail')}
+              />
             </div>
           ) : activeView === 'insights' ? (
-            <div className="pt-6">
-              <InsightsPage />
+            <div>
+              {insightSubView === 'buying' && <BuyingPage />}
+              {insightSubView === 'data-health' && <DataHealthPage />}
+              {insightSubView === 'optimiser-status' && <OptimiserStatusPage />}
+              {insightSubView === 'forecast-inspector' && <ForecastInspectorPage />}
+              {!insightSubView && <InsightsPage />}
             </div>
           ) : (
             <OverviewPage assignee={assignee} setAssignee={setAssignee} />

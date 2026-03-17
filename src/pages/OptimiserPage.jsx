@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react'
-import { IconCalendarSidebar, IconPlus, IconReplenishment, IconReorder, IconRebalancing, IconChevronDown, IconList, IconCalendarNote, IconTruck, IconTrendUp, IconLightbulb, IconEdit, IconClose, IconChevronDownSelect } from '../components/icons'
+import { useState, useRef, useEffect } from 'react'
+import { ChevronRight } from 'lucide-react'
+import { IconCalendarSidebar, IconPlus, IconReplenishment, IconReorder, IconRebalancing, IconChevronDown, IconList, IconCalendarNote, IconTruck, IconTrendUp, IconLightbulb, IconEdit, IconClose, IconChevronDownSelect, IconArrowLeft, IconFilterFunnel, IconSearch } from '../components/icons'
 
 const SAMPLE_CALENDAR_ENTRY = {
   id: 'entry-1',
@@ -112,13 +113,14 @@ const DEFAULT_DRAWER_FORM = {
   endsOn: '',
   notify: '',
 }
+const DAY_OPTIONS = Array.from({ length: 31 }, (_, i) => i + 1)
 const MODULE_OPTIONS = [
   { id: 'replenishment', label: 'Replenishment' },
   { id: 'reorder', label: 'Reorder' },
   { id: 'rebalancing', label: 'Rebalancing' },
 ]
 
-export default function OptimiserPage({ onAddJob }) {
+export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob, resetToUpcoming, openCreateSchedulePage, resetToRecommendationsLanding, onOpenScheduleDetail }) {
   const [scheduleDrawerOpen, setScheduleDrawerOpen] = useState(false)
   const [editingScheduleEntry, setEditingScheduleEntry] = useState(null)
   const [drawerForm, setDrawerForm] = useState(DEFAULT_DRAWER_FORM)
@@ -153,6 +155,86 @@ export default function OptimiserPage({ onAddJob }) {
   const [eventDatePickerViewDate, setEventDatePickerViewDate] = useState(() => new Date(2026, 1, 1))
   const [selectedReviewStatuses, setSelectedReviewStatuses] = useState([])
   const [reviewStatusDropdownOpen, setReviewStatusDropdownOpen] = useState(false)
+  const [activeStatusTab, setActiveStatusTab] = useState('next')
+  const [expandedExceptionsScheduleId, setExpandedExceptionsScheduleId] = useState(null)
+  const [isCreateSchedulePage, setIsCreateSchedulePage] = useState(false)
+  const [accordionOpen, setAccordionOpen] = useState({
+    details: true,
+    scope: false,
+    exceptions: false,
+  })
+  const [scopeOption, setScopeOption] = useState('include-all')
+  const [productFilterOpen, setProductFilterOpen] = useState({
+    departments: false,
+    subDepartments: false,
+    seasons: false,
+    events: false,
+  })
+  const [geoFilterOpen, setGeoFilterOpen] = useState({
+    locationTypes: false,
+    regions: false,
+    countries: false,
+    sendingCountries: false,
+    receivingCountries: false,
+    locations: false,
+    sendingLocations: false,
+    receivingLocations: false,
+  })
+  const DEFAULT_PRODUCT_FILTER_OPEN = { departments: false, subDepartments: false, seasons: false, events: false }
+  const DEFAULT_GEO_FILTER_OPEN = {
+    locationTypes: false,
+    regions: false,
+    countries: false,
+    sendingCountries: false,
+    receivingCountries: false,
+    locations: false,
+    sendingLocations: false,
+    receivingLocations: false,
+  }
+  const DEFAULT_PRODUCT_FILTER_SELECTED = { departments: [], subDepartments: [], seasons: [], events: [] }
+  const DEFAULT_GEO_FILTER_SELECTED = {
+    locationTypes: [], regions: [], countries: [], sendingCountries: [], receivingCountries: [],
+    locations: [], sendingLocations: [], receivingLocations: [],
+  }
+  const EXCEPTION_FILTER_OPTIONS = [
+    { id: 'advanced', label: 'Advanced filters', highlight: true },
+    { id: 'departments', label: 'Departments', options: ['Cadeaux', 'Exotiques', 'Femme', 'Homme', 'Voyage'] },
+    { id: 'subDepartments', label: 'Sub-departments', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
+    { id: 'seasons', label: 'Seasons', options: ['25E', '25S', '25W', '26E', '26S'] },
+    { id: 'events', label: 'Events', options: ['Sale', 'New arrivals', 'Promo'] },
+    { id: 'locationTypes', label: 'Location Types', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
+    { id: 'regions', label: 'Regions', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
+    { id: 'countries', label: 'Countries', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
+    { id: 'sendingCountries', label: 'Sending countries', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
+    { id: 'receivingCountries', label: 'Receiving countries', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
+    { id: 'locations', label: 'Locations', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
+    { id: 'sendingLocations', label: 'Sending locations', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
+    { id: 'receivingLocations', label: 'Receiving locations', options: ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'] },
+  ]
+  const [exceptions, setExceptions] = useState(() => [
+    {
+      id: 'exc-1',
+      expanded: true,
+      advancedRows: [{ id: 'adv-1', conditions: [{ id: 'cond-1', mainColumn: '', condition: '', value: '' }] }],
+      productFilterOpen: { ...DEFAULT_PRODUCT_FILTER_OPEN },
+      geoFilterOpen: { ...DEFAULT_GEO_FILTER_OPEN },
+      productFilterSelected: { ...DEFAULT_PRODUCT_FILTER_SELECTED },
+      geoFilterSelected: { ...DEFAULT_GEO_FILTER_SELECTED },
+      filtersDropdownOpen: false,
+      openFilterPopover: null,
+      activeFilterTypes: [],
+      filterSearchQuery: '',
+    },
+  ])
+  const [advancedRowNextId, setAdvancedRowNextId] = useState(2)
+  const [advancedConditionNextId, setAdvancedConditionNextId] = useState(2)
+  const [exceptionNextId, setExceptionNextId] = useState(2)
+  const [recurrenceRepeatEvery, setRecurrenceRepeatEvery] = useState(1)
+  const [recurrenceRepeatUnit, setRecurrenceRepeatUnit] = useState('week')
+  const [recurrenceSubmissionDayOfWeek, setRecurrenceSubmissionDayOfWeek] = useState(3)
+  const [recurrenceSubmissionDayOfMonth, setRecurrenceSubmissionDayOfMonth] = useState(1)
+  const [recurrenceSubmissionDateYear, setRecurrenceSubmissionDateYear] = useState('')
+  const [recurrenceSubmissionTime, setRecurrenceSubmissionTime] = useState('09:00')
   const reviewStatusFilterOptions = [
     { id: 'in review', label: 'In review' },
     { id: 'upcoming', label: 'Upcoming' },
@@ -163,6 +245,69 @@ export default function OptimiserPage({ onAddJob }) {
       prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
     )
   }
+  const statusTabs = [
+    { id: 'next', label: 'Next' },
+    { id: 'upcoming', label: 'Upcoming' },
+    { id: 'failed', label: 'Failed' },
+    { id: 'submitted', label: 'Submitted' },
+  ]
+  const nextSchedules = [
+    {
+      id: 'eu-monthly-rebal',
+      name: 'Europe monthly rebal',
+      created: '24/02/2026',
+      deadline: '28/02/2026',
+      status: 'Ready to review',
+      exceptions: '12',
+      approved: '96',
+      reviewedCount: 96,
+      totalTransfers: 121,
+      transferExceptions: 12,
+      totalApproved: 96,
+      pendingCount: 25,
+      metrics: [
+        { label: 'Unique trips', value: '113', subLabel: 'Across 8 routes' },
+        { label: 'Recommended transfers', value: '2,308', subLabel: '94% auto-approved' },
+        { label: 'Revenue increase', value: '€501.1K', subLabel: '+4.2% vs last run' },
+        { label: 'Stockouts resolved', value: '1,013 → 559', subLabel: '−44.8% reduction' },
+      ],
+      exceptionsTotal: 2,
+      exceptionsList: [
+        { description: 'Exception 1 — Transfer units lower than 10 · Location: Opéra' },
+        { description: 'Exception 2 — Product: A1252810, A12528YY, A13314YY' },
+      ],
+    },
+    {
+      id: 'uk-weekly-replen',
+      name: 'UK weekly replenishment',
+      created: '04/05/2026',
+      deadline: '06/05/2026',
+      status: 'Ready to review',
+      exceptions: '5',
+      approved: '42',
+      reviewedCount: 42,
+      totalTransfers: 58,
+      transferExceptions: 5,
+      totalApproved: 42,
+      pendingCount: 16,
+      metrics: [
+        { label: 'Unique trips', value: '48', subLabel: 'Across 5 routes' },
+        { label: 'Recommended transfers', value: '1,120', subLabel: '88% auto-approved' },
+        { label: 'Revenue increase', value: '€210.4K', subLabel: '+2.1% vs last run' },
+        { label: 'Stockouts resolved', value: '512 → 304', subLabel: '−40.6% reduction' },
+      ],
+    },
+  ]
+  const parseDate = (dateStr) => {
+    const [day, month, year] = dateStr.split('/').map(Number)
+    return new Date(year, month - 1, day)
+  }
+  const today = new Date(2026, 2, 5) // 05/03/2026
+  const sortedNextSchedules = [...nextSchedules].sort((a, b) => {
+    const da = parseDate(a.deadline)
+    const db = parseDate(b.deadline)
+    return Math.abs(da - today) - Math.abs(db - today)
+  })
   const viewOptions = [
     { id: 'list', label: 'List', icon: 'list' },
     { id: 'week', label: 'Week', icon: 'week' },
@@ -293,213 +438,1327 @@ export default function OptimiserPage({ onAddJob }) {
   const eventDatePickerPrevMonth = () => setEventDatePickerViewDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1))
   const eventDatePickerNextMonth = () => setEventDatePickerViewDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1))
 
-  return (
-    <div className="flex flex-col gap-6">
-      {pinnedHoverEntryId && (
-        <div role="presentation" className="fixed inset-0 z-40" onClick={() => { setPinnedHoverEntryId(null); setPinnedHoverCellKey(null) }} aria-hidden />
-      )}
-      <div className="flex flex-col gap-6" data-name="Optimiser" data-node-id="174:2696">
-        <div className="bg-[#f3f4f6] border border-[#ebf3ff] rounded-[14px] p-6 flex flex-col gap-5" data-name="Calendar container" data-node-id="174:2767">
-        <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-2">
-            <IconCalendarSidebar className="text-[#22272f] size-6 shrink-0" />
-            <div>
-              <p className="text-[16px] font-medium text-[#0a0a0a] leading-tight">Optimiser Schedule & jobs</p>
-              <p className="text-[14px] font-normal text-[#4b535c]">Perform all job and schedule actions for all your upcoming inventory</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
+  useEffect(() => {
+    if (!openScheduleDrawer) return
+    setEditingScheduleEntry(null)
+    setDrawerForm(DEFAULT_DRAWER_FORM)
+    setScheduleDrawerDays({ Wed: true, Sat: true })
+    setScheduleDrawerOpen(true)
+  }, [openScheduleDrawer])
+
+  useEffect(() => {
+    if (!openAddJob) return
+    if (onAddJob) onAddJob()
+  }, [openAddJob, onAddJob])
+
+  useEffect(() => {
+    if (!resetToUpcoming) return
+    setActiveStatusTab('next')
+  }, [resetToUpcoming])
+
+  useEffect(() => {
+    if (!openCreateSchedulePage) return
+    setIsCreateSchedulePage(true)
+  }, [openCreateSchedulePage])
+
+  useEffect(() => {
+    if (!resetToRecommendationsLanding) return
+    setIsCreateSchedulePage(false)
+  }, [resetToRecommendationsLanding])
+
+  const toggleAccordion = (key) => {
+    setAccordionOpen({
+      details: key === 'details',
+      scope: key === 'scope',
+      exceptions: key === 'exceptions',
+    })
+  }
+
+  const toggleProductFilterRow = (key) => {
+    setProductFilterOpen((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }))
+  }
+
+  const toggleGeoFilterRow = (key) => {
+    setGeoFilterOpen((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }))
+  }
+
+  const toggleExceptionAccordion = (exceptionId) => {
+    setExceptions((prev) =>
+      prev.map((e) => (e.id === exceptionId ? { ...e, expanded: !e.expanded } : e))
+    )
+  }
+
+  const removeException = (exceptionId) => {
+    setExceptions((prev) => prev.filter((e) => e.id !== exceptionId))
+  }
+
+  const addException = () => {
+    const excId = `exc-${exceptionNextId}`
+    const advId = `adv-${advancedRowNextId}`
+    const condId = `cond-${advancedConditionNextId}`
+    setExceptionNextId((n) => n + 1)
+    setAdvancedRowNextId((n) => n + 1)
+    setAdvancedConditionNextId((n) => n + 1)
+    setExceptions((prev) => {
+      const withExpandedFalse = prev.map((e) => ({ ...e, expanded: false }))
+      return [
+        ...withExpandedFalse,
+        {
+          id: excId,
+          expanded: true,
+          advancedRows: [{ id: advId, conditions: [{ id: condId, mainColumn: '', condition: '', value: '' }] }],
+          productFilterOpen: { ...DEFAULT_PRODUCT_FILTER_OPEN },
+          geoFilterOpen: { ...DEFAULT_GEO_FILTER_OPEN },
+          productFilterSelected: { ...DEFAULT_PRODUCT_FILTER_SELECTED },
+          geoFilterSelected: { ...DEFAULT_GEO_FILTER_SELECTED },
+          filtersDropdownOpen: false,
+          openFilterPopover: null,
+          activeFilterTypes: [],
+          filterSearchQuery: '',
+        },
+      ]
+    })
+  }
+
+  const toggleProductFilterRowForException = (exceptionId, key) => {
+    setExceptions((prev) =>
+      prev.map((e) =>
+        e.id === exceptionId
+          ? { ...e, productFilterOpen: { ...e.productFilterOpen, [key]: !e.productFilterOpen[key] } }
+          : e
+      )
+    )
+  }
+
+  const toggleGeoFilterRowForException = (exceptionId, key) => {
+    setExceptions((prev) =>
+      prev.map((e) =>
+        e.id === exceptionId ? { ...e, geoFilterOpen: { ...e.geoFilterOpen, [key]: !e.geoFilterOpen[key] } } : e
+      )
+    )
+  }
+
+  const addConditionToBox = (exceptionId, boxId) => {
+    const condId = `cond-${advancedConditionNextId}`
+    setAdvancedConditionNextId((n) => n + 1)
+    setExceptions((prev) =>
+      prev.map((e) =>
+        e.id === exceptionId
+          ? {
+              ...e,
+              advancedRows: e.advancedRows.map((r) =>
+                r.id === boxId ? { ...r, conditions: [...r.conditions, { id: condId, mainColumn: '', condition: '', value: '' }] } : r
+              ),
+            }
+          : e
+      )
+    )
+  }
+
+  const removeConditionFromBox = (exceptionId, boxId, conditionId) => {
+    const condId = `cond-${advancedConditionNextId}`
+    setAdvancedConditionNextId((n) => n + 1)
+    setExceptions((prev) =>
+      prev.map((e) => {
+        if (e.id !== exceptionId) return e
+        const newRows = e.advancedRows
+          .map((r) => {
+            if (r.id !== boxId) return r
+            const newConditions = r.conditions.filter((c) => c.id !== conditionId)
+            if (newConditions.length === 0) return { ...r, conditions: [{ id: condId, mainColumn: '', condition: '', value: '' }] }
+            return { ...r, conditions: newConditions }
+          })
+        return { ...e, advancedRows: newRows }
+      })
+    )
+  }
+
+  const updateAdvancedApprovalCondition = (exceptionId, boxId, conditionId, field, value) => {
+    setExceptions((prev) =>
+      prev.map((e) =>
+        e.id === exceptionId
+          ? {
+              ...e,
+              advancedRows: e.advancedRows.map((r) =>
+                r.id === boxId ? { ...r, conditions: r.conditions.map((c) => (c.id === conditionId ? { ...c, [field]: value } : c)) } : r
+              ),
+            }
+          : e
+      )
+    )
+  }
+
+  const clearAdvancedForException = (exceptionId) => {
+    const advId = `adv-${advancedRowNextId}`
+    const condId = `cond-${advancedConditionNextId}`
+    setAdvancedRowNextId((n) => n + 1)
+    setAdvancedConditionNextId((n) => n + 1)
+    setExceptions((prev) =>
+      prev.map((e) =>
+        e.id === exceptionId
+          ? { ...e, advancedRows: [{ id: advId, conditions: [{ id: condId, mainColumn: '', condition: '', value: '' }] }] }
+          : e
+      )
+    )
+  }
+
+  const clearProductFilterForException = (exceptionId) => {
+    setExceptions((prev) =>
+      prev.map((e) => (e.id === exceptionId ? { ...e, productFilterOpen: { ...DEFAULT_PRODUCT_FILTER_OPEN } } : e))
+    )
+  }
+
+  const clearGeoFilterForException = (exceptionId) => {
+    setExceptions((prev) =>
+      prev.map((e) => (e.id === exceptionId ? { ...e, geoFilterOpen: { ...DEFAULT_GEO_FILTER_OPEN } } : e))
+    )
+  }
+
+  const setExceptionFiltersDropdownOpen = (exceptionId, open) => {
+    setExceptions((prev) =>
+      prev.map((e) => (e.id === exceptionId ? { ...e, filtersDropdownOpen: open, filterSearchQuery: open ? (e.filterSearchQuery || '') : '' } : e))
+    )
+  }
+
+  const setExceptionFilterSearchQuery = (exceptionId, query) => {
+    setExceptions((prev) =>
+      prev.map((e) => (e.id === exceptionId ? { ...e, filterSearchQuery: query } : e))
+    )
+  }
+
+  const addFilterToException = (exceptionId, filterId) => {
+    setExceptions((prev) =>
+      prev.map((e) => {
+        if (e.id !== exceptionId) return e
+        const alreadyActive = e.activeFilterTypes?.includes(filterId)
+        if (alreadyActive) return e
+        return {
+          ...e,
+          filtersDropdownOpen: false,
+          activeFilterTypes: [...(e.activeFilterTypes || []), filterId],
+        }
+      })
+    )
+  }
+
+  const removeFilterFromException = (exceptionId, filterId) => {
+    setExceptions((prev) =>
+      prev.map((e) => {
+        if (e.id !== exceptionId) return e
+        const newActive = (e.activeFilterTypes || []).filter((t) => t !== filterId)
+        let updates = { ...e, activeFilterTypes: newActive, openFilterPopover: e.openFilterPopover === filterId ? null : e.openFilterPopover }
+        if (filterId === 'advanced') {
+          const advId = `adv-${advancedRowNextId}`
+          const condId = `cond-${advancedConditionNextId}`
+          setAdvancedRowNextId((n) => n + 1)
+          setAdvancedConditionNextId((n) => n + 1)
+          updates = { ...updates, advancedRows: [{ id: advId, conditions: [{ id: condId, mainColumn: '', condition: '', value: '' }] }] }
+        } else if (EXCEPTION_FILTER_OPTIONS.find((o) => o.id === filterId)) {
+          const opt = EXCEPTION_FILTER_OPTIONS.find((o) => o.id === filterId)
+          if (opt && ['departments', 'subDepartments', 'seasons', 'events'].includes(filterId)) {
+            updates = { ...updates, productFilterSelected: { ...e.productFilterSelected, [filterId]: [] } }
+          } else if (opt) {
+            updates = { ...updates, geoFilterSelected: { ...e.geoFilterSelected, [filterId]: [] } }
+          }
+        }
+        return updates
+      })
+    )
+  }
+
+  const setExceptionOpenFilterPopover = (exceptionId, filterId) => {
+    setExceptions((prev) =>
+      prev.map((e) => (e.id === exceptionId ? { ...e, openFilterPopover: filterId } : e))
+    )
+  }
+
+  const toggleFilterOptionForException = (exceptionId, filterId, optionValue) => {
+    setExceptions((prev) =>
+      prev.map((e) => {
+        if (e.id !== exceptionId) return e
+        const isProduct = ['departments', 'subDepartments', 'seasons', 'events'].includes(filterId)
+        const sel = isProduct ? e.productFilterSelected : e.geoFilterSelected
+        const key = filterId
+        const arr = sel[key] || []
+        const has = arr.includes(optionValue)
+        const newArr = has ? arr.filter((v) => v !== optionValue) : [...arr, optionValue]
+        return {
+          ...e,
+          [isProduct ? 'productFilterSelected' : 'geoFilterSelected']: { ...sel, [key]: newArr },
+        }
+      })
+    )
+  }
+
+  const selectAllFilterOptionsForException = (exceptionId, filterId, selectAll) => {
+    const opt = EXCEPTION_FILTER_OPTIONS.find((o) => o.id === filterId)
+    if (!opt?.options) return
+    setExceptions((prev) =>
+      prev.map((e) => {
+        if (e.id !== exceptionId) return e
+        const isProduct = ['departments', 'subDepartments', 'seasons', 'events'].includes(filterId)
+        const sel = isProduct ? e.productFilterSelected : e.geoFilterSelected
+        return {
+          ...e,
+          [isProduct ? 'productFilterSelected' : 'geoFilterSelected']: {
+            ...sel,
+            [filterId]: selectAll ? [...opt.options] : [],
+          },
+        }
+      })
+    )
+  }
+
+  const clearAllFiltersForException = (exceptionId) => {
+    const advId = `adv-${advancedRowNextId}`
+    const condId = `cond-${advancedConditionNextId}`
+    setAdvancedRowNextId((n) => n + 1)
+    setAdvancedConditionNextId((n) => n + 1)
+    setExceptions((prev) =>
+      prev.map((e) =>
+        e.id === exceptionId
+          ? {
+              ...e,
+              activeFilterTypes: [],
+              filtersDropdownOpen: false,
+              openFilterPopover: null,
+              advancedRows: [{ id: advId, conditions: [{ id: condId, mainColumn: '', condition: '', value: '' }] }],
+              productFilterSelected: { ...DEFAULT_PRODUCT_FILTER_SELECTED },
+              geoFilterSelected: { ...DEFAULT_GEO_FILTER_SELECTED },
+            }
+          : e
+      )
+    )
+  }
+
+  const getAdvancedFilterSummary = (exc) => {
+    const first = exc.advancedRows?.[0]?.conditions?.[0]
+    if (!first || !first.mainColumn || !first.condition || !first.value) return null
+    return `${first.mainColumn} ${first.condition.toLowerCase()} ${first.value}`
+  }
+
+  const MAIN_COLUMN_OPTIONS = [
+    'L30D sales',
+    'Understocks',
+    'Transfer units',
+    'Understocks after rebalance',
+    'Overstocks',
+    'Overstocks after rebalance',
+    'Sales uplift',
+    'Sales uplift units',
+    'L7D sales',
+    'Forecast sales rate',
+  ]
+  const CONDITION_OPTIONS = [
+    'Equal to',
+    'Greater than',
+    'Lower than',
+    'Greater than or equal to',
+    'Lower than or equal to',
+  ]
+
+  if (isCreateSchedulePage) {
+    return (
+      <div className="flex flex-col gap-8">
+        <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={(e) => { e.preventDefault(); onAddJob?.() }}
-            className="h-10 px-4 rounded-[4px] bg-[#0267ff] text-white text-[16px] font-medium flex items-center gap-2 shrink-0"
+            onClick={() => setIsCreateSchedulePage(false)}
+            className="flex items-center justify-center w-8 h-8 rounded-[4px] text-[#0a0a0a] hover:bg-[#e5e7eb]"
+            aria-label="Back to recommendations"
           >
-            <IconPlus />
-            Add Job
+            <IconArrowLeft className="size-5" />
           </button>
-          <button
-            type="button"
-            onClick={() => {
-              setEditingScheduleEntry(null)
-              setDrawerForm(DEFAULT_DRAWER_FORM)
-              setScheduleDrawerDays({ Wed: true, Sat: true })
-              setScheduleDrawerOpen(true)
-            }}
-            className="h-10 px-4 rounded-[4px] bg-[#0267ff] text-white text-[16px] font-medium flex items-center gap-2 shrink-0"
-          >
-            <IconPlus />
-            Add Schedule
-          </button>
+          <h1 className="text-[24px] font-medium text-[#0a0a0a] leading-[100%]">
+            Create schedule
+          </h1>
         </div>
-        </div>
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="bg-white border border-[#e9eaeb] flex gap-[var(--spacing-s,8px)] items-center p-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] shrink-0 h-12" data-name="segment-control" data-node-id="202:3165">
-            {typeFilters.map((f) => {
-              const isActive = activeTypeFilter === f.id
-              return (
-                <button
-                  key={f.id}
-                  type="button"
-                  onClick={() => setActiveTypeFilter(f.id)}
-                  className={`flex gap-[var(--spacing-xs,6px)] items-center justify-center max-h-[32px] p-[var(--spacing-s,8px)] rounded-[2px] shrink-0 text-[14px] text-center whitespace-nowrap ${isActive ? 'bg-[#f8f8f8] font-medium text-[#0a0a0a]' : 'font-normal text-[#4b535c]'}`}
-                  data-name="Segment element"
-                >
-                  {f.icon === 'replenishment' && <IconReplenishment className="text-[#22272f] size-4 shrink-0" aria-hidden />}
-                  {f.icon === 'reorder' && <IconReorder className="text-[#22272f] size-4 shrink-0" aria-hidden />}
-                  {f.icon === 'rebalancing' && <IconRebalancing className="text-[#22272f] size-4 shrink-0" aria-hidden />}
-                  <span>{f.label}</span>
-                </button>
-              )
-            })}
-          </div>
-          <div className="flex items-center gap-2 ml-auto shrink-0">
-          <div className="flex items-center gap-2 relative" data-name="Review status multiselect" data-node-id="12771:5757">
+
+        <div className="flex flex-col gap-4">
+          <div className="border border-[#EAEAEA] rounded-[4px] bg-white overflow-hidden">
             <button
               type="button"
-              onClick={() => { setReviewStatusDropdownOpen((o) => !o); setEventDatePickerOpen(false) }}
-              className={`flex items-center justify-between gap-2 h-12 px-4 py-3 rounded-[4px] bg-white text-[16px] font-medium text-left shrink-0 min-w-[160px] border ${reviewStatusDropdownOpen ? 'border-[#0267ff]' : 'border-[#e9eaeb]'}`}
+              onClick={() => toggleAccordion('details')}
+              className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#f8f8f8] transition-colors"
             >
-              <span className={selectedReviewStatuses.length === 0 ? 'text-[#0a0a0a]' : 'text-[#0a0a0a]'}>
-                Review status
-                {selectedReviewStatuses.length > 0 && (
-                  <span className="text-[#4b535c] font-normal">
-                    {' · '}
-                    {selectedReviewStatuses.length === reviewStatusFilterOptions.length
-                      ? 'Upcoming, In review, Submitted'
-                      : reviewStatusFilterOptions.filter((o) => selectedReviewStatuses.includes(o.id)).map((o) => o.label).join(', ')}
-                  </span>
-                )}
-              </span>
-              <IconChevronDown className="text-[#22272f] size-4 shrink-0" aria-hidden />
+              <div className="flex flex-col gap-1">
+                <span className="text-[20px] font-medium text-[#212B36] leading-[150%]">
+                  Schedule details
+                </span>
+                <span className="text-[14px] font-normal text-[#4b535c]">
+                  Configure how you want your schedule to run
+                </span>
+              </div>
+              <IconChevronDown
+                className={`size-5 text-[#4b535c] transition-transform shrink-0 ${
+                  accordionOpen.details ? 'rotate-180' : ''
+                }`}
+              />
             </button>
-            {reviewStatusDropdownOpen && (
-              <>
-                <div role="presentation" className="fixed inset-0 z-40" onClick={() => setReviewStatusDropdownOpen(false)} aria-hidden />
-                <div
-                  className="absolute left-0 top-full mt-1 z-50 w-full min-w-[200px] bg-white border border-[#e9eaeb] rounded-[4px] p-2 shadow-[0px_8px_25px_0px_rgba(0,0,0,0.12)]"
-                  data-name="Dropdown list"
-                  data-node-id="12771:5850"
-                >
-                  {reviewStatusFilterOptions.map((opt) => {
-                    const selected = selectedReviewStatuses.includes(opt.id)
-                    return (
-                      <button
-                        key={opt.id}
-                        type="button"
-                        onClick={() => toggleReviewStatusFilter(opt.id)}
-                        className="w-full flex gap-2 items-center p-3 rounded-[3px] text-left hover:bg-[#f8f8f8] focus:bg-[#f8f8f8]"
-                        data-name="Dropdown item"
-                      >
-                        <span className="flex items-center justify-center shrink-0 size-6">
-                          <span className={`flex items-center justify-center rounded-[4px] size-5 border-2 ${selected ? 'bg-[#0267ff] border-[#0267ff]' : 'bg-white border-[#e5e7eb]'}`}>
-                            {selected && (
-                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-white"><path d="M2 6l3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                            )}
-                          </span>
+            {accordionOpen.details && (
+              <div className="px-5 pb-6 pt-2 flex flex-col gap-6 border-t border-[#EAEAEA]">
+                <section className="flex flex-col gap-2">
+                  <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Movement type</label>
+                  <div className="relative">
+                    <select
+                      value={drawerForm.module}
+                      onChange={(ev) =>
+                        setDrawerForm((f) => ({
+                          ...f,
+                          module: ev.target.value,
+                        }))
+                      }
+                      className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
+                    >
+                      <option value="">Select</option>
+                      {MODULE_OPTIONS.map((opt) => (
+                        <option key={opt.id} value={opt.id}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                      <IconChevronDownSelect />
+                    </span>
+                  </div>
+                </section>
+
+                <section className="flex flex-col gap-2">
+                  <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Name schedule</label>
+                  <input
+                    type="text"
+                    placeholder="Placeholder"
+                    value={drawerForm.name}
+                    onChange={(ev) =>
+                      setDrawerForm((f) => ({
+                        ...f,
+                        name: ev.target.value,
+                      }))
+                    }
+                    className="w-full h-14 px-4 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] placeholder:text-[#9CA1AE]"
+                  />
+                  <p className="text-[12px] font-normal text-[#4b535c]">
+                    If not assigned, name will be given automatically
+                  </p>
+                </section>
+
+                <section className="flex flex-col gap-4">
+                  <p className="text-[14px] font-medium text-[#0a0a0a]">Scheduling Dates</p>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Repeat every</label>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center border border-[#EAEAEA] rounded-[4px] bg-white overflow-hidden h-12">
+                        <input
+                          type="number"
+                          min={1}
+                          value={recurrenceRepeatEvery}
+                          onChange={(e) => setRecurrenceRepeatEvery(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                          className="w-[80px] h-12 py-3 px-4 text-center text-[16px] text-[#0a0a0a] border-none focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
+                        <div className="flex flex-col border-l border-[#EAEAEA] shrink-0">
+                          <button type="button" onClick={() => setRecurrenceRepeatEvery((v) => Math.max(1, v + 1))} className="h-6 w-7 flex items-center justify-center text-[#4b535c] hover:bg-[#f8f8f8] border-b border-[#EAEAEA]">+</button>
+                          <button type="button" onClick={() => setRecurrenceRepeatEvery((v) => Math.max(1, v - 1))} className="h-6 w-7 flex items-center justify-center text-[#4b535c] hover:bg-[#f8f8f8]">−</button>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <select
+                          value={recurrenceRepeatUnit}
+                          onChange={(e) => setRecurrenceRepeatUnit(e.target.value)}
+                          className="h-12 w-[120px] py-3 px-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
+                        >
+                          <option value="day">day</option>
+                          <option value="week">week</option>
+                          <option value="month">month</option>
+                          <option value="year">year</option>
+                        </select>
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                          <IconChevronDownSelect />
                         </span>
-                        <span className="flex-1 text-[12px] font-medium text-[#0a0a0a] leading-normal">{opt.label}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </>
+                      </div>
+                    </div>
+                  </div>
+
+                  {recurrenceRepeatUnit === 'week' && (
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Submission day</label>
+                      <div className="flex gap-4">
+                        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((letter, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => setRecurrenceSubmissionDayOfWeek(i)}
+                            className={`size-10 rounded-full flex items-center justify-center text-[14px] font-medium shrink-0 transition-colors ${
+                              recurrenceSubmissionDayOfWeek === i
+                                ? 'bg-[#0267FF] text-white'
+                                : 'bg-[#F8F8F8] text-[#4b535c] hover:bg-[#eee]'
+                            }`}
+                          >
+                            {letter}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {recurrenceRepeatUnit === 'month' && (
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Submission day</label>
+                      <div className="relative max-w-[200px]">
+                        <select
+                          value={recurrenceSubmissionDayOfMonth}
+                          onChange={(e) => setRecurrenceSubmissionDayOfMonth(Number(e.target.value))}
+                          className="w-full h-14 pl-4 pr-10 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] appearance-none"
+                        >
+                          {Array.from({ length: 28 }, (_, i) => i + 1).map((d) => (
+                            <option key={d} value={d}>{d}</option>
+                          ))}
+                        </select>
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                          <IconChevronDownSelect />
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  {recurrenceRepeatUnit === 'year' && (
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Submission day</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Jun 10, 2026"
+                        value={recurrenceSubmissionDateYear}
+                        onChange={(e) => setRecurrenceSubmissionDateYear(e.target.value)}
+                        className="w-full max-w-[200px] h-14 px-4 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] placeholder:text-[#9CA1AE]"
+                      />
+                    </div>
+                  )}
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[14px] font-normal text-[#000000] opacity-[0.67]">Submission time</label>
+                    <div className="relative max-w-[200px]">
+                      <select
+                        value={recurrenceSubmissionTime}
+                        onChange={(e) => setRecurrenceSubmissionTime(e.target.value)}
+                        className="w-full h-12 py-3 px-4 pr-10 rounded-[4px] border border-[#E9EAEB] bg-white text-[16px] text-[#0a0a0a] appearance-none"
+                      >
+                        {Array.from({ length: 48 }, (_, i) => {
+                          const h = Math.floor(i / 2)
+                          const m = (i % 2) * 30
+                          const label = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
+                          return <option key={label} value={label}>{label}</option>
+                        })}
+                      </select>
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                        <IconChevronDownSelect />
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-[14px] italic text-[#4b535c]">
+                    New scheduled recommendations available every{' '}
+                    {(() => {
+                      const unit = recurrenceRepeatUnit === 'week' ? 'weeks' : recurrenceRepeatUnit === 'month' ? 'months' : recurrenceRepeatUnit === 'year' ? 'years' : 'days'
+                      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                      const dayName = dayNames[recurrenceSubmissionDayOfWeek]
+                      const timeStr = ` at ${recurrenceSubmissionTime}`
+                      if (recurrenceRepeatUnit === 'week') {
+                        return `${recurrenceRepeatEvery} ${recurrenceRepeatEvery === 1 ? unit.slice(0, -1) : unit} on ${dayName}${timeStr}`
+                      }
+                      if (recurrenceRepeatUnit === 'month') {
+                        return `${recurrenceRepeatEvery} ${recurrenceRepeatEvery === 1 ? 'month' : unit} on day ${recurrenceSubmissionDayOfMonth}${timeStr}`
+                      }
+                      if (recurrenceRepeatUnit === 'year') {
+                        return recurrenceSubmissionDateYear ? `${recurrenceRepeatEvery} ${recurrenceRepeatEvery === 1 ? 'year' : unit} on ${recurrenceSubmissionDateYear}${timeStr}` : `${recurrenceRepeatEvery} ${recurrenceRepeatEvery === 1 ? 'year' : unit}`
+                      }
+                      return `${recurrenceRepeatEvery} ${recurrenceRepeatEvery === 1 ? 'day' : unit}${timeStr}`
+                    })()}
+                  </p>
+                </section>
+
+                <section className="flex flex-col gap-2">
+                  <p className="text-[14px] font-medium text-[#0a0a0a]">Notify users:</p>
+                  <input
+                    type="text"
+                    placeholder="Enter user emails"
+                    value={drawerForm.notify}
+                    onChange={(ev) =>
+                      setDrawerForm((f) => ({
+                        ...f,
+                        notify: ev.target.value,
+                      }))
+                    }
+                    className="w-full h-14 px-4 rounded-[4px] border border-[#EAEAEA] bg-white text-[16px] text-[#0a0a0a] placeholder:text-[#9CA1AE]"
+                  />
+                </section>
+              </div>
             )}
           </div>
-          <div className="flex items-center gap-2 relative">
+
+          <div className="border border-[#EAEAEA] rounded-[4px] bg-white overflow-hidden">
             <button
               type="button"
-              onClick={() => { setEventDatePickerOpen((o) => !o); setEventDatePickerViewDate(eventDateSelected || new Date(2026, 1, 1)); setReviewStatusDropdownOpen(false) }}
-              className="flex items-center gap-[var(--spacing-s,8px)] h-12 px-[var(--spacing-l,16px)] py-[var(--spacing-m,12px)] rounded-[var(--border-radius-s,4px)] bg-white border border-[#e9eaeb] text-[16px] font-medium text-[#0a0a0a] shrink-0"
-              data-name="Button"
-              data-node-id="202:3228"
+              onClick={() => toggleAccordion('scope')}
+              className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#f8f8f8] transition-colors"
             >
-              <IconCalendarSidebar className="text-[#22272f] size-4 shrink-0" aria-hidden data-name="icon" data-node-id="I202:3228;12027:34152" />
-              <span data-node-id="I202:3228;12027:34153">Event Date</span>
+              <div className="flex flex-col gap-1">
+                <span className="text-[20px] font-medium text-[#212B36] leading-[150%]">
+                  Scope
+                </span>
+                <span className="text-[14px] font-normal text-[#4b535c]">
+                  Define which products and locations are included in this schedule
+                </span>
+              </div>
+              <IconChevronDown
+                className={`size-5 text-[#4b535c] transition-transform shrink-0 ${
+                  accordionOpen.scope ? 'rotate-180' : ''
+                }`}
+              />
             </button>
-            {eventDatePickerOpen && (
-              <>
-                <div role="presentation" className="fixed inset-0 z-40" onClick={() => setEventDatePickerOpen(false)} aria-hidden />
-                <div className="absolute left-0 top-full mt-2 z-50 w-[336px] bg-white border border-[#e9eaeb] rounded-[4px] p-4 flex flex-col gap-3 shadow-lg" data-name="Datepicker" data-node-id="2360:105506">
-                  <div className="flex items-center justify-between p-1">
-                    <button type="button" onClick={eventDatePickerPrevMonth} className="flex items-center justify-center h-10 w-10 rounded-[4px] text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label="Previous month">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                    </button>
-                    <p className="text-[18px] font-medium text-[#0a0a0a] leading-none">
-                      {monthNames[eventDatePickerViewDate.getMonth()]}, {eventDatePickerViewDate.getFullYear()}
-                    </p>
-                    <button type="button" onClick={eventDatePickerNextMonth} className="flex items-center justify-center h-10 w-10 rounded-[4px] text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label="Next month">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                    </button>
-                  </div>
-                  <div className="flex flex-col gap-0">
-                    <div className="grid grid-cols-7">
-                      {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((wd) => (
-                        <div key={wd} className="size-12 flex items-center justify-center text-[14px] font-medium text-[#4b535c]">
-                          {wd}
-                        </div>
-                      ))}
+            {accordionOpen.scope && (
+              <div className="px-5 pb-6 pt-2 flex flex-col gap-6 border-t border-[#EAEAEA]">
+                <div className="flex flex-col gap-3">
+                  <label className="flex items-start gap-3 p-4 rounded-[10px] border border-[#e5e7eb] bg-white cursor-pointer hover:border-[#0267ff]/40 has-[:checked]:border-[#0267ff]">
+                    <input
+                      type="radio"
+                      name="scopeOption"
+                      value="include-all"
+                      checked={scopeOption === 'include-all'}
+                      onChange={() => setScopeOption('include-all')}
+                      className="mt-1 size-4 shrink-0 border-[#e5e7eb] text-[#0267ff] focus:ring-[#0267ff]"
+                    />
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <span className="text-[14px] font-medium text-[#0a0a0a]">Include all recommendations</span>
+                      <span className="text-[12px] font-normal text-[#4b535c]">Applies the full optimised recommendation set for maximum impact.</span>
                     </div>
-                    {eventDatePickerGrid.map((row, ri) => (
-                      <div key={ri} className="grid grid-cols-7">
-                        {row.map((cell, ci) => {
-                          const inMonth = cell.month === eventDatePickerViewDate.getMonth()
-                          const selected = isSameDay(cell.fullDate, eventDateSelected)
+                  </label>
+                  <label className="flex items-start gap-3 p-4 rounded-[10px] border border-[#e5e7eb] bg-white cursor-pointer hover:border-[#0267ff]/40 has-[:checked]:border-[#0267ff]">
+                    <input
+                      type="radio"
+                      name="scopeOption"
+                      value="filter"
+                      checked={scopeOption === 'filter'}
+                      onChange={() => setScopeOption('filter')}
+                      className="mt-1 size-4 shrink-0 border-[#e5e7eb] text-[#0267ff] focus:ring-[#0267ff]"
+                    />
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <span className="text-[14px] font-medium text-[#0a0a0a]">Filter recommendations</span>
+                      <span className="text-[12px] font-normal text-[#4b535c]">Narrow recommendations to specific products, locations, or criteria.</span>
+                    </div>
+                  </label>
+                </div>
+
+                {scopeOption === 'filter' && (
+                  <div className="mt-1 flex flex-col gap-6">
+                    <section className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-[13px] font-medium text-[#0a0a0a] uppercase tracking-[0.04em]">
+                          Product
+                        </h3>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setProductFilterOpen({
+                              departments: false,
+                              subDepartments: false,
+                              seasons: false,
+                              events: false,
+                            })
+                          }
+                          className="text-[12px] font-medium text-[#4b535c] hover:text-[#0a0a0a]"
+                        >
+                          Clear all
+                        </button>
+                      </div>
+                      <div className="mt-1 flex flex-col border-t border-[#e5e7eb]">
+                        {[
+                          { id: 'departments', label: 'Departments' },
+                          { id: 'subDepartments', label: 'Sub-departments' },
+                          { id: 'seasons', label: 'Seasons' },
+                          { id: 'events', label: 'Events' },
+                        ].map((row) => {
+                          const isOpen = productFilterOpen[row.id]
                           return (
-                            <div key={`${ri}-${ci}`} className="size-12 flex items-center justify-center p-1">
+                            <div key={row.id} className="border-b border-[#e5e7eb] last:border-b-0">
                               <button
                                 type="button"
-                                onClick={() => {
-                                  setEventDateSelected(cell.fullDate)
-                                  setViewDate(new Date(cell.fullDate.getFullYear(), cell.fullDate.getMonth(), 1))
-                                  setEventDatePickerOpen(false)
-                                }}
-                                className={`size-10 flex items-center justify-center rounded-[2px] text-[14px] ${selected ? 'bg-[#0267ff] text-white font-bold' : inMonth ? 'text-[#0a0a0a] hover:bg-[#f3f4f6]' : 'text-[#4b535c] opacity-50 hover:bg-[#f3f4f6]'}`}
+                                onClick={() => toggleProductFilterRow(row.id)}
+                                className="w-full flex items-center justify-between px-3 py-2.5 text-left hover:bg-[#f8f8f8]"
                               >
-                                {cell.date}
+                                <span className="text-[13px] font-medium text-[#0a0a0a]">
+                                  {row.label}
+                                </span>
+                                <span
+                                  className={`inline-flex items-center justify-center size-5 text-[#4b535c] transition-transform ${
+                                    isOpen ? 'rotate-180' : ''
+                                  }`}
+                                >
+                                  <IconChevronDown className="size-4" />
+                                </span>
                               </button>
+                              {isOpen && (
+                                <div className="px-3 pb-3 pt-1 flex flex-col gap-2 bg-[#fafafa]">
+                                  <div className="flex items-center justify-between gap-2">
+                                    <div className="relative flex-1">
+                                      <input
+                                        type="text"
+                                        placeholder="search..."
+                                        className="w-full h-9 px-3 rounded-[4px] border border-[#e5e7eb] bg-white text-[13px] text-[#0a0a0a] placeholder:text-[#9ca3af]"
+                                      />
+                                    </div>
+                                    <button
+                                      type="button"
+                                      className="text-[12px] font-medium text-[#0267ff] hover:underline shrink-0"
+                                    >
+                                      Select all
+                                    </button>
+                                  </div>
+                                  <div className="flex flex-col gap-1.5 mt-1">
+                                    {['Cadeaux', 'Exotiques', 'Femme', 'Homme', 'Voyage'].map(
+                                      (name) => (
+                                        <label
+                                          key={name}
+                                          className="flex items-center gap-2 text-[13px] text-[#0a0a0a]"
+                                        >
+                                          <input
+                                            type="checkbox"
+                                            className="size-4 rounded border-[#d1d5db] text-[#0267ff] focus:ring-[#0267ff]"
+                                          />
+                                          <span>{name}</span>
+                                        </label>
+                                      ),
+                                    )}
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           )
                         })}
                       </div>
-                    ))}
+                    </section>
+
+                    <section className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-[13px] font-medium text-[#0a0a0a] uppercase tracking-[0.04em]">
+                          Geographic
+                        </h3>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setGeoFilterOpen({
+                              locationTypes: false,
+                              regions: false,
+                              countries: false,
+                              sendingCountries: false,
+                              receivingCountries: false,
+                              locations: false,
+                              sendingLocations: false,
+                              receivingLocations: false,
+                            })
+                          }
+                          className="text-[12px] font-medium text-[#4b535c] hover:text-[#0a0a0a]"
+                        >
+                          Clear all
+                        </button>
+                      </div>
+                      <div className="mt-1 flex flex-col border-t border-[#e5e7eb]">
+                        {[
+                          { id: 'locationTypes', label: 'Location Types' },
+                          { id: 'regions', label: 'Regions' },
+                          { id: 'countries', label: 'Countries' },
+                          { id: 'sendingCountries', label: 'Sending countries' },
+                          { id: 'receivingCountries', label: 'Receiving countries' },
+                          { id: 'locations', label: 'Locations' },
+                          { id: 'sendingLocations', label: 'Sending locations' },
+                          { id: 'receivingLocations', label: 'Receiving locations' },
+                        ].map((row) => {
+                          const isOpen = geoFilterOpen[row.id]
+                          return (
+                            <div key={row.id} className="border-b border-[#e5e7eb] last:border-b-0">
+                              <button
+                                type="button"
+                                onClick={() => toggleGeoFilterRow(row.id)}
+                                className="w-full flex items-center justify-between px-3 py-2.5 text-left hover:bg-[#f8f8f8]"
+                              >
+                                <span className="text-[13px] font-medium text-[#0a0a0a]">
+                                  {row.label}
+                                </span>
+                                <span
+                                  className={`inline-flex items-center justify-center size-5 text-[#4b535c] transition-transform ${
+                                    isOpen ? 'rotate-180' : ''
+                                  }`}
+                                >
+                                  <IconChevronDown className="size-4" />
+                                </span>
+                              </button>
+                              {isOpen && (
+                                <div className="px-3 pb-3 pt-1 flex flex-col gap-2 bg-[#fafafa]">
+                                  <div className="flex items-center justify-between gap-2">
+                                    <div className="relative flex-1">
+                                      <input
+                                        type="text"
+                                        placeholder="search..."
+                                        className="w-full h-9 px-3 rounded-[4px] border border-[#e5e7eb] bg-white text-[13px] text-[#0a0a0a] placeholder:text-[#9ca3af]"
+                                      />
+                                    </div>
+                                    <button
+                                      type="button"
+                                      className="text-[12px] font-medium text-[#0267ff] hover:underline shrink-0"
+                                    >
+                                      Select all
+                                    </button>
+                                  </div>
+                                  <div className="flex flex-col gap-1.5 mt-1">
+                                    {['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'].map((name) => (
+                                      <label
+                                        key={name}
+                                        className="flex items-center gap-2 text-[13px] text-[#0a0a0a]"
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          className="size-4 rounded border-[#d1d5db] text-[#0267ff] focus:ring-[#0267ff]"
+                                        />
+                                        <span>{name}</span>
+                                      </label>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </section>
                   </div>
-                </div>
-              </>
+                )}
+              </div>
             )}
           </div>
-            <div className="bg-white border border-[#e9eaeb] flex gap-[var(--spacing-s,8px)] items-center p-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] shrink-0 h-12" data-name="segment-control" data-node-id="203:1343">
-              {viewOptions.map((v) => {
-                const isActive = activeViewOption === v.id
-                return (
-                  <button
-                    key={v.id}
-                    type="button"
-                    onClick={() => setActiveViewOption(v.id)}
-                    className={`flex gap-[var(--spacing-xs,6px)] items-center justify-center max-h-[32px] p-[var(--spacing-s,8px)] rounded-[2px] shrink-0 text-[14px] text-center whitespace-nowrap ${isActive ? 'bg-[#f8f8f8] font-medium text-[#0a0a0a]' : 'font-normal text-[#4b535c]'}`}
-                    data-name="Segment element"
-                  >
-                    {v.icon === 'list' && <IconList className="text-[#22272f] size-4 shrink-0" aria-hidden />}
-                    {v.icon === 'week' && <IconCalendarNote className="text-[#22272f] size-4 shrink-0" aria-hidden />}
-                    {v.icon === 'month' && <IconCalendarSidebar className="text-[#22272f] size-4 shrink-0" aria-hidden />}
-                    <span>{v.label}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
+
+          <div className="border border-[#EAEAEA] rounded-[4px] bg-white overflow-visible">
+            <button
+              type="button"
+              onClick={() => toggleAccordion('exceptions')}
+              className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-[#f8f8f8] transition-colors"
+            >
+              <div className="flex flex-col gap-1">
+                <span className="text-[20px] font-medium text-[#212B36] leading-[150%]">
+                  Manage exceptions
+                </span>
+                <span className="text-[14px] font-normal text-[#4b535c]">
+                  Set which recommendations you want to review, the rest will be auto-approved
+                </span>
+              </div>
+              <IconChevronDown
+                className={`size-5 text-[#4b535c] transition-transform shrink-0 ${
+                  accordionOpen.exceptions ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+            {accordionOpen.exceptions && (
+              <div className="px-5 pb-6 pt-2 flex flex-col gap-4 border-t border-[#EAEAEA]">
+                {exceptions.map((exc, excIdx) => (
+                  <div key={exc.id} className="border border-[#e5e7eb] rounded-[4px] bg-white overflow-visible">
+                    <div className="flex items-center">
+                      <button
+                        type="button"
+                        onClick={() => toggleExceptionAccordion(exc.id)}
+                        className="flex-1 flex items-center justify-between px-4 py-3 text-left hover:bg-[#f8f8f8] transition-colors"
+                      >
+                        <span className="text-[14px] font-medium text-[#0a0a0a]">
+                          Exception {excIdx + 1}
+                        </span>
+                        <IconChevronDown
+                          className={`size-5 text-[#4b535c] transition-transform shrink-0 ${
+                            exc.expanded ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => removeException(exc.id)}
+                        className="h-10 w-10 flex items-center justify-center text-[#4b535c] hover:bg-[#e5e7eb] shrink-0"
+                        aria-label="Delete exception"
+                      >
+                        <IconClose className="size-4" />
+                      </button>
+                    </div>
+                    {exc.expanded && (
+                      <div className="px-4 pb-4 pt-0 flex flex-col gap-4 border-t border-[#e5e7eb]">
+                        <div className="flex flex-wrap items-center gap-2 mt-4">
+                          <div className="relative">
+                            <button
+                              type="button"
+                              onClick={() => setExceptionFiltersDropdownOpen(exc.id, !exc.filtersDropdownOpen)}
+                              className="h-10 px-4 py-2 flex items-center gap-2 rounded-[4px] border border-[#E9EAEB] bg-white text-[14px] font-medium text-[#0a0a0a] hover:bg-[#f8f8f8]"
+                            >
+                              <IconFilterFunnel />
+                              Filters
+                            </button>
+                            {exc.filtersDropdownOpen && (
+                              <>
+                                <div
+                                  className="fixed inset-0 z-[9]"
+                                  aria-hidden
+                                  onClick={() => setExceptionFiltersDropdownOpen(exc.id, false)}
+                                />
+                                <div
+                                  className="absolute left-0 top-full mt-1 z-10 w-[220px] rounded-[4px] border border-[#E9EAEB] bg-white shadow-lg overflow-hidden"
+                                  style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                                >
+                                  <div className="p-2 border-b border-[#e5e7eb]">
+                                    <div className="relative">
+                                      <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#9ca3af]" />
+                                      <input
+                                        type="text"
+                                        placeholder="Search"
+                                        value={exc.filterSearchQuery || ''}
+                                        onChange={(e) => setExceptionFilterSearchQuery(exc.id, e.target.value)}
+                                        className="w-full h-9 pl-9 pr-3 rounded-[4px] border border-[#e5e7eb] bg-white text-[13px] text-[#0a0a0a] placeholder:text-[#9ca3af]"
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="max-h-[240px] overflow-y-auto py-1">
+                                    {EXCEPTION_FILTER_OPTIONS.filter((o) =>
+                                      !(exc.filterSearchQuery || '').trim() ||
+                                      o.label.toLowerCase().includes((exc.filterSearchQuery || '').toLowerCase())
+                                    ).map((opt) => (
+                                      <button
+                                        key={opt.id}
+                                        type="button"
+                                        onClick={() => addFilterToException(exc.id, opt.id)}
+                                        className={`w-full px-3 py-2 text-left text-[13px] font-medium text-[#0a0a0a] hover:bg-[#f8f8f8] ${opt.highlight ? 'bg-[#E8F0FE]' : ''}`}
+                                      >
+                                        {opt.label}
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                          {(exc.activeFilterTypes || []).map((filterId) => {
+                            const opt = EXCEPTION_FILTER_OPTIONS.find((o) => o.id === filterId)
+                            const label = opt?.label || filterId
+                            const isProduct = ['departments', 'subDepartments', 'seasons', 'events'].includes(filterId)
+                            const sel = isProduct ? (exc.productFilterSelected || {}) : (exc.geoFilterSelected || {})
+                            const selected = sel[filterId] || []
+                            const summary = filterId === 'advanced'
+                              ? (getAdvancedFilterSummary(exc) || '')
+                              : selected.length > 0
+                                ? selected.join(', ')
+                                : ''
+                            const chipLabel = summary ? `${label}: ${summary}` : `${label}:`
+                            const isPopoverOpen = exc.openFilterPopover === filterId
+                            return (
+                              <div key={filterId} className="relative">
+                                <button
+                                  type="button"
+                                  onClick={() => filterId === 'advanced' ? null : setExceptionOpenFilterPopover(exc.id, isPopoverOpen ? null : filterId)}
+                                  className="h-10 px-3 py-2 flex items-center gap-1.5 rounded-[4px] border border-[#E9EAEB] bg-white text-[13px] font-medium text-[#0a0a0a] hover:bg-[#f8f8f8]"
+                                >
+                                  <span className="max-w-[180px] truncate">{chipLabel}</span>
+                                  <span
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={(e) => { e.stopPropagation(); e.preventDefault(); removeFilterFromException(exc.id, filterId) }}
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); removeFilterFromException(exc.id, filterId) } }}
+                                    className="inline-flex shrink-0 text-[#4b535c] hover:text-[#0a0a0a]"
+                                  >
+                                    <IconClose className="size-4" />
+                                  </span>
+                                </button>
+                                {filterId !== 'advanced' && isPopoverOpen && (
+                                  <>
+                                    <div
+                                      className="fixed inset-0 z-[9]"
+                                      aria-hidden
+                                      onClick={() => setExceptionOpenFilterPopover(exc.id, null)}
+                                    />
+                                    <div
+                                      className="absolute left-0 top-full mt-1 z-10 w-[220px] rounded-[4px] border border-[#E9EAEB] bg-white shadow-lg overflow-hidden"
+                                      style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      <div className="p-2 border-b border-[#e5e7eb]">
+                                        <div className="relative">
+                                          <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#9ca3af] pointer-events-none" />
+                                          <input
+                                            type="text"
+                                            placeholder="Search"
+                                            className="w-full h-9 pl-9 pr-3 rounded-[4px] border border-[#e5e7eb] bg-white text-[13px] text-[#0a0a0a] placeholder:text-[#9ca3af]"
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className="p-2 flex items-center justify-between">
+                                        <button
+                                          type="button"
+                                          onClick={() => selectAllFilterOptionsForException(exc.id, filterId, selected.length < (opt?.options?.length || 0))}
+                                          className="text-[12px] font-medium text-[#0267ff] hover:underline"
+                                        >
+                                          Select all
+                                        </button>
+                                      </div>
+                                      <div className="max-h-[180px] overflow-y-auto py-1 px-2 flex flex-col gap-1.5">
+                                        {(opt?.options || []).map((name) => (
+                                          <label key={name} className="flex items-center gap-2 text-[13px] text-[#0a0a0a] cursor-pointer">
+                                            <input
+                                              type="checkbox"
+                                              checked={selected.includes(name)}
+                                              onChange={() => toggleFilterOptionForException(exc.id, filterId, name)}
+                                              className="size-4 rounded border-[#d1d5db] text-[#0267ff] focus:ring-[#0267ff]"
+                                            />
+                                            <span>{name}</span>
+                                          </label>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            )
+                          })}
+                          {((exc.activeFilterTypes || []).length > 0) && (
+                            <button
+                              type="button"
+                              onClick={() => clearAllFiltersForException(exc.id)}
+                              className="text-[13px] font-medium text-[#4b535c] hover:text-[#0a0a0a] hover:underline"
+                            >
+                              Clear filters
+                            </button>
+                          )}
+                        </div>
+                        {(exc.activeFilterTypes || []).includes('advanced') && (
+                          <div className="flex flex-col gap-3 p-4 rounded-[4px] border border-[#E9EAEB] bg-white shadow-sm">
+                            {exc.advancedRows.map((box) => (
+                              <div key={box.id} className="flex flex-col gap-2">
+                                {box.conditions.map((cond, condIdx) => (
+                                  <div key={cond.id} className="flex flex-col gap-1">
+                                    {condIdx > 0 && (
+                                      <span className="text-[12px] font-normal text-[#878D94]">and</span>
+                                    )}
+                                    <div className="flex items-end gap-2 w-full">
+                                      <span className="text-[14px] font-medium text-[#0a0a0a] shrink-0 w-[48px]">
+                                        {condIdx === 0 ? 'Where' : ''}
+                                      </span>
+                                      <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                                        <label className="text-[12px] font-normal text-[#4b535c]">Main column</label>
+                                        <div className="relative">
+                                          <select
+                                            value={cond.mainColumn}
+                                            onChange={(e) => updateAdvancedApprovalCondition(exc.id, box.id, cond.id, 'mainColumn', e.target.value)}
+                                            className="w-full h-10 py-2 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none"
+                                          >
+                                            <option value="">Select</option>
+                                            {MAIN_COLUMN_OPTIONS.map((o) => (
+                                              <option key={o} value={o}>{o}</option>
+                                            ))}
+                                          </select>
+                                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                                            <IconChevronDownSelect />
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                                        <label className="text-[12px] font-normal text-[#4b535c]">Condition</label>
+                                        <div className="relative">
+                                          <select
+                                            value={cond.condition}
+                                            onChange={(e) => updateAdvancedApprovalCondition(exc.id, box.id, cond.id, 'condition', e.target.value)}
+                                            className="w-full h-10 py-2 pl-3 pr-9 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a] appearance-none"
+                                          >
+                                            <option value="">Select</option>
+                                            {CONDITION_OPTIONS.map((o) => (
+                                              <option key={o} value={o}>{o}</option>
+                                            ))}
+                                          </select>
+                                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4b535c] pointer-events-none">
+                                            <IconChevronDownSelect />
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                                        <label className="text-[12px] font-normal text-[#4b535c]">Enter a value</label>
+                                        <input
+                                          type="text"
+                                          placeholder="Enter a value"
+                                          value={cond.value}
+                                          onChange={(e) => updateAdvancedApprovalCondition(exc.id, box.id, cond.id, 'value', e.target.value)}
+                                          className="w-full h-10 py-2 px-3 rounded-[4px] border border-[#e9eaeb] bg-white text-[14px] text-[#0a0a0a]"
+                                        />
+                                      </div>
+                                      {box.conditions.length > 1 && (
+                                        <button
+                                          type="button"
+                                          onClick={() => removeConditionFromBox(exc.id, box.id, cond.id)}
+                                          className="h-10 w-10 flex items-center justify-center rounded-[4px] text-[#4b535c] hover:bg-[#e5e7eb] shrink-0"
+                                          aria-label="Remove condition"
+                                        >
+                                          <IconClose className="size-4" />
+                                        </button>
+                                      )}
+                                    </div>
+                                  </div>
+                                ))}
+                                <button
+                                  type="button"
+                                  onClick={() => addConditionToBox(exc.id, box.id)}
+                                  className="self-start text-[13px] font-medium text-[#0267FF] hover:underline"
+                                >
+                                  + Add row
+                                </button>
+                              </div>
+                            ))}
+                            <div className="flex justify-end">
+                              <button
+                                type="button"
+                                onClick={() => clearAdvancedForException(exc.id)}
+                                className="h-9 px-4 rounded-[4px] border border-[#E9EAEB] bg-white text-[13px] font-medium text-[#0a0a0a] hover:bg-[#f8f8f8]"
+                              >
+                                Clear
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addException}
+                  className="self-start text-[13px] font-medium text-[#0267FF] hover:underline"
+                >
+                  + Add exception
+                </button>
+              </div>
+            )}
           </div>
         </div>
-        <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-4 h-7">
-            <button type="button" onClick={goPrev} className="rounded size-7 flex items-center justify-center text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label={activeViewOption === 'week' ? 'Previous week' : 'Previous month'}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button>
-            <h2 className="text-[20px] font-semibold text-[#0a0a0a] tracking-tight">{viewTitle}</h2>
-            <button type="button" onClick={goNext} className="rounded size-7 flex items-center justify-center text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label={activeViewOption === 'week' ? 'Next week' : 'Next month'}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 4l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button>
+
+        <div className="flex items-center justify-end gap-3 pt-6">
+          <button
+            type="button"
+            onClick={() => setIsCreateSchedulePage(false)}
+            className="h-12 px-6 rounded-[6px] text-[16px] font-medium text-[#0a0a0a] hover:bg-[#f3f4f6]">
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsCreateSchedulePage(false)}
+            className="h-12 px-6 rounded-[6px] bg-[#0267FF] text-white text-[16px] font-medium hover:bg-[#0252cc]">
+            Create schedule
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      {pinnedHoverEntryId && activeStatusTab === 'upcoming' && (
+        <div role="presentation" className="fixed inset-0 z-40" onClick={() => { setPinnedHoverEntryId(null); setPinnedHoverCellKey(null) }} aria-hidden />
+      )}
+      <div className="border-b border-[#e5e7eb]">
+        <nav className="flex items-center gap-6 h-11">
+          {statusTabs.map((tab) => {
+            const isActive = activeStatusTab === tab.id
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveStatusTab(tab.id)}
+                className={`pb-2 text-[14px] font-medium border-b-2 ${
+                  isActive
+                    ? 'text-[#0a0a0a] border-[#0267ff]'
+                    : 'text-[#4b535c] border-transparent hover:text-[#0a0a0a]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            )
+          })}
+        </nav>
+      </div>
+      {activeStatusTab === 'upcoming' ? (
+        <>
+          <div className="flex flex-col gap-6" data-name="Optimiser" data-node-id="174:2696">
+            <div>
+              <p className="text-[16px] font-medium text-[#0a0a0a] leading-tight">Optimiser Schedule & jobs</p>
+              <p className="text-[14px] font-normal text-[#4b535c]">Perform all job and schedule actions for all your upcoming inventory</p>
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="bg-white border border-[#e9eaeb] flex gap-[var(--spacing-s,8px)] items-center p-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] shrink-0 h-12" data-name="segment-control" data-node-id="202:3165">
+                {typeFilters.map((f) => {
+                  const isActive = activeTypeFilter === f.id
+                  return (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => setActiveTypeFilter(f.id)}
+                      className={`flex gap-[var(--spacing-xs,6px)] items-center justify-center max-h-[32px] p-[var(--spacing-s,8px)] rounded-[2px] shrink-0 text-[14px] text-center whitespace-nowrap ${isActive ? 'bg-[#f8f8f8] font-medium text-[#0a0a0a]' : 'font-normal text-[#4b535c]'}`}
+                      data-name="Segment element"
+                    >
+                      {f.icon === 'replenishment' && <IconReplenishment className="text-[#22272f] size-4 shrink-0" aria-hidden />}
+                      {f.icon === 'reorder' && <IconReorder className="text-[#22272f] size-4 shrink-0" aria-hidden />}
+                      {f.icon === 'rebalancing' && <IconRebalancing className="text-[#22272f] size-4 shrink-0" aria-hidden />}
+                      <span>{f.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+              <div className="flex items-center gap-2 ml-auto shrink-0">
+                <div className="flex items-center gap-2 relative" data-name="Review status multiselect" data-node-id="12771:5757">
+                  <button
+                    type="button"
+                    onClick={() => { setReviewStatusDropdownOpen((o) => !o); setEventDatePickerOpen(false) }}
+                    className={`flex items-center justify-between gap-2 h-12 px-4 py-3 rounded-[4px] bg-white text-[16px] font-medium text-left shrink-0 min-w-[160px] border ${reviewStatusDropdownOpen ? 'border-[#0267ff]' : 'border-[#e9eaeb]'}`}
+                  >
+                    <span className={selectedReviewStatuses.length === 0 ? 'text-[#0a0a0a]' : 'text-[#0a0a0a]'}>
+                      Review status
+                      {selectedReviewStatuses.length > 0 && (
+                        <span className="text-[#4b535c] font-normal">
+                          {' · '}
+                          {selectedReviewStatuses.length === reviewStatusFilterOptions.length
+                            ? 'Upcoming, In review, Submitted'
+                            : reviewStatusFilterOptions.filter((o) => selectedReviewStatuses.includes(o.id)).map((o) => o.label).join(', ')}
+                        </span>
+                      )}
+                    </span>
+                    <IconChevronDown className="text-[#22272f] size-4 shrink-0" aria-hidden />
+                  </button>
+                  {reviewStatusDropdownOpen && (
+                    <>
+                      <div role="presentation" className="fixed inset-0 z-40" onClick={() => setReviewStatusDropdownOpen(false)} aria-hidden />
+                      <div
+                        className="absolute left-0 top-full mt-1 z-50 w-full min-w-[200px] bg-white border border-[#e9eaeb] rounded-[4px] p-2 shadow-[0px_8px_25px_0px_rgba(0,0,0,0.12)]"
+                        data-name="Dropdown list"
+                        data-node-id="12771:5850"
+                      >
+                        {reviewStatusFilterOptions.map((opt) => {
+                          const selected = selectedReviewStatuses.includes(opt.id)
+                          return (
+                            <button
+                              key={opt.id}
+                              type="button"
+                              onClick={() => toggleReviewStatusFilter(opt.id)}
+                              className="w-full flex gap-2 items-center p-3 rounded-[3px] text-left hover:bg-[#f8f8f8] focus:bg-[#f8f8f8]"
+                              data-name="Dropdown item"
+                            >
+                              <span className="flex items-center justify-center shrink-0 size-6">
+                                <span className={`flex items-center justify-center rounded-[4px] size-5 border-2 ${selected ? 'bg-[#0267ff] border-[#0267ff]' : 'bg-white border-[#e5e7eb]'}`}>
+                                  {selected && (
+                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-white"><path d="M2 6l3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                  )}
+                                </span>
+                              </span>
+                              <span className="flex-1 text-[12px] font-medium text-[#0a0a0a] leading-normal">{opt.label}</span>
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 relative">
+                  <button
+                    type="button"
+                    onClick={() => { setEventDatePickerOpen((o) => !o); setEventDatePickerViewDate(eventDateSelected || new Date(2026, 1, 1)); setReviewStatusDropdownOpen(false) }}
+                    className="flex items-center gap-[var(--spacing-s,8px)] h-12 px-[var(--spacing-l,16px)] py-[var(--spacing-m,12px)] rounded-[var(--border-radius-s,4px)] bg-white border border-[#e9eaeb] text-[16px] font-medium text-[#0a0a0a] shrink-0"
+                    data-name="Button"
+                    data-node-id="202:3228"
+                  >
+                    <IconCalendarSidebar className="text-[#22272f] size-4 shrink-0" aria-hidden data-name="icon" data-node-id="I202:3228;12027:34152" />
+                    <span data-node-id="I202:3228;12027:34153">Event Date</span>
+                  </button>
+                  {eventDatePickerOpen && (
+                    <>
+                      <div role="presentation" className="fixed inset-0 z-40" onClick={() => setEventDatePickerOpen(false)} aria-hidden />
+                      <div className="absolute left-0 top-full mt-2 z-50 w-[336px] bg-white border border-[#e9eaeb] rounded-[4px] p-4 flex flex-col gap-3 shadow-lg" data-name="Datepicker" data-node-id="2360:105506">
+                        <div className="flex items-center justify-between p-1">
+                          <button type="button" onClick={eventDatePickerPrevMonth} className="flex items-center justify-center h-10 w-10 rounded-[4px] text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label="Previous month">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                          </button>
+                          <p className="text-[18px] font-medium text-[#0a0a0a] leading-none">
+                            {monthNames[eventDatePickerViewDate.getMonth()]}, {eventDatePickerViewDate.getFullYear()}
+                          </p>
+                          <button type="button" onClick={eventDatePickerNextMonth} className="flex items-center justify-center h-10 w-10 rounded-[4px] text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label="Next month">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                          </button>
+                        </div>
+                        <div className="flex flex-col gap-0">
+                          <div className="grid grid-cols-7">
+                            {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((wd) => (
+                              <div key={wd} className="size-12 flex items-center justify-center text-[14px] font-medium text-[#4b535c]">
+                                {wd}
+                              </div>
+                            ))}
+                          </div>
+                          {eventDatePickerGrid.map((row, ri) => (
+                            <div key={ri} className="grid grid-cols-7">
+                              {row.map((cell, ci) => {
+                                const inMonth = cell.month === eventDatePickerViewDate.getMonth()
+                                const selected = isSameDay(cell.fullDate, eventDateSelected)
+                                return (
+                                  <div key={`${ri}-${ci}`} className="size-12 flex items-center justify-center p-1">
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setEventDateSelected(cell.fullDate)
+                                        setViewDate(new Date(cell.fullDate.getFullYear(), cell.fullDate.getMonth(), 1))
+                                        setEventDatePickerOpen(false)
+                                      }}
+                                      className={`size-10 flex items-center justify-center rounded-[2px] text-[14px] ${selected ? 'bg-[#0267ff] text-white font-medium' : inMonth ? 'text-[#0a0a0a] hover:bg-[#f3f4f6]' : 'text-[#4b535c] opacity-50 hover:bg-[#f3f4f6]'}`}
+                                    >
+                                      {cell.date}
+                                    </button>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="bg-white border border-[#e9eaeb] flex gap-[var(--spacing-s,8px)] items-center p-[var(--spacing-xxs,4px)] rounded-[var(--border-radius-s,4px)] shrink-0 h-12" data-name="segment-control" data-node-id="203:1343">
+                  {viewOptions.map((v) => {
+                    const isActive = activeViewOption === v.id
+                    return (
+                      <button
+                        key={v.id}
+                        type="button"
+                        onClick={() => setActiveViewOption(v.id)}
+                        className={`flex gap-[var(--spacing-xs,6px)] items-center justify-center max-h-[32px] p-[var(--spacing-s,8px)] rounded-[2px] shrink-0 text-[14px] text-center whitespace-nowrap ${isActive ? 'bg-[#f8f8f8] font-medium text-[#0a0a0a]' : 'font-normal text-[#4b535c]'}`}
+                        data-name="Segment element"
+                      >
+                        {v.icon === 'list' && <IconList className="text-[#22272f] size-4 shrink-0" aria-hidden />}
+                        {v.icon === 'week' && <IconCalendarNote className="text-[#22272f] size-4 shrink-0" aria-hidden />}
+                        {v.icon === 'month' && <IconCalendarSidebar className="text-[#22272f] size-4 shrink-0" aria-hidden />}
+                        <span>{v.label}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
-          {activeViewOption === 'month' && (
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center gap-4 h-7">
+              <button type="button" onClick={goPrev} className="rounded size-7 flex items-center justify-center text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label={activeViewOption === 'week' ? 'Previous week' : 'Previous month'}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </button>
+              <h2 className="text-[20px] font-medium text-[#0a0a0a] tracking-tight">{viewTitle}</h2>
+              <button type="button" onClick={goNext} className="rounded size-7 flex items-center justify-center text-[#0a0a0a] hover:bg-[#f3f4f6]" aria-label={activeViewOption === 'week' ? 'Next week' : 'Next month'}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 4l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </button>
+            </div>
+            {activeViewOption === 'month' && (
             <div className="border border-[#e5e7eb] rounded-[10px] overflow-visible relative">
               <div className="grid grid-cols-7 bg-[#f3f4f6] border-b border-[#e5e7eb]">
                 {weekDays.map((day) => (
@@ -586,7 +1845,7 @@ export default function OptimiserPage({ onAddJob }) {
                                         <Icon className="size-4" />
                                       </span>
                                       <div>
-                                        <p className="text-[14px] font-semibold text-[#0a0a0a]">{entry.title}</p>
+                                        <p className="text-[14px] font-medium text-[#0a0a0a]">{entry.title}</p>
                                         <p className="text-[12px] text-[#4b535c]">
                                           {monthNames[entry.startDate.getMonth()]} {entry.startDate.getDate()} – {entry.endDate.getDate()}, {entry.endDate.getFullYear()}
                                         </p>
@@ -663,7 +1922,7 @@ export default function OptimiserPage({ onAddJob }) {
               </div>
             </div>
           )}
-          {activeViewOption === 'week' && (
+            {activeViewOption === 'week' && (
             <div className="border border-[#e5e7eb] rounded-[10px] overflow-hidden">
               <div className="grid grid-cols-7 bg-[#f3f4f6] border-b border-[#e5e7eb]">
                 {weekDays.map((day) => (
@@ -681,7 +1940,7 @@ export default function OptimiserPage({ onAddJob }) {
               </div>
             </div>
           )}
-          {activeViewOption === 'list' && (
+            {activeViewOption === 'list' && (
             <div className="border border-[#e5e7eb] rounded-[10px] overflow-hidden">
               <div className="bg-[#f3f4f6] border-b border-[#e5e7eb] py-3 px-4 text-[14px] font-medium text-[#364153]">
                 {monthNames[viewDate.getMonth()]} {viewDate.getFullYear()} – list
@@ -701,15 +1960,153 @@ export default function OptimiserPage({ onAddJob }) {
               </div>
             </div>
           )}
+          </div>
+        </>
+      ) : activeStatusTab === 'next' ? (
+        <div className="mt-3 space-y-4">
+          {sortedNextSchedules.map((schedule) => {
+            const deadlineDate = parseDate(schedule.deadline)
+            const isDeadlinePast = deadlineDate < today
+            const deadlineBadgeClass = isDeadlinePast
+              ? 'bg-[#fee2e2] text-[#b91c1c]'
+              : 'bg-[#fef3c7] text-[#92400e]'
+            return (
+            <div
+              key={schedule.id}
+              className="bg-white border border-[#EAEAEA] rounded-[3.42px] p-5 flex flex-col gap-4 w-full"
+            >
+              <div
+                className="group flex flex-wrap items-center justify-between gap-2 cursor-pointer"
+                onClick={() => onOpenScheduleDetail && onOpenScheduleDetail(schedule)}
+              >
+                <span className="inline-flex items-center gap-2">
+                  <h2 className="text-xl md:text-2xl font-medium text-[#0a0a0a] group-hover:text-[#0267ff]">{schedule.name}</h2>
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-green-50 text-green-800 text-[13px] font-medium shrink-0">
+                    {schedule.status}
+                  </span>
+                </span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    // submit handler can be wired here later
+                  }}
+                  className="h-9 px-4 rounded-[4px] border border-[#0267ff] text-sm font-medium text-[#0267ff] bg-white hover:bg-[#ebf3ff]"
+                >
+                  Submit
+                </button>
+              </div>
+              <div className="flex items-center gap-3 text-sm text-[#4b535c]">
+                <span className="flex items-center gap-2">
+                  <span>Submission deadline:</span>
+                  <span className={`px-2.5 py-1 rounded-full text-[13px] font-medium ${deadlineBadgeClass}`}>
+                    {schedule.deadline}
+                  </span>
+                </span>
+                <span className="text-[#d1d5db]">·</span>
+                <span>Created {schedule.created}</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {schedule.metrics.map((metric) => {
+                  const style =
+                    metric.label === 'Unique trips'
+                      ? { bg: 'bg-blue-50', value: 'text-blue-800', label: 'text-blue-700' }
+                      : metric.label === 'Recommended transfers'
+                        ? { bg: 'bg-purple-50', value: 'text-purple-800', label: 'text-purple-700' }
+                        : metric.label === 'Revenue increase'
+                          ? { bg: 'bg-green-50', value: 'text-green-800', label: 'text-green-700' }
+                          : { bg: 'bg-amber-50', value: 'text-amber-800', label: 'text-amber-700' }
+                  return (
+                    <div
+                      key={metric.label}
+                      className={`rounded-[4px] border border-[#EAEAEA] px-4 py-3 flex flex-col ${style.bg}`}
+                    >
+                      <span className={`text-xl md:text-2xl font-medium tracking-tight ${style.value}`}>
+                        {metric.value}
+                      </span>
+                      <span className={`mt-1 text-[11px] ${style.label}`}>
+                        {metric.label}
+                      </span>
+                      {metric.subLabel != null && metric.subLabel !== '' && (
+                        <span className={`mt-0.5 text-[10px] ${style.label} opacity-75`}>
+                          {metric.subLabel}
+                        </span>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+              {((reviewedCount, totalTransfers) => totalTransfers > 0)(schedule.reviewedCount ?? 0, schedule.totalTransfers ?? 0) && (
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[14px] font-medium text-[#0a0a0a]">Review progress</span>
+                    <span className="text-[14px] text-[#4b535c]">
+                      {Math.round((schedule.reviewedCount / schedule.totalTransfers) * 100)}% ({schedule.reviewedCount} of {schedule.totalTransfers} transfers reviewed)
+                    </span>
+                  </div>
+                  <div className="h-2 w-full rounded-full bg-[#e5e7eb] overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-[#0267ff] transition-[width]"
+                      style={{ width: `${Math.min(100, (schedule.reviewedCount / schedule.totalTransfers) * 100)}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="flex items-center justify-between gap-4 text-sm">
+                <div>
+                  {schedule.exceptionsList && (
+                    (() => {
+                      const totalExceptions = schedule.exceptionsTotal ?? schedule.exceptionsList.length
+                      return (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setExpandedExceptionsScheduleId((prev) =>
+                              prev === schedule.id ? null : schedule.id
+                            )
+                          }}
+                          className="text-xs font-medium text-[#0267ff] hover:underline"
+                        >
+                          {expandedExceptionsScheduleId === schedule.id
+                            ? `Hide exceptions (${totalExceptions})`
+                            : `Show exceptions (${totalExceptions})`}
+                        </button>
+                      )
+                    })()
+                  )}
+                </div>
+                <div className="flex flex-wrap items-center gap-4 text-[#4b535c]">
+                  <span>Transfer exceptions: <span className="font-medium text-[#0a0a0a]">{schedule.exceptions ?? '—'}</span></span>
+                  <span>Total approved: <span className="font-medium text-[#0a0a0a]">{schedule.approved ?? '—'}</span></span>
+                  <span>Pending: <span className="font-medium text-[#0a0a0a]">{schedule.pendingCount ?? '—'}</span></span>
+                </div>
+              </div>
+              {schedule.exceptionsList && expandedExceptionsScheduleId === schedule.id && (
+                <div className="space-y-2">
+                  {schedule.exceptionsList.map((ex, idx) => (
+                    <div
+                      key={`${schedule.id}-ex-${idx}`}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border border-[#e5e7eb] rounded-[8px] px-3 py-2 bg-[#f9fafb] text-xs text-[#0a0a0a]"
+                    >
+                      <span className="text-[#4b535c]">{ex.description}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            )
+          })}
         </div>
-      </div>
-
+      ) : (
+        <div />
+      )}
       {scheduleDrawerOpen && (
         <>
           <div role="presentation" className="fixed inset-0 bg-black/50 z-40" onClick={closeDrawer} aria-hidden />
           <div className="fixed right-0 top-0 bottom-0 w-[800px] bg-white shadow-xl z-50 flex flex-col" role="dialog" aria-modal aria-labelledby="add-schedule-title" data-name={editingScheduleEntry ? 'Edit schedule' : 'Add Schedule'} data-node-id="214:2622">
             <header className="flex items-center justify-between shrink-0 h-14 px-6 border-b border-[#e9eaeb]">
-              <h2 id="add-schedule-title" className="text-[18px] font-semibold text-[#0a0a0a]">{editingScheduleEntry ? 'Edit schedule' : 'Add Schedule'}</h2>
+              <h2 id="add-schedule-title" className="text-[18px] font-medium text-[#0a0a0a]">{editingScheduleEntry ? 'Edit schedule' : 'Add Schedule'}</h2>
               <button type="button" onClick={closeDrawer} className="p-2 -mr-2 text-[#4b535c] hover:bg-[#f3f4f6] rounded-[4px]" aria-label="Close">
                 <IconClose />
               </button>
