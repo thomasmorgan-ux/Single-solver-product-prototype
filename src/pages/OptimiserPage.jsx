@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Truck, Brain, TrendingUp, ShieldCheck } from 'lucide-react'
 import { IconCalendarSidebar, IconPlus, IconReplenishment, IconReorder, IconRebalancing, IconChevronDown, IconList, IconCalendarNote, IconTruck, IconTrendUp, IconLightbulb, IconEdit, IconClose, IconChevronDownSelect, IconArrowLeft, IconFilterFunnel, IconSearch } from '../components/icons'
 
 const SAMPLE_CALENDAR_ENTRY = {
@@ -268,8 +268,8 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
       metrics: [
         { label: 'Unique trips', value: '113', subLabel: 'Across 8 routes' },
         { label: 'Recommended transfers', value: '2,308', subLabel: '94% auto-approved' },
-        { label: 'Revenue increase', value: '€501.1K', subLabel: '+4.2% vs last run' },
-        { label: 'Stockouts resolved', value: '1,013 → 559', subLabel: '−44.8% reduction' },
+        { label: 'Revenue increase', value: '€501.1K', subLabel: '+4.2% vs last run', subLabelSentiment: 'positive' },
+        { label: 'Stockouts resolved', value: '1,013 → 559', subLabel: '−44.8% reduction', subLabelSentiment: 'positive' },
       ],
       exceptionsTotal: 2,
       exceptionsList: [
@@ -293,8 +293,8 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
       metrics: [
         { label: 'Unique trips', value: '48', subLabel: 'Across 5 routes' },
         { label: 'Recommended transfers', value: '1,120', subLabel: '88% auto-approved' },
-        { label: 'Revenue increase', value: '€210.4K', subLabel: '+2.1% vs last run' },
-        { label: 'Stockouts resolved', value: '512 → 304', subLabel: '−40.6% reduction' },
+        { label: 'Revenue increase', value: '€210.4K', subLabel: '+2.1% vs last run', subLabelSentiment: 'positive' },
+        { label: 'Stockouts resolved', value: '512 → 304', subLabel: '−40.6% reduction', subLabelSentiment: 'positive' },
       ],
     },
   ]
@@ -2008,30 +2008,47 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {schedule.metrics.map((metric) => {
-                  const style =
+                  const dotColor =
+                    metric.subLabelSentiment === 'positive' ? 'bg-green-500'
+                    : metric.subLabelSentiment === 'warning' ? 'bg-amber-400'
+                    : metric.subLabelSentiment === 'negative' ? 'bg-red-500'
+                    : null
+                  const sentimentStyle =
+                    metric.subLabelSentiment === 'positive' ? { bg: 'bg-green-50', color: 'text-green-500' }
+                    : metric.subLabelSentiment === 'warning'  ? { bg: 'bg-amber-50', color: 'text-amber-500' }
+                    : metric.subLabelSentiment === 'negative' ? { bg: 'bg-red-50', color: 'text-red-500' }
+                    : null
+                  const iconConfig =
                     metric.label === 'Unique trips'
-                      ? { bg: 'bg-blue-50', value: 'text-blue-800', label: 'text-blue-700' }
-                      : metric.label === 'Recommended transfers'
-                        ? { bg: 'bg-purple-50', value: 'text-purple-800', label: 'text-purple-700' }
-                        : metric.label === 'Revenue increase'
-                          ? { bg: 'bg-green-50', value: 'text-green-800', label: 'text-green-700' }
-                          : { bg: 'bg-amber-50', value: 'text-amber-800', label: 'text-amber-700' }
+                      ? { Icon: Truck, bg: 'bg-blue-50', color: 'text-blue-500' }
+                    : metric.label === 'Recommended transfers'
+                      ? { Icon: Brain, bg: 'bg-purple-50', color: 'text-purple-500' }
+                    : metric.label === 'Revenue increase'
+                      ? { Icon: TrendingUp, ...(sentimentStyle ?? { bg: 'bg-green-50', color: 'text-green-500' }) }
+                      : { Icon: ShieldCheck, ...(sentimentStyle ?? { bg: 'bg-green-50', color: 'text-green-500' }) }
+                  const { Icon: MetricIcon, bg: iconBg, color: iconColor } = iconConfig
                   return (
                     <div
                       key={metric.label}
-                      className={`rounded-[4px] border border-[#EAEAEA] px-4 py-3 flex flex-col ${style.bg}`}
+                      className="rounded-[4px] border border-[#EAEAEA] bg-white px-4 py-3 flex gap-3 items-start"
                     >
-                      <span className={`text-xl md:text-2xl font-medium tracking-tight ${style.value}`}>
-                        {metric.value}
+                      <span className={`mt-0.5 shrink-0 flex items-center justify-center w-8 h-8 rounded-[6px] ${iconBg} ${iconColor}`}>
+                        <MetricIcon size={16} strokeWidth={1.75} />
                       </span>
-                      <span className={`mt-1 text-[11px] ${style.label}`}>
-                        {metric.label}
-                      </span>
-                      {metric.subLabel != null && metric.subLabel !== '' && (
-                        <span className={`mt-0.5 text-[10px] ${style.label} opacity-75`}>
-                          {metric.subLabel}
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-xl md:text-2xl font-medium tracking-tight text-[#0a0a0a]">
+                          {metric.value}
                         </span>
-                      )}
+                        <span className="mt-1 text-[11px] text-[#0a0a0a]">
+                          {metric.label}
+                        </span>
+                        {metric.subLabel != null && metric.subLabel !== '' && (
+                          <span className="mt-0.5 text-[10px] text-[#4b535c] flex items-center gap-1">
+                            {dotColor && <span className={`inline-block w-1.5 h-1.5 rounded-full shrink-0 ${dotColor}`} />}
+                            {metric.subLabel}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   )
                 })}
