@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts'
 import { IconSearch, IconChevronDown, IconChevronRight, IconShare, IconDocument, IconClose, IconArrowLeft, IconGears, IconTruck, IconOutlet, IconWarehouse, IconEcomm } from '../components/icons'
 
@@ -547,6 +548,8 @@ const STATUS_BADGE_CLASSES = {
 function StatusDropdown({ value, userName, onChange, rowId, useShortEditedLabel }) {
   const [open, setOpen] = useState(false)
   const [dropdownId] = useState(() => `status-dd-${rowId}-${Math.random().toString(36).slice(2)}`)
+  const buttonRef = useRef(null)
+  const [position, setPosition] = useState({ top: 0, left: 0 })
   const opt = STATUS_OPTIONS.find((o) => o.id === value) || STATUS_OPTIONS.find((o) => o.id === 'unapproved')
   const badgeClass = STATUS_BADGE_CLASSES[value] || STATUS_BADGE_CLASSES.unapproved
   const displayLabel =
@@ -568,50 +571,63 @@ function StatusDropdown({ value, userName, onChange, rowId, useShortEditedLabel 
     return () => document.removeEventListener('click', handleClickOutside)
   }, [open, dropdownId])
 
+  useEffect(() => {
+    if (open && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect()
+      setPosition({ top: rect.bottom + 4, left: rect.left })
+    }
+  }, [open])
+
+  const dropdownContent = open && (
+    <>
+      <div
+        role="presentation"
+        className="fixed inset-0 z-[60]"
+        onClick={() => setOpen(false)}
+        aria-hidden
+      />
+      <div
+        className="fixed z-[70] min-w-[200px] rounded-[6px] border border-[#e5e7eb] bg-white py-1 shadow-lg"
+        style={{ top: position.top, left: position.left, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+        data-status-dropdown={dropdownId}
+      >
+        {STATUS_DROPDOWN_OPTIONS.map((o) => (
+          <button
+            key={o.id}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onChange(o.id)
+              setOpen(false)
+            }}
+            className="w-full flex items-center gap-2 px-3 py-2 text-left text-[13px] font-medium text-[#0a0a0a] hover:bg-[#f3f4f6]"
+          >
+            <span className={`size-2 rounded-full shrink-0 ${o.dotClass}`} aria-hidden />
+            <span>{o.dropdownLabel}</span>
+          </button>
+        ))}
+      </div>
+    </>
+  )
+
   return (
     <div className="relative" data-status-dropdown={dropdownId}>
       <button
+        ref={buttonRef}
         type="button"
         onClick={(e) => {
           e.stopPropagation()
+          e.preventDefault()
           setOpen((o) => !o)
         }}
+        onMouseDown={(e) => e.stopPropagation()}
         className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-[12px] font-medium hover:opacity-90 min-w-0 max-w-full ${badgeClass}`}
       >
         <span className={`size-2 rounded-full shrink-0 ${opt.dotClass}`} aria-hidden />
         <span className="truncate">{displayLabel}</span>
         <IconChevronDown className={`size-3.5 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
-      {open && (
-        <>
-          <div
-            role="presentation"
-            className="fixed inset-0 z-[60]"
-            onClick={() => setOpen(false)}
-            aria-hidden
-          />
-          <div
-            className="absolute left-0 top-full mt-1 z-[70] min-w-[200px] rounded-[6px] border border-[#e5e7eb] bg-white py-1 shadow-lg"
-            style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
-          >
-            {STATUS_DROPDOWN_OPTIONS.map((o) => (
-              <button
-                key={o.id}
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onChange(o.id)
-                  setOpen(false)
-                }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-left text-[13px] font-medium text-[#0a0a0a] hover:bg-[#f3f4f6]"
-              >
-                <span className={`size-2 rounded-full shrink-0 ${o.dotClass}`} aria-hidden />
-                <span>{o.dropdownLabel}</span>
-              </button>
-            ))}
-          </div>
-        </>
-      )}
+      {typeof document !== 'undefined' && dropdownContent && createPortal(dropdownContent, document.body)}
     </div>
   )
 }
@@ -1472,12 +1488,16 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
               <tr
                 key={p.id}
                 className="group border-b border-[#E9EAEB] hover:bg-[#f9fafb] cursor-pointer"
-                onClick={() => setSelectedProduct(p)}
+                onClick={(e) => {
+                  if (e.target.closest('[data-status-dropdown]')) return
+                  setSelectedProduct(p)
+                }}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault()
+                    if (e.target.closest('[data-status-dropdown]')) return
                     setSelectedProduct(p)
                   }
                 }}
@@ -1594,14 +1614,12 @@ function ProductsDrilldown({ trip, onBack, showBackButton = true }) {
                 <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{p.understocks}</div></td>
                 <td className="py-3 px-4 text-right text-[#0a0a0a]"><div className="line-clamp-2 min-w-0">{p.depth}</div></td>
                 <td className="sticky right-0 z-10 py-3 px-4 bg-white group-hover:bg-[#f9fafb] border-l border-[#e5e7eb] shadow-[-4px_0_8px_rgba(0,0,0,0.04)] min-w-0" onClick={(e) => e.stopPropagation()}>
-                  <div className="line-clamp-2 min-w-0">
                   <StatusDropdown
                     rowId={`product-${p.id}`}
                     value={productStatusOverrides[p.id] ?? getRowStatus(p)}
                     userName={p.approvedByUser || p.editedByUser}
                     onChange={(statusId) => setProductStatusOverrides((prev) => ({ ...prev, [p.id]: statusId }))}
                   />
-                  </div>
                 </td>
               </tr>
             ))}
