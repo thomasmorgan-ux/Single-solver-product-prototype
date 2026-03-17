@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import TopBar from './components/TopBar'
-import AddScheduleDrawer from './components/AddScheduleDrawer'
 import AutoneLogo from './components/Logo'
 import {
   IconCollapse,
@@ -34,7 +33,6 @@ export default function App() {
   const [optimiserOpen, setOptimiserOpen] = useState(false)
   const [insightsOpen, setInsightsOpen] = useState(false)
   const [activeView, setActiveView] = useState('control-panel')
-<<<<<<< HEAD
   const [optimiserSubView, setOptimiserSubView] = useState(null)
   const [insightSubView, setInsightSubView] = useState(null)
   const [openScheduleDrawerSignal, setOpenScheduleDrawerSignal] = useState(0)
@@ -42,12 +40,6 @@ export default function App() {
   const [resetToUpcomingSignal, setResetToUpcomingSignal] = useState(0)
   const [openCreateSchedulePageSignal, setOpenCreateSchedulePageSignal] = useState(0)
   const [resetToRecommendationsLandingSignal, setResetToRecommendationsLandingSignal] = useState(0)
-=======
-  const [optimiserSubView, setOptimiserSubView] = useState('schedule')
-  const [scopeTripType, setScopeTripType] = useState('rebalancing')
-  const [insightSubView, setInsightSubView] = useState(null)
-  const [createScheduleDrawerOpen, setCreateScheduleDrawerOpen] = useState(false)
->>>>>>> origin/main
 
   return (
     <div className="h-screen bg-[#f5f5f5] flex text-[#0a0a0a] overflow-hidden">
@@ -145,7 +137,7 @@ export default function App() {
                 <span>Events</span>
               </button>
               <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
-                <IconGears className="text-white size-6 shrink-0" aria-hidden />
+                <IconGears className="text-[#22272f] size-6 shrink-0" aria-hidden />
                 <span>Parameters</span>
               </button>
               <button type="button" className="h-10 w-full flex items-center gap-[var(--spacing-m,12px)] px-[var(--spacing-l,16px)] py-[var(--spacing-s,8px)] rounded-[var(--border-radius-s,4px)] text-left text-[14px] font-normal text-white hover:bg-white/5 shrink-0" data-name="Sidebar element">
@@ -193,7 +185,6 @@ export default function App() {
       <div className="flex flex-col flex-1 min-w-0 min-h-0 w-full overflow-hidden">
         <div className="shrink-0">
           <TopBar
-<<<<<<< HEAD
             title={
               activeView === 'optimiser' && optimiserSubView === 'scope'
                 ? 'Scope'
@@ -217,14 +208,6 @@ export default function App() {
                       : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"
             }
             primaryButtonLabel={undefined}
-=======
-            title={activeView === 'optimiser' && optimiserSubView === 'scope' ? (scopeTripType === 'rebalancing' ? 'Rebalancing' : scopeTripType === 'replenishment' ? 'Replenishment' : 'Reorder') : activeView === 'optimiser' ? 'Optimiser' : activeView === 'insights' ? 'Insights' : 'Overview'}
-            subtitle={activeView === 'optimiser' && optimiserSubView === 'scope' ? (scopeTripType === 'rebalancing' ? 'Optimize your inventory between points of sales' : scopeTripType === 'replenishment' ? 'Move stock from your warehouse to your points of sale' : 'Order more of your bestsellers') : activeView === 'optimiser' ? 'Automate replenishment, reordering, and rebalancing with scheduled inventory optimisation.' : activeView === 'insights' ? 'Analytics and statistics for your sales performance.' : "Overview area, your 'morning check-in' to prioritise and manage inventory, scheduling and more"}
-            primaryButtonLabel={activeView === 'optimiser' && optimiserSubView === 'scope' ? (scopeTripType === 'rebalancing' ? 'Create new rebalancing' : scopeTripType === 'replenishment' ? 'Create new replenishment' : 'Create new reorder') : undefined}
-            onPrimaryClick={activeView === 'optimiser' && optimiserSubView === 'scope' ? () => setCreateScheduleDrawerOpen(true) : undefined}
-            secondaryButtonLabel={activeView === 'optimiser' && optimiserSubView === 'scope' ? 'Switch back' : undefined}
-            onSecondaryClick={activeView === 'optimiser' && optimiserSubView === 'scope' ? () => setOptimiserSubView('schedule') : undefined}
->>>>>>> origin/main
             showMenuButton={activeView === 'insights'}
             onBack={
               activeView === 'optimiser' && (optimiserSubView === 'scope' || optimiserSubView === 'schedule-detail')
@@ -253,15 +236,11 @@ export default function App() {
 
         <main className="flex-1 min-h-0 min-w-0 w-full pl-8 pr-8 pb-12 overflow-y-auto overflow-x-hidden">
           {activeView === 'optimiser' && optimiserSubView === 'scope' ? (
-<<<<<<< HEAD
             <ScopePage />
           ) : activeView === 'optimiser' && optimiserSubView === 'schedule-detail' ? (
             <div className="pt-6">
               <ScheduleDetailPage />
             </div>
-=======
-            <ScopePage tripType={scopeTripType} onTripTypeChange={setScopeTripType} />
->>>>>>> origin/main
           ) : activeView === 'optimiser' ? (
             <div className="pt-6">
               <OptimiserPage
@@ -283,12 +262,10 @@ export default function App() {
               {!insightSubView && <InsightsPage />}
             </div>
           ) : (
-            <OverviewPage assignee={assignee} setAssignee={setAssignee} onAddJob={() => { setActiveView('optimiser'); setOptimiserSubView('scope'); }} />
+            <OverviewPage assignee={assignee} setAssignee={setAssignee} />
           )}
         </main>
       </div>
-
-      <AddScheduleDrawer open={createScheduleDrawerOpen} onClose={() => setCreateScheduleDrawerOpen(false)} />
     </div>
   )
 }

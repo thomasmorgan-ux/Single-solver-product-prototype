@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState, useRef, useEffect } from 'react'
 import { ChevronRight } from 'lucide-react'
 import { IconCalendarSidebar, IconPlus, IconReplenishment, IconReorder, IconRebalancing, IconChevronDown, IconList, IconCalendarNote, IconTruck, IconTrendUp, IconLightbulb, IconEdit, IconClose, IconChevronDownSelect, IconArrowLeft, IconFilterFunnel, IconSearch } from '../components/icons'
@@ -2276,10 +2275,4 @@ export default function OptimiserPage({ onAddJob, openScheduleDrawer, openAddJob
       )}
     </div>
   )
-=======
-import { OptimiserScheduleSection } from '../components/OptimiserScheduleSection'
-
-export default function OptimiserPage({ onAddJob }) {
-  return <OptimiserScheduleSection onAddJob={onAddJob} />
->>>>>>> origin/main
 }

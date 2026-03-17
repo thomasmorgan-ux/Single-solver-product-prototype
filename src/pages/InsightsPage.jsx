@@ -204,23 +204,14 @@ export default function InsightsPage() {
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-medium text-[#0a0a0a]">Insights</h1>
             <div className="flex items-center gap-1">
-              <button type="button" className="relative group p-1.5 rounded text-[#6a7282] hover:bg-[#f5f5f5]" aria-label="Liveboard details">
+              <button type="button" className="p-1.5 rounded text-[#6a7282] hover:bg-[#f5f5f5]" aria-label="Info">
                 <IconInfo className="size-4" />
-                <span className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 text-xs font-medium text-white bg-[#12171e] rounded-[4px] opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                  Liveboard details
-                </span>
               </button>
-              <button type="button" className="relative group p-1.5 rounded text-[#6a7282] hover:bg-[#f5f5f5]" aria-label="Add to favourites">
+              <button type="button" className="p-1.5 rounded text-[#6a7282] hover:bg-[#f5f5f5]" aria-label="Favorite">
                 <IconStar className="size-4" />
-                <span className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 text-xs font-medium text-white bg-[#12171e] rounded-[4px] opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                  Add to favourites
-                </span>
               </button>
-              <button type="button" className="relative group p-1.5 rounded text-[#6a7282] hover:bg-[#f5f5f5]" aria-label="Request access">
+              <button type="button" className="p-1.5 rounded text-[#6a7282] hover:bg-[#f5f5f5]" aria-label="Lock">
                 <IconLock className="size-4" />
-                <span className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 text-xs font-medium text-white bg-[#12171e] rounded-[4px] opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                  Request access
-                </span>
               </button>
             </div>
           </div>
